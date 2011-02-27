@@ -23,23 +23,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from BeautifulSoup import BeautifulSoup
 import urllib, urllib2
 
 import registry
 
-def send_request(request, url, data=None, sessid=None):
+def send_request(request, url, data=None, sessid=None, referer=None):
     if not sessid:
         lsid = request.get_session_id()
         if lsid:
-            sessid = registry.query(lsid)
+            sessid = registry.query(lsid)[1]
 
     headers  = {}
     if sessid:
-        headers['Cookie'] = 'PHPSESSID=%s; path=/' % sessid
+        headers['Cookie'] = 'PHPSESSID=%s' % sessid
+    if referer:
+        headers['Referer'] = referer
 
     req = urllib2.Request(url, data, headers)
     return urllib2.urlopen(req)
 
 def postprocess(data):
-    return data.decode('cp949', 'ignore')
+    data = data.decode('cp949', 'ignore')
+    return data, BeautifulSoup(data)
 

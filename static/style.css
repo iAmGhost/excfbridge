@@ -2,16 +2,6 @@
     -webkit-text-size-adjust: none;
 }
 
-a:link {
-    color: black;
-    text-decoration: none;
-}
-
-a:visited {
-    color: #222222;
-    text-decoration: none;
-}
-
 body {
     font-size: 14px;
     margin: 0;
@@ -27,6 +17,56 @@ table, tr, td {
     border-color: white;
     margin: 0;
     padding: 0;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+#view_header th {
+    width: 60px;
+}
+
+#view_header td {
+    padding-left: 10px;
+}
+
+#comments {
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #ddddd;
+}
+
+#comments .header {
+    margin-top: 10px;
+    background-color: #f8f8f8;
+}
+
+#comments .author {
+    padding-left: 10px;
+}
+
+#comments .date {
+    padding-right: 10px;
+    text-align: right;
+}
+
+#comments .body {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1.1em;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#view_body {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1.15em;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 table {
@@ -63,11 +103,97 @@ input, textarea {
 }
 
 .comment {
-    font-size: 0.8em;
-    color: #000033;
+    font-size: 0.9em;
+    padding: 2px 5px 2px 5px;
+    background-color: #000033;
+    color: #DDDDFF;
+    border-radius: 4px;
 }
 
 .emph {
     text-weight: bold;
     color: #ff0000;
+}
+
+img {
+    width: 100%;
+}
+
+#postcomment {
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-size: 1.15em;
+}
+
+#postcomment input {
+    width: 100%;
+}
+
+#postcomment #input_comment {
+    height: 2em;
+    word-wrap: break-word;
+}
+
+#postcomment #input_submit {
+    font-size: 1.1em;
+}
+
+#header {
+    width: 100%
+    border-top: 1px solid #222222;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #222222;
+    height: 35px;
+}
+
+#header h2 {
+    float: left;
+    background-color: white;
+    color: #383B39;
+    font-size: 1.1em;
+    padding-left: 10px;
+}
+
+#header .button {
+    float: right;
+    font-size: 0.9em;
+    margin: 0.3em 0.5em 0.5em 0em;
+}
+
+#error {
+    text-align: center;
+}
+
+.button {
+    border-radius: 5px;
+    background-color: black;
+    padding: 0.4em 0.5em 0.4em 0.5em;
+    color: white;
+}
+
+#body a:link {
+    color: black;
+}
+
+#body a:visited {
+    color: #222222;
+    text-decoration: none;
+}
+
+#footer {
+    margin-top: 30px;
+    padding: 0px 0 10px 0;
+    border-top: 1px solid #6666AA;
+    border-bottom: 1px solid #6666AA;
+    background-color: #eef0ff;
+    font-size: 0.9em;
+    line-height: 150%;
+    text-align: center;
+}
+
+#footer a {
+    color: #222222;
+    font-weight: bold;
 }

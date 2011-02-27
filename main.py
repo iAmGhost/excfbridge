@@ -30,16 +30,23 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 # pages
+from admin import admin
 from index import index
 from signon import signon
 from signoff import signoff
 from listing import listing
+from post import post, post_comment
+from view import view
 
 requests = [
     ('/', index),
+    ('/admin', admin),
     ('/signon', signon),
     ('/signoff', signoff),
-    ('/list/([-\w/]+)', listing)
+    ('/list/([-\w/]+)', listing),
+    ('/post/([-\w/]+)', post),
+    ('/post_comment/([-\w/]+)', post_comment),
+    ('/view/([-\w/]+)', view)
 ]
 
 application = webapp.WSGIApplication(requests, debug=True)

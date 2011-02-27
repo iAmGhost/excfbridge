@@ -26,6 +26,7 @@
 from google.appengine.ext import db
 
 class registry(db.Model):
+    userid = db.StringProperty()
     phpsessid = db.StringProperty(required=True)
     signon_time = db.DateTimeProperty(auto_now_add=True)
 
@@ -37,14 +38,17 @@ class auditlog(db.Model):
     time = db.DateTimeProperty(auto_now_add=True)
 
 def query(sid):
+    if not sid:
+        return None
+    
     d = registry.get_by_key_name(sid)
     if not d:
         return None
 
-    return d.phpsessid
+    return d.userid, d.phpsessid
 
-def register(sid, psess):
-    r = registry(key_name=sid, phpsessid=psess)
+def register(sid, userid, psess):
+    r = registry(key_name=sid, userid=userid, phpsessid=psess)
     d = registry.get_by_key_name(sid)
     if d:
         d.delete()
@@ -52,6 +56,9 @@ def register(sid, psess):
     r.put()
 
 def purge(sid):
+    if not sid:
+        return
+
     d = registry.get_by_key_name(sid)
     if d:
         d.delete()

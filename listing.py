@@ -25,6 +25,7 @@
 
 from page import page
 import pagedefs
+from parser import parser
 import remote
 
 class listing(page):
@@ -33,6 +34,9 @@ class listing(page):
     URL = 'http://excf.com/bbs/zboard.php'
 
     def get(self, path):
+        if self.redirect_if_no_session():
+            return
+
         args = path.split('/')
 
         dest = args[0]
@@ -48,12 +52,17 @@ class listing(page):
         query = self.URL + '?id=%s&page=%d' % (pagedefs.PAGE_IDS[dest], page)
 
         result = remote.send_request(self, query)
-        html = remote.postprocess(result.read())
+        html, soup = remote.postprocess(result.read())
         
-        if self.redirect_if_not_signed_on(html, pagedefs.PAGE_PARSERS[dest]):
+        if self.redirect_if_not_signed_on(html, soup, pagedefs.PAGE_PARSERS[dest]):
             return
 
-        output = pagedefs.PAGE_PARSERS[dest].parse_list(html)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode != parser.ERROR_NONE:
+            self.error_forward(errmsg)
+            return
+
+        output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
 
         self.set_title(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page))
         self.render('list.html.frag', output)

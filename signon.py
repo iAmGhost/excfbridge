@@ -54,14 +54,14 @@ class signon(page):
         phpsessid = re.match('PHPSESSID=([0-9a-f]+)', m.headers['set-cookie']).group(1)
 
         l = remote.send_request(self, self.URL_SIGN_ON, encoded, phpsessid)
-        result = remote.postprocess(l.read())
+        result, soup = remote.postprocess(l.read())
 
         if 'about:blank' in result:
             # succeeded
             ip = self.request.remote_addr
             ua = self.request.headers['User-Agent'] if self.request.headers.has_key('User-Agent') else None
 
-            registry.register(sessid, phpsessid)
+            registry.register(sessid, userid, phpsessid)
             registry.audit(userid, sessid, ip, ua)
 
             # save form data if needed

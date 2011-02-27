@@ -23,12 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import config
 from page import page
 import registry
 
 class admin(page):
-    ALLOWED_USER = ['segfault87', 'excf']
-
     LIMIT_REGISTRY = 250
     LIMIT_AUDIT = 500
 
@@ -39,7 +38,7 @@ class admin(page):
             self.error(u'로그인되어 있지 않습니다.')
             return
 
-        if not out[0] in self.ALLOWED_USER:
+        if not out[0] in config.ADMINISTRATORS:
             self.error(u'권한이 없습니다.')
 
         outvars = {}

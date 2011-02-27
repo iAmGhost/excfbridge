@@ -8,10 +8,7 @@
   <tbody>
 {% for article in article_lists %}
     <tr>
-      <td>
-	<a href='{{article.address}}'>{{article.name}}</a>
-	{% if article.comment %}<span class='comment'>{{article.comment}}</span>{% endif %}
-      </td>
+      <td><a href='{{article.link}}'>{{article.name}} {% if article.comment %}<span class='comment'>{{article.comment}}</span>{% endif %}</a></td>
       <td class='column_author'>{{article.author}}</td>
     </tr>
 {% endfor %}

@@ -29,6 +29,7 @@ import urllib
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
+import config
 import registry
 
 class page(webapp.RequestHandler):
@@ -37,23 +38,27 @@ class page(webapp.RequestHandler):
     title = ''
 
     def set_title(self, title):
-        self.title = u'ⓢ.excf.com | %s' % title
+        self.title = title
 
-    def redirect_if_not_signed_on(self, page, pagedef):
-        redirect = False
+    def redirect_if_no_session(self):
         if not self.get_session_id():
-            # Not signed on at all
-            redirect = True
-        elif not pagedef.check_session(page):
-            # Remote session is expired
-            self.force_sign_out()
-            redirect = True
-        
-        if redirect:
             self.redirect('/signon?%s' % urllib.urlencode({'redirect': self.request.path}))
             return True
-        else:
-            return False
+        elif not registry.query(self.get_session_id()):
+            self.force_sign_out()
+            self.redirect('/signon?%s' % urllib.urlencode({'redirect': self.request.path}))
+            return True
+        
+        return False                                 
+
+    def redirect_if_not_signed_on(self, page, soup, pagedef):
+        if not pagedef.check_session(page, soup):
+            # Remote session is expired
+            self.force_sign_out()
+            self.redirect('/signon?%s' % urllib.urlencode({'redirect': self.request.path}))
+            return True
+        
+        return False
 
     def get_session_id(self):
         if not self.request.cookies.has_key('session'):
@@ -77,7 +82,7 @@ class page(webapp.RequestHandler):
     def error(self, errmsg, redir=None, onclick=None):
         self.set_title(u'오류')
         
-        attr = 'href=\'#\''
+        attr = 'onclick=\'history.back();\''
         if redir:
             attr = 'href=\'%s\'' % redir
         elif onclick:
@@ -89,18 +94,31 @@ class page(webapp.RequestHandler):
 
         self.render('error.html.frag', var)
 
+    def error_forward(self, errmsg, redir=None, onclick=None):
+        self.error(u'<b>%s</b><br />랩니다.' % errmsg, redir, onclick)
+
     # Construct HTML
     def render(self, filename, attributes):
         dirname = os.path.dirname(__file__) + '/templates'
 
-        vals = {'title': self.title}
+        headervals = {'title': self.title}
+        footervals = {}
+        
+        try:
+            admin = registry.query(self.get_session_id())
+            if admin and admin[0] in config.ADMINISTRATORS:
+                footervals['admin'] = True
+                headervals['signed_on'] = True
+                headervals['user'] = admin[0]
+        except:
+            pass
 
         header = os.path.join(dirname, 'header.html.frag')
         body = os.path.join(dirname, filename)
         footer = os.path.join(dirname, 'footer.html.frag')
 
         self.response.headers.add_header('Content-Type', 'text/html')
-        self.response.out.write(template.render(header, vals))
+        self.response.out.write(template.render(header, headervals))
         self.response.out.write(template.render(body, attributes))
-        self.response.out.write(template.render(footer, {}))
+        self.response.out.write(template.render(footer, footervals))
         
