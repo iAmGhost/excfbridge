@@ -33,6 +33,9 @@ import remote
 class post(page):
     """ post handler """
 
+    URL = 'http://excf.com/bbs/write_ok.php'
+    URL_WRITE = 'http://excf.com/bbs/write.php'
+
     def check_arg(self, path):
         args = path.split('/')
 
@@ -48,13 +51,52 @@ class post(page):
 
         return dest
 
-    def get(self, path):
-        dest = self.check_arg(dest)
+    def post(self, path):
+        if self.redirect_if_no_session():
+            return
+
+        dest = self.check_arg(path)
         if not dest:
             return
 
-        self.set_title('%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest])
-        self.render('post.html.frag', {})
+        subject = self.request.get('subject').encode('cp949')
+        contents = self.request.get('contents').encode('cp949')
+        
+        query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
+
+        l = remote.send_request(self, self.URL, urllib.urlencode(query), referer=self.URL)
+        result, soup = remote.postprocess(l.read())
+
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        if errcode != parser.ERROR_NONE:
+            self.error_forward(errmsg)
+            return
+
+        self.redirect('/list/%s' % (dest, ))
+
+    def get(self, path):
+        if self.redirect_if_no_session():
+            return
+
+        dest = self.check_arg(path)
+        if not dest:
+            return
+
+        query = self.URL_WRITE + '?id=%s' % (pagedefs.PAGE_IDS[dest])
+        
+        result = remote.send_request(self, query, referer=self.URL_WRITE)
+        html, soup = remote.postprocess(result.read())
+        
+        if self.redirect_if_not_signed_on(html, soup, pagedefs.PAGE_PARSERS[dest]):
+            return
+
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode != parser.ERROR_NONE:
+            self.error_forward(errmsg)
+            return
+
+        self.set_title(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest])
+        self.render('post.html.frag', {'bid': dest})
 
 class post_comment(page):
     """ comment post handler """

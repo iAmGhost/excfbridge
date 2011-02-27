@@ -123,7 +123,7 @@ img {
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
-    text-size: 1.15em;
+    font-size: 1.15em;
 }
 
 #postcomment input {
@@ -137,6 +137,18 @@ img {
 
 #postcomment #input_submit {
     font-size: 1.1em;
+}
+
+#post {
+    padding: 1em;
+}
+
+#post input {
+    width: 100%;
+}
+
+#post textarea {
+    width: 100%;
 }
 
 #header {
