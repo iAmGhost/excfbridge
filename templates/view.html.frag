@@ -47,3 +47,11 @@
   <input id='input_submit' type='submit' value='게시' />
 </form>
 </div>
+<table class='nav'>
+  <tbody>
+    <tr>
+      <td><a href='/view/{{bid}}/{{pid}}'>새로고침</a></td>
+      <td><a href='/list/{{bid}}'>목록</a></td>
+      <td><a href='/post/{{bid}}'>글쓰기</a></td>
+  </tbody>
+</table>

@@ -63,6 +63,12 @@ class listing(page):
             return
 
         output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
+        output['bid'] = dest
+        output['page'] = page
+
+        maxpages = 500 # FIXME
+        pages = filter(lambda x: x > 0 and x <= maxpages, range(page-2, page+3))
+        output['pages'] = pages
 
         self.set_title(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page))
         self.render('list.html.frag', output)

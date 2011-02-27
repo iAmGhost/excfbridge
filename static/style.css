@@ -194,6 +194,53 @@ img {
     text-decoration: none;
 }
 
+.nav {
+    margin-top: 10px;
+    border: 1px solid #eeeeee;
+    padding: 2px;
+    border: none;
+}
+
+#pagenav_container {
+    text-align: center;
+}
+
+.pagenav {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-bottom: 10px;
+    border: 1px solid #eeeeee;
+    padding: 2px;
+    margin-top: 3px;
+    border: none;
+}
+
+.nav td, .pagenav td {
+    text-align: center;
+    padding: 0.2em;
+    border: none;
+}
+
+.nav a {
+    width: 100%;
+    display: block;
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+    background-color: #ddddef;
+    border-radius: 4px;
+}
+
+.pagenav a {
+    width: 100%;
+    display: block;
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
 #footer {
     margin-top: 30px;
     padding: 0px 0 10px 0;
@@ -209,3 +256,4 @@ img {
     color: #222222;
     font-weight: bold;
 }
+
