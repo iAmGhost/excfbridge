@@ -24,7 +24,7 @@
 # THE SOFTWARE.
 
 from settings import ADMINS_EXCF
-from flexigate import registry
+from flexigate import registry, models
 from flexigate.tools import *
 
 LIMIT_REGISTRY = 100
@@ -42,7 +42,7 @@ def handle(request):
     data = default_template_vars(u'관리자 페이지', request)
     data['limit_registry'] = LIMIT_REGISTRY
     data['limit_audit'] = LIMIT_AUDIT
-    data['sessions'] = registry.registry.objects.order_by('-signon_time').all()[:LIMIT_REGISTRY]
-    data['audit'] = registry.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
+    data['sessions'] = models.registry.objects.order_by('-signon_time').all()[:LIMIT_REGISTRY]
+    data['audit'] = models.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
         
     return render_to_response('admin.html', data)

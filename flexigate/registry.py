@@ -25,21 +25,7 @@
 
 from datetime import datetime
 
-from django.db import models
-
-class registry(models.Model):
-    session = models.CharField(max_length=36, primary_key=True)
-    userid = models.CharField(max_length=20)
-    phpsessid = models.CharField(max_length=30)
-    signon_time = models.DateTimeField(auto_now_add=True)
-    lastactivity_time = models.DateTimeField(auto_now_add=True)
-
-class auditlog(models.Model):
-    userid = models.CharField(max_length=20)
-    session = models.CharField(max_length=36)
-    ipaddress = models.IPAddressField()
-    useragent = models.CharField(max_length=300, null=True, blank=True)
-    time = models.DateTimeField(auto_now_add=True)
+from flexigate.models import registry, auditlog
 
 def query(sid):
     if not sid:

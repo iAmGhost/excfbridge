@@ -18,6 +18,7 @@
   }
 </script>
 <form action='/signon' method='post' onsubmit='return validate();'>
+  {% if redirect %}<input type='hidden' name='redirect' value='{{redirect}}' />{% endif %}
   <table>
     <tbody>
       <tr>

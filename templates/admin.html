@@ -3,10 +3,10 @@
 {% block body %}
 <h2>열린 세션 (최근 {{limit_registry}}건)</h2>
 <ul>
-{% for ac in sessions %}<li>{{ac.signon_time}} - {{ac.lastactivity_time}}: <b>{{ac.userid}}</b> ({{ac.phpsessid}})</li>{% endfor %}
+{% for ac in sessions %}<li>{{ac.signon_time}} (<strong>{{ac.elapsed}}</strong> elapsed, <strong>{{ac.active_usage}}</strong> used): <strong>{{ac.userid}}</strong></li>{% endfor %}
 </ul>
 <h2>로그인 내역 (최근 {{limit_audit}}건)</h2>
 <ul>
-{% for al in audit %}<li>{{al.time}}: <b>{{al.userid}}</b> (from {{al.ipaddress}}{% if al.useragent %}, using {{al.useragent}}{% endif %})</li>{% endfor %}
+{% for al in audit %}<li>{{al.time}}: <strong>{{al.userid}}</strong> (from {{al.ipaddress}}{% if al.useragent %}, using {{al.browser}}{% endif %})</li>{% endfor %}
 </ul>
 {% endblock %}

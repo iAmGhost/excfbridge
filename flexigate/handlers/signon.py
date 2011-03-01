@@ -88,7 +88,7 @@ def handle_signon_post(request):
         return error(u'아이디와 패스워드를 입력해 주시기 바랍니다.', redir='/signon')
 
     try:
-        raddr = request.GET['redirect']
+        raddr = request.POST['redirect']
     except:
         raddr = DEFAULT_INDEX
 
@@ -113,6 +113,10 @@ def handle_signon_get(request):
     data['userid'] = userid
     data['password'] = password
     data['checked'] = checked
+    try:
+        data['redirect'] = request.GET['redirect']
+    except:
+        pass
 
     response = render_to_response('signon.html', data)
 
