@@ -1,3 +1,6 @@
+{% extends "skel.html" %}
+
+{% block body %}
 <table id='view_header'>
   <tr>
     <th>이름</th>
@@ -19,7 +22,9 @@
   </tr>
 </table>
 <div id='view_body'>
+{% autoescape off %}
 {{body}}
+{% endautoescape %}
 </div>
 <table id='comments'>
 {% for comment in comments %}
@@ -28,7 +33,7 @@
     <td class='date'>{{comment.date}}</td>
   </tr>
   <tr class='body'>
-    <td colspan='2' class='body'>{{comment.body}}</td>
+    <td colspan='2' class='body'>{% autoescape off %}{{comment.body}}{% endautoescape %}</td>
   </tr>
 {% endfor %}
 </table>
@@ -36,7 +41,7 @@
 <script type='text/javascript'>
   function validate() {
     if (!document.getElementById('input_comment').value) {
-      alert('내용을 입력해 주십시오.);
+      alert('내용을 입력해 주십시오.');
       return false;
     }
     return true;
@@ -55,3 +60,4 @@
       <td><a href='/post/{{bid}}'>글쓰기</a></td>
   </tbody>
 </table>
+{% endblock %}

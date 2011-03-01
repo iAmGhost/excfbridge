@@ -10,6 +10,7 @@
       @import url('/static/style.css');
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
+    {% block head %}{% endblock %}
   </head>
   <body>
 <div id='header'>
@@ -17,3 +18,12 @@
   {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
 </div>
 <div id='body'>
+{% block body%}{% endblock %}
+</div>
+    <div id='footer'>
+      <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 직접적인 관계가 없습니다.</p>
+      Powered by <a href='http://influx.kr'><span class='emph'>!</span>nflux</a><br />
+      <a href='mailto:mastermind@planetmono.org'>피드백</a> | <a href='https://github.com/segfault87/excfbridge'>소스 코드</a>{% if admin %} | <a href='/admin'>관리자</a>{% endif %}
+    </div>
+  </body>
+</html>

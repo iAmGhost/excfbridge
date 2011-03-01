@@ -23,4 +23,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-ADMINISTRATORS = ['segfault87', 'excf']
+from flexigate.parsers import free
+
+PAGE_IDS = {
+    'free': 'free3'
+}
+
+PAGE_NAMES = {
+    'free': u'자유 게시판'
+}
+
+PAGE_PARSERS = {
+    'free': free.parser()
+}

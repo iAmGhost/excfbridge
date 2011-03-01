@@ -24,35 +24,10 @@
 # THE SOFTWARE.
 
 import re
-from BeautifulSoup import BeautifulSoup
 
-# BeautifulSoup's HTML parsing capability is somewhat problematic, so
-# we have to do additional (dirty) shovelling to get the desired result.
+from flexigate.parser import parser as parser_base
 
-class parser:
-    ERROR_NONE = 0
-    ERROR_SIGNED_OUT = 1
-    ERROR_GENERIC = 2
-
-    DECIMAL_MATCHER = re.compile(r'.*(\d+)')
-
-    def parse_list(self, pid, page, soup):
-        return {}
-
-    def parse_view(self, pid, page, soup):
-        return {}
-
-    def check_session(self, page, soup):
-        errcode, errmsg = self.check_error(page, soup)
-        if errcode == self.ERROR_SIGNED_OUT:
-            return False
-        
-        return True
-
-    def check_error(self, page, soup):
-        return (self.ERROR_NONE, None)
-
-class parser_free(parser):
+class parser(parser_base):
     """ Parser for free board """
 
     no_matcher = re.compile(r'.*no=(\d+)')
@@ -132,4 +107,3 @@ class parser_free(parser):
                 return (self.ERROR_GENERIC, msg)
         except:
             return (self.ERROR_NONE, None)
-                

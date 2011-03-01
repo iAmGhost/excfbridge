@@ -23,16 +23,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-import parser
+from flexigate.tools import get_session_id
 
-PAGE_IDS = {
-    'free': 'free3'
-}
+from django.shortcuts import *
 
-PAGE_NAMES = {
-    'free': u'자유 게시판'
-}
+DEFAULT_INDEX = '/list/free'
 
-PAGE_PARSERS = {
-    'free': parser.parser_free()
-}
+def handle(request):
+    if not get_session_id(request):
+        return redirect('/signon')
+    else:
+        return redirect(DEFAULT_INDEX)

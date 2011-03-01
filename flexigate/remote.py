@@ -26,11 +26,12 @@
 from BeautifulSoup import BeautifulSoup
 import urllib, urllib2
 
-import registry
+from flexigate import registry
+from flexigate.tools import *
 
 def send_request(request, url, data=None, sessid=None, referer=None):
     if not sessid:
-        lsid = request.get_session_id()
+        lsid = get_session_id(request)
         if lsid:
             sessid = registry.query(lsid)[1]
 

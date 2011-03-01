@@ -23,15 +23,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from page import page
-import remote
+from django.conf.urls.defaults import *
 
-class signoff(page):
-    """ Sign out request handler """
+from flexigate.handlers.admin import handle as admin
+from flexigate.handlers.index import handle as index
+from flexigate.handlers.list import handle as listing
+from flexigate.handlers.post import handle_article as post, handle_comment as post_comment
+from flexigate.handlers.signon import handle_signon as signon, handle_signoff as signoff
+from flexigate.handlers.view import handle as view
 
-    URL = 'http://excf.com/bbs/logout.php?s_url=about:blank'
+urlpatterns = patterns('',
+    (r'^$', index),
+    (r'^admin$', admin),
+    (r'^signon$', signon),
+    (r'^signout$', signoff),
+    (r'^list/(.*)$', listing),
+    (r'^post/(.*)$', post),
+    (r'^post_comment/(.*)$', post_comment),
+    (r'^view/(.*)$', view),
+)
 
-    def get(self):
-        remote.send_request(self, self.URL)
-        self.force_sign_out()
-        self.redirect('/signon')
+
+

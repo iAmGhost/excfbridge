@@ -23,46 +23,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from google.appengine.ext import db
+# BeautifulSoup's HTML parsing capability is somewhat problematic, so
+# we have to do additional (dirty) shovelling to get the desired result.
 
-class registry(db.Model):
-    userid = db.StringProperty()
-    phpsessid = db.StringProperty(required=True)
-    signon_time = db.DateTimeProperty(auto_now_add=True)
+import re
 
-class auditlog(db.Model):
-    userid = db.StringProperty(required=True)
-    session = db.StringProperty(required=True)
-    ipaddress = db.StringProperty(required=True)
-    useragent = db.StringProperty()
-    time = db.DateTimeProperty(auto_now_add=True)
+class parser:
+    ERROR_NONE = 0
+    ERROR_SIGNED_OUT = 1
+    ERROR_GENERIC = 2
 
-def query(sid):
-    if not sid:
-        return None
-    
-    d = registry.get_by_key_name(sid)
-    if not d:
-        return None
+    DECIMAL_MATCHER = re.compile(r'.*(\d+)')
 
-    return d.userid, d.phpsessid
+    def parse_list(self, pid, page, soup):
+        return {}
 
-def register(sid, userid, psess):
-    r = registry(key_name=sid, userid=userid, phpsessid=psess)
-    d = registry.get_by_key_name(sid)
-    if d:
-        d.delete()
+    def parse_view(self, pid, page, soup):
+        return {}
+
+    def check_session(self, page, soup):
+        errcode, errmsg = self.check_error(page, soup)
+        if errcode == self.ERROR_SIGNED_OUT:
+            return False
         
-    r.put()
+        return True
 
-def purge(sid):
-    if not sid:
-        return
-
-    d = registry.get_by_key_name(sid)
-    if d:
-        d.delete()
-
-def audit(uid, sid, ip, ua):
-    auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).put()
-    
+    def check_error(self, page, soup):
+        return (self.ERROR_NONE, None)

@@ -127,7 +127,9 @@ img {
 }
 
 #postcomment input {
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
 }
 
 #postcomment #input_comment {
@@ -144,11 +146,15 @@ img {
 }
 
 #post input {
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
 }
 
 #post textarea {
-    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
 }
 
 #header {

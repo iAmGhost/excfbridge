@@ -23,18 +23,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from page import page
-import registry
+from settings import ADMINS_EXCF
+from flexigate import registry
+from flexigate.tools import *
 
-class index(page):
-    """ Handler for root index. Jump to sign on page if not signed on, bbs otherwise. """
+LIMIT_REGISTRY = 100
+LIMIT_AUDIT = 200
+
+def handle(request):
+    out = registry.query(get_session_id(request))
     
-    DEFAULT_INDEX='/list/free'
+    if not out:
+        return error(request, u'로그인되어 있지 않습니다.')
+    
+    if not out[0] in ADMINS_EXCF:
+        return error(request, u'권한이 없습니다.')
 
-    def get(self):
-        self.set_title('ExCF Mobile Bridge')
-
-        if not self.get_session_id():
-            self.redirect('/signon')
-        else:
-            self.redirect(self.DEFAULT_INDEX)
+    data = default_template_vars(u'관리자 페이지', request)
+    data['limit_registry'] = LIMIT_REGISTRY
+    data['limit_audit'] = LIMIT_AUDIT
+    data['sessions'] = registry.registry.objects.order_by('-signon_time').all()[:LIMIT_REGISTRY]
+    data['audit'] = registry.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
+        
+    return render_to_response('admin.html', data)

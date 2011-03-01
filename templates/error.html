@@ -1,0 +1,6 @@
+{% extends "skel.html" %}
+
+{% block body %}
+<div id='error'><p>{% autoescape off %}{{errmsg}}{% endautoescape %}</p>
+<a class='button' style='color: white;' {{attr}}>확인</a></div>
+{% endblock %}
