@@ -48,6 +48,7 @@ def redirect_if_no_session(request):
 
     # there is an activity
     registry.touch(sid)
+    registry.flush_outdated()
 
 def redirect_if_not_signed_on(request, page, soup, pagedef):
     if not pagedef.check_session(page, soup):

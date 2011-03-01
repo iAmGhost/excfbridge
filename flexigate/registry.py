@@ -23,9 +23,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from datetime import datetime
+from datetime import datetime, timedelta
+import pickle
 
 from flexigate.models import registry, auditlog
+
+IDLE_SECONDS = 1800
 
 def query(sid):
     if not sid:
@@ -68,6 +71,17 @@ def purge(sid):
     except:
         pass
 
+def flush_outdated():
+    try:
+        trigger = pickle.loads(open('/tmp/excfbridge_session_flush_trigger', 'r').read())
+    except:
+        trigger = datetime.now() - timedelta(seconds=1)
+
+    if datetime.now() > trigger:
+        registry.objects.filter(lastactivity_time__lte=datetime.now()-timedelta(seconds=IDLE_SECONDS)).delete()
+
+        open('/tmp/excfbridge_session_flush_trigger', 'w').write(pickle.dumps(datetime.now() + timedelta(minutes=10)))
+
 def audit(uid, sid, ip, ua):
     auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).save()
-    
+
