@@ -26,7 +26,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-BASE_PATH = '/home/segfault/excfbridge'
+BASE_PATH = '/home/segfault/wsgi/excfbridge'
 
 ADMINS = (
     ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),

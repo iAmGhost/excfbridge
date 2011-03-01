@@ -38,8 +38,6 @@ def handle(request, path):
 
     args = path.split('/')
 
-    print args
-    
     dest = args[0]
     page = 1
 

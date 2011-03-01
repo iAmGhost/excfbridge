@@ -258,6 +258,19 @@ img {
     text-align: center;
 }
 
+.disclaimer {
+    padding: 0.4em;
+    width: 100%;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.buttons {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #footer a {
     color: #222222;
     font-weight: bold;

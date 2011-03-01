@@ -1,9 +1,10 @@
 import os
 import sys
 
-path = '/home/segfault/excfbridge'
-if path not in sys.path:
-   sys.path.append(path)
+path = ['/home/segfault/wsgi', '/home/segfault/wsgi/excfbridge']
+for i in path:
+    if i not in sys.path:
+        sys.path.append(i)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
