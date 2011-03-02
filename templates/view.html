@@ -7,10 +7,12 @@
     <th>이름</th>
     <td><span class='name'>{{name}}</span> <span class='id'>({{userid}})</span></td>
   </tr>
+{% if date %}
   <tr>
     <th>시각</th>
     <td>{{date}}</td>
   </tr>
+{% endif %}
 {% if homepage %}
   <tr>
     <th>웹</th>

@@ -23,19 +23,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from flexigate.parsers import free, general
+from flexigate.parsers import uncategorized, categorized
 
 PAGE_IDS = {
     'free': 'free3',
     'general': 'opin',
+    'creation': 'cre1',
+    'cartoon': 'gene1',
+    'playground': 'ev',
+    'game': 'game',
 }
 
 PAGE_NAMES = {
     'free': u'자유 게시판',
     'general': u'다용도 게시판',
+    'creation': u'창작 게시판',
+    'cartoon': u'만화 게시판',
+    'playground': u'놀이 게시판',
+    'game': u'오락실',
 }
 
 PAGE_PARSERS = {
-    'free': free.parser(),
-    'general': general.parser(),
+    'free': uncategorized.parser_object,
+    'general': categorized.parser_object,
+    'creation': categorized.parser_object,
+    'cartoon': uncategorized.parser_object,
+    'playground': uncategorized.parser_object,
+    'game': categorized.parser_object,
 }

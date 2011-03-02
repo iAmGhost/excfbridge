@@ -31,7 +31,7 @@
     <tbody>
       <tr>
 {% for p in pages %}
-        <td class='pagebtn'><a href='/list/{{bid}}/{{p}}'>{{p}}</a></td>
+        <td><a {% if p == page %}class='btnhighlight'{% endif %} href='/list/{{bid}}/{{p}}'>{{p}}</a></td>
 {% endfor %}
       </tr>
     </tbody>
