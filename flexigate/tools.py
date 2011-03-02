@@ -29,9 +29,7 @@ from django.shortcuts import redirect, render_to_response
 
 from settings import ADMINS_EXCF
 from flexigate import registry
-
-def postprocess_string(text):
-    return text.replace('&nbsp;', ' ').strip().replace('/span>', '')
+from flexigate.pagedefs import PAGES
 
 def redirect_if_no_session(request):
     # we have to kill inactive session first.
@@ -78,7 +76,7 @@ def force_sign_out(request, response):
         # Expire cookie
         response.delete_cookie('session')
 
-def default_template_vars(title, request):
+def default_template_vars(title, request, location=None):
     out = {}
 
     out['title'] = title
@@ -91,6 +89,13 @@ def default_template_vars(title, request):
             out['user'] = admin[0]
     except:
         pass
+
+    pages = []
+    for i in PAGES:
+        pages.append({'id': i[0], 'location': i[1], 'name': i[2]})
+    out['jumplist'] = pages
+    if location:
+        out['location'] = location
 
     return out
     

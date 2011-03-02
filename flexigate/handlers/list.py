@@ -68,7 +68,7 @@ def handle(request, path):
     pages = filter(lambda x: x > 0 and x <= maxpages, range(page-2, page+3))
     output['pages'] = pages
 
-    data = default_template_vars(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page), request)
+    data = default_template_vars(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page), request, dest)
     data.update(output)
 
     return render_to_response('list.html', data)

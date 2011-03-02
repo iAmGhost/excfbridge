@@ -97,7 +97,7 @@ def handle_article_get(request, path):
     if errcode != parser.ERROR_NONE:
         return error_forward(errmsg)
     
-    data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request)
+    data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
     data['bid'] = dest
     
     return render_to_response('post.html', data)

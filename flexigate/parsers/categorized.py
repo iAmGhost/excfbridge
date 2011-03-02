@@ -25,8 +25,7 @@
 
 import re
 
-from flexigate.parser import parser as parser_base
-from flexigate.tools import *
+from flexigate.parser import parser as parser_base, postprocess_string
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')

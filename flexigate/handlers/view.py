@@ -62,7 +62,7 @@ def handle(request, path):
     output['bid'] = dest
     output['pid'] = no
 
-    data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request)
+    data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request, dest)
     data.update(output)
 
     return render_to_response('view.html', data)

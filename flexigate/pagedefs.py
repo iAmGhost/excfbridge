@@ -51,3 +51,12 @@ PAGE_PARSERS = {
     'playground': uncategorized.parser_object,
     'game': categorized.parser_object,
 }
+
+PAGES = (
+    ('free', '/list/free', PAGE_NAMES['free']),
+    ('general', '/list/general', PAGE_NAMES['general']),
+    ('creation', '/list/creation', PAGE_NAMES['creation']),
+    ('cartoon', '/list/cartoon', PAGE_NAMES['cartoon']),
+    ('playground', '/list/playground', PAGE_NAMES['playground']),
+    ('game', '/list/game', PAGE_NAMES['game']),
+)

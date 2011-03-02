@@ -11,10 +11,22 @@
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
     {% block head %}{% endblock %}
+    <script type="text/javascript">
+      function jump(url) {
+        if (url)
+          document.location = url;
+      }
+    </script>
   </head>
   <body>
+<h2>{{title}}</h2>
 <div id='header'>
-  <h2>{{title}}</h2>
+  <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>
+    <option value=''>메뉴</option>
+{% for item in jumplist %}
+    <option value='{{item.location}}' {% if location == item.id %}selected='selected'{% endif %}>{{item.name}}</option>
+{% endfor %}
+  </select>
   {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
 </div>
 <div id='body'>

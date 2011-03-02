@@ -28,6 +28,9 @@
 
 import re
 
+def postprocess_string(text):
+    return text.replace('&nbsp;', ' ').strip().replace('/span>', '')
+
 class parser:
     ERROR_NONE = 0
     ERROR_SIGNED_OUT = 1

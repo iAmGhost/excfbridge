@@ -25,7 +25,7 @@
 
 import re
 
-from flexigate.parser import parser as parser_base
+from flexigate.parser import parser as parser_base, postprocess_string
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')
@@ -38,7 +38,7 @@ class parser(parser_base):
         trs = soup.findAll('tr', {'align': 'center', 'valign': 'middle', 'height': '26'})
 
         for tags in trs:
-            title = tags.contents[7].contents[3].contents[2].text.replace('&nbsp;', ' ').strip()
+            title = postprocess_string(tags.contents[7].contents[3].contents[2].text)
             try:
                 comments = tags.contents[7].contents[3].contents[4].text[1:-1]
             except:

@@ -166,9 +166,14 @@ img {
     height: 35px;
 }
 
-#header h2 {
+#header select {
+    width: 50%;
+}
+
+h2 {
     float: left;
     background-color: white;
+    width: 100%;
     color: #383B39;
     font-size: 1.1em;
     padding-left: 10px;
