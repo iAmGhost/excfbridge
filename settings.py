@@ -59,13 +59,10 @@ SECRET_KEY = 'hhku$j1^-3dl5(!-5+0xeh+9)0@xmnp2jblf5!(ht736v3_hom'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -75,6 +72,5 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.sites',
     'excfbridge.flexigate',
 )

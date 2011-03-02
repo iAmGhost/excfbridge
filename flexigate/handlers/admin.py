@@ -39,7 +39,6 @@ def handle(request):
         return error(request, u'권한이 없습니다.')
 
     data = default_template_vars(u'관리자 페이지', request)
-    data['limit_registry'] = LIMIT_REGISTRY
     data['limit_audit'] = LIMIT_AUDIT
     data['sessions'] = models.registry.objects.order_by('-signon_time').all()
     data['audit'] = models.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
