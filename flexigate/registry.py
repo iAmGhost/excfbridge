@@ -26,9 +26,8 @@
 from datetime import datetime, timedelta
 import pickle
 
+from settings import SESSION_EXPIRE, SESSION_FLUSH_TRIGGER_PATH
 from flexigate.models import registry, auditlog
-
-IDLE_SECONDS = 1800
 
 def query(sid):
     if not sid:
@@ -73,14 +72,14 @@ def purge(sid):
 
 def flush_outdated():
     try:
-        trigger = pickle.loads(open('/tmp/excfbridge_session_flush_trigger', 'r').read())
+        trigger = pickle.loads(open(SESSION_FLUSH_TRIGGER_PATH, 'r').read())
     except:
         trigger = datetime.now() - timedelta(seconds=1)
 
     if datetime.now() > trigger:
-        registry.objects.filter(lastactivity_time__lte=datetime.now()-timedelta(seconds=IDLE_SECONDS)).delete()
+        registry.objects.filter(lastactivity_time__lte=datetime.now()-timedelta(seconds=SESSION_EXPIRE)).delete()
 
-        open('/tmp/excfbridge_session_flush_trigger', 'w').write(pickle.dumps(datetime.now() + timedelta(minutes=10)))
+        open(SESSION_FLUSH_TRIGGER_PATH, 'w').write(pickle.dumps(datetime.now() + timedelta(minutes=5)))
 
 def audit(uid, sid, ip, ua):
     auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).save()

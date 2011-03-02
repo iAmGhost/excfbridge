@@ -1,6 +1,7 @@
 {% extends "skel.html" %}
 
 {% block body %}
+{% autoescape off %}
 <table id='list'>
   <thead>
     <tr>
@@ -36,4 +37,5 @@
     </tbody>
   </table>
 </div>
+{% endautoescape %}
 {% endblock %}

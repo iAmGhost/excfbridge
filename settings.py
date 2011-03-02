@@ -26,7 +26,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-BASE_PATH = '/home/segfault/wsgi/excfbridge'
+BASE_PATH = '/home/segfault/Projects/excfbridge'
+SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger2'
 
 ADMINS = (
     ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),
@@ -35,6 +36,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 ADMINS_EXCF = ['segfault87', 'excf']
+SESSION_EXPIRE = 1800
 
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = BASE_PATH + '/database/excfbridge.db'

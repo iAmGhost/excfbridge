@@ -26,6 +26,7 @@
 import re
 
 from flexigate.parser import parser as parser_base
+from flexigate.tools import *
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')
@@ -35,25 +36,20 @@ class parser(parser_base):
         alist = []
         output['article_lists'] = alist
         
-        trs = soup.findAll('tr', {'align': 'center', 'valign': 'middle', 'height': '26'})
+        trs = soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''})
 
         for tags in trs:
-            title = tags.contents[7].contents[3].contents[2].text.replace('&nbsp;', ' ').strip()
+            title = '[%s] %s' %  (tags.contents[4].text, tags.contents[6].contents[5].text)
             try:
-                comments = tags.contents[7].contents[3].contents[4].text[1:-1]
+                comments = tags.contents[6].contents[7].text[1:-1]
             except:
                 comments = ''
-            author = tags.contents[9].getText().replace('/span>', '').strip()
+            author = tags.contents[8].text
             
             try:
-                link = '/view/%s/%s' % (pid, self.no_matcher.match(filter(lambda x: x[0] == 'href', tags.contents[7].contents[3].contents[2].attrs)[0][1]).group(1))
+                link = '/view/%s/%s' % (pid, self.no_matcher.match(filter(lambda x: x[0] == 'href', tags.contents[6].contents[5].attrs)[0][1]).group(1))
             except:
                 link = '#'
-
-            try:
-                title = title[title.rindex('>')+1:]
-            except:
-                pass
 
             alist.append({'name': title, 'author': author, 'comment': comments, 'link': link})
         
@@ -62,30 +58,29 @@ class parser(parser_base):
     def parse_view(self, pid, page, soup):
         output = {}
 
-        cnode = soup.find('span', {'style': 'line-height:160%'})
-        cnode.find('div').replaceWith('')
-
-        headers = soup.findAll('tr', {'height': '26'})
+        headers = soup.find('table', {'bgcolor': '#EFEFEF'}).findAll('tr')
         for n in headers:
-            if n.contents[3].text == 'Name':
-                output['name'] = n.contents[5].contents[0].text
-                output['userid'] = n.contents[5].contents[1].strip()[1:-1]
-            elif n.contents[3].text == 'Homepage':
-                output['homepage'] = n.contents[5].text
-            elif n.contents[3].text == 'Subject':
-                output['subject'] = n.contents[5].text
+            if 'Name' in n.contents[1].text:
+                output['name'] = n.contents[3].contents[0].contents[0].text
+                output['userid'] = n.contents[3].contents[0].contents[1].strip()[1:-1]
+            elif 'Home' in n.contents[1].text:
+                output['homepage'] = n.contents[3].text
+            elif 'Subject' in n.contents[1].text:
+                output['subject'] = n.contents[3].text
+
         
-        output['body'] = cnode.renderContents()
-        output['date'] = soup.findAll('table')[2].contents[1].contents[3].getText()
+        body = soup.find('span', {'style': 'line-height:160%'})
+        body.find('div').replaceWith('')
+        output['body'] = body.renderContents()
 
         comments = []
-        cmtnodes = soup.findAll('table', {'border': '0', 'align': 'center', 'cellpadding': '2', 'cellspacing': '1', 'width': '100%'})
-        for n in cmtnodes:
+        cmtnodes = soup.findAll('table', {'border': '0', 'cellspacing': '0', 'cellpadding': '0', 'width': '95%'})[4].findAll('tr', {'align': 'center'})
+        for n in cmtnodes[:-1]:
             cmtnode = {}
-            cmtnode['name'] = n.contents[1].contents[1].contents[0].text
-            cmtnode['id'] = n.contents[1].contents[1].contents[3].text[1:-1]
-            cmtnode['body'] = n.contents[1].contents[5].text
-            cmtnode['date'] = n.contents[1].contents[9].contents[0].contents[1].contents[0][1:-1] + ' ' + n.contents[1].contents[9].contents[0].contents[1].contents[2][1:-1]
+            cmtnode['name'] = postprocess_string(n.contents[1].contents[0].text)
+            cmtnode['body'] = postprocess_string(n.contents[7].text)
+            date = map(lambda x: x[:-1], n.contents[3].contents[0].contents[1].attrs[0][1].split())
+            cmtnode['date'] = '%s/%s %s:%s:%s' % (date[1], date[2], date[3], date[4], date[5])
 
             comments.append(cmtnode)
 
@@ -95,7 +90,7 @@ class parser(parser_base):
 
     def check_error(self, page, soup):
         try:
-            msg = soup.find('tr', {'height': '27', 'align': 'right'}).contents[3].text.strip()
+            msg = soup.find('td').contents[3].find('font', {'color': 'red'}).text.strip()
             if not msg:
                 return (self.ERROR_NONE, None)
             

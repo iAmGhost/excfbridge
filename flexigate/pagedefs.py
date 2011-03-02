@@ -23,16 +23,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from flexigate.parsers import free
+from flexigate.parsers import free, general
 
 PAGE_IDS = {
-    'free': 'free3'
+    'free': 'free3',
+    'general': 'opin',
 }
 
 PAGE_NAMES = {
-    'free': u'자유 게시판'
+    'free': u'자유 게시판',
+    'general': u'다용도 게시판',
 }
 
 PAGE_PARSERS = {
-    'free': free.parser()
+    'free': free.parser(),
+    'general': general.parser(),
 }

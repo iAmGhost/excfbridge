@@ -64,7 +64,7 @@ def attempt_sign_on(request, response, userid, passwd):
         registry.audit(userid, sessid, ip, ua)
 
         # save form data if needed
-        if request.GET.has_key('saveform') and request.GET['saveform'] == 'on':
+        if request.GET.has_key('saveform') and request.POST['saveform'] == 'true':
             response.set_cookie('userid', userid)
             response.set_cookie('password', passwd)
         else:

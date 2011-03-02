@@ -58,7 +58,7 @@ def handle(request, path):
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
     if errcode != parser.ERROR_NONE:
-        return error_forward(errmsg)
+        return error_forward(request, errmsg)
 
     output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
     output['bid'] = dest

@@ -30,6 +30,9 @@ from django.shortcuts import redirect, render_to_response
 from settings import ADMINS_EXCF
 from flexigate import registry
 
+def postprocess_string(text):
+    return text.replace('&nbsp;', ' ').strip().replace('/span>', '')
+
 def redirect_if_no_session(request):
     # we have to kill inactive session first.
     registry.flush_outdated()
