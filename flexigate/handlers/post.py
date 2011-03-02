@@ -59,7 +59,7 @@ def handle_article_post(request, path):
 
     try:
         subject = request.POST['subject'].encode('cp949')
-        contents = request.POST['contents'].encode('cp949') + '<!-- emb -->'
+        contents = request.POST['contents'].encode('cp949')
     except:
         return error(request, u'내용을 입력해 주셔야 합니다.')
     

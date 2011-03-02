@@ -64,7 +64,7 @@ def attempt_sign_on(request, response, userid, passwd):
         registry.audit(userid, sessid, ip, ua)
 
         # save form data if needed
-        if request.GET.has_key('saveform') and request.POST['saveform'] == 'true':
+        if request.POST.has_key('saveform') and request.POST['saveform'] == 'true':
             response.set_cookie('userid', userid)
             response.set_cookie('password', passwd)
         else:
@@ -112,7 +112,7 @@ def handle_signon_get(request):
     data = default_template_vars(u'로그인', request)
     data['userid'] = userid
     data['password'] = password
-    data['checked'] = checked
+    data['saveform'] = checked
     try:
         data['redirect'] = request.GET['redirect']
     except:
