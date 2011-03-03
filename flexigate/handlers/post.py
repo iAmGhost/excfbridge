@@ -23,10 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from os import unlink
 import urllib
 
 from flexigate.parser import parser
-from flexigate import pagedefs, remote
+from flexigate import pagedefs, remote, imageshack
 from flexigate.tools import *
 
 URL_POST = 'http://excf.com/bbs/write_ok.php'
@@ -65,6 +66,20 @@ def handle_article_post(request, path):
             raise Exception
     except:
         return error(request, u'내용을 입력해 주셔야 합니다.')
+
+    if request.FILES.has_key('file'):
+        filename = '/tmp/flexigate_%s' % request.FILES['file'].name
+        f = open(filename, 'wb+')
+        for chunk in request.FILES['file'].chunks():
+            f.write(chunk)
+        f.close()
+
+        fn = imageshack.upload(filename).encode('utf-8')
+        if fn:
+            cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (fn, request.FILES['file'].name)
+            contents = cx.encode('cp949') + contents
+        
+        unlink(filename)
     
     query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
 
@@ -111,6 +126,7 @@ def handle_article_get(request, path):
     
     data['bid'] = dest
     data['target'] = '/post/%s' % dest
+    data['mode'] = 'post'
     
     return render_to_response('post.html', data)
 

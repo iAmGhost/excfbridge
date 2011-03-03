@@ -20,61 +20,35 @@
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+from BeautifulSoup import BeautifulStoneSoup
+import pycurl
 
-IMAGESHACK_API_KEY = '5AGJMPSY9bb081f160571c5bdd8402348ffff72f'
+from settings import IMAGESHACK_API_KEY
 
-BASE_PATH = '/home/segfault/Projects/excfbridge'
-SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger2'
+class response_handler:
+    def __init__(self):
+        self.contents = ''
 
-ADMINS = (
-    ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),
-)
+    def write(self, buf):
+        self.contents = self.contents + buf
 
-MANAGERS = ADMINS
+def upload(filename):
+    c = pycurl.Curl()
+    c.setopt(c.POST, 1)
+    c.setopt(c.URL, 'http://www.imageshack.us/upload_api.php')
 
-ADMINS_EXCF = ['segfault87', 'excf']
-SESSION_EXPIRE = 1800
+    opts = []
+    opts.append(('fileupload', (c.FORM_FILE, filename.encode('utf-8'))))
+    opts.append(('key', IMAGESHACK_API_KEY.encode('utf-8')))
+    c.setopt(c.HTTPPOST, opts)
+    cb = response_handler()
+    c.setopt(c.WRITEFUNCTION, cb.write)
+    c.perform()
 
-DATABASE_ENGINE = 'sqlite3'
-DATABASE_NAME = BASE_PATH + '/database/excfbridge.db'
-
-TIME_ZONE = 'Asia/Seoul'
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
-
-USE_I18N = False
-
-MEDIA_ROOT = ''
-MEDIA_URL = ''
-
-STATIC_ROOT = BASE_PATH + '/static'
-STATIC_URL = '/static/'
-
-ADMIN_MEDIA_PREFIX = '/static/media/'
-
-SECRET_KEY = 'hhku$j1^-3dl5(!-5+0xeh+9)0@xmnp2jblf5!(ht736v3_hom'
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-)
-
-ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    BASE_PATH+'/templates'
-)
-
-INSTALLED_APPS = (
-    'excfbridge.flexigate',
-)
+    try:
+        return BeautifulStoneSoup(cb.contents).find('image_link').renderContents()
+    except:
+        return None
