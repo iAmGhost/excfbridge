@@ -120,6 +120,7 @@ img {
 }
 
 #postcomment {
+    text-align: center;
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
@@ -142,6 +143,7 @@ img {
 }
 
 #post {
+    text-align: center;
     padding: 1em;
 }
 
@@ -163,7 +165,6 @@ img {
     margin: 0;
     padding: 0;
     border-bottom: 1px solid #222222;
-    height: 35px;
 }
 
 #header select {
@@ -173,7 +174,7 @@ img {
 h2 {
     float: left;
     background-color: white;
-    width: 100%;
+    width: 95%;
     color: #383B39;
     font-size: 1.1em;
     padding-left: 10px;
@@ -182,7 +183,7 @@ h2 {
 #header .button {
     float: right;
     font-size: 0.9em;
-    margin: 0.3em 0.5em 0.5em 0em;
+    margin-right: 0.4em;
 }
 
 #error {

@@ -63,7 +63,10 @@ class parser(parser_base):
         output = {}
 
         cnode = soup.find('span', {'style': 'line-height:160%'})
-        cnode.find('div').replaceWith('')
+        try:
+            cnode.find('div').replaceWith('')
+        except:
+            pass
 
         headers = soup.findAll('tr', {'height': '26'})
         for n in headers:
@@ -82,9 +85,9 @@ class parser(parser_base):
         cmtnodes = soup.findAll('table', {'border': '0', 'align': 'center', 'cellpadding': '2', 'cellspacing': '1', 'width': '100%'})
         for n in cmtnodes:
             cmtnode = {}
-            cmtnode['name'] = n.contents[1].contents[1].contents[0].text
+            cmtnode['name'] = postprocess_string(n.contents[1].contents[1].contents[0].text)
             cmtnode['id'] = n.contents[1].contents[1].contents[3].text[1:-1]
-            cmtnode['body'] = n.contents[1].contents[5].text
+            cmtnode['body'] = postprocess_string(n.contents[1].contents[5].text)
             cmtnode['date'] = n.contents[1].contents[9].contents[0].contents[1].contents[0][1:-1] + ' ' + n.contents[1].contents[9].contents[0].contents[1].contents[2][1:-1]
 
             comments.append(cmtnode)
