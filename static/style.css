@@ -11,6 +11,10 @@ body {
     display: block;
 }
 
+a {
+    color: black;
+}
+
 table, tr, td {
     border: 0;
     border-spacing: 0;
@@ -147,10 +151,21 @@ img {
     padding: 1em;
 }
 
+#post select {
+    width: 20%;
+}
+
+#post #post_subject {
+    width: 75%;
+}
+
+#post #post_submit {
+    width: 95%;
+}
+
 #post input {
     margin-left: auto;
     margin-right: auto;
-    width: 95%;
 }
 
 #post textarea {
@@ -184,6 +199,7 @@ h2 {
     float: right;
     font-size: 0.9em;
     margin-right: 0.4em;
+    color: white;
 }
 
 #error {
@@ -197,9 +213,9 @@ h2 {
     color: white;
 }
 
-#body a:link {
-    color: black;
-}
+//#body a:link {
+//    color: black;
+//}
 
 #body a:visited {
     color: #222222;
