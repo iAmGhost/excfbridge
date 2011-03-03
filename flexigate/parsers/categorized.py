@@ -29,6 +29,7 @@ from flexigate.parser import parser as parser_base, postprocess_string
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')
+    cno_matcher = re.compile(r'.*c_no=(\d+)')
 
     def parse_list(self, pid, page, soup):
         output = {}
@@ -73,6 +74,8 @@ class parser(parser_base):
             elif 'Subject' in n.contents[1].text:
                 output['subject'] = n.contents[3].text
 
+        if len(soup.findAll('form')) == 0:
+            output['nocomments'] = True
         
         body = soup.find('span', {'style': 'line-height:160%'})
         body.find('div').replaceWith('')
@@ -80,17 +83,53 @@ class parser(parser_base):
 
         comments = []
         cmtnodes = soup.findAll('table', {'border': '0', 'cellspacing': '0', 'cellpadding': '0', 'width': '95%'})[4].findAll('tr', {'align': 'center'})
-        for n in cmtnodes[:-1]:
+        for n in cmtnodes:
             cmtnode = {}
-            cmtnode['name'] = postprocess_string(n.contents[1].contents[0].text)
-            cmtnode['body'] = postprocess_string(n.contents[7].text)
-            date = map(lambda x: x[:-1], n.contents[3].contents[0].contents[1].attrs[0][1].split())
-            cmtnode['date'] = '%s/%s %s:%s:%s' % (date[1], date[2], date[3], date[4], date[5])
+            try:
+                cmtnode['name'] = postprocess_string(n.contents[1].contents[0].text)
+                cmtnode['body'] = postprocess_string(n.contents[7].text)
+                date = map(lambda x: x[:-1], n.contents[3].contents[0].contents[1].attrs[0][1].split())
+                cmtnode['date'] = '%s/%s %s:%s:%s' % (date[1], date[2], date[3], date[4], date[5])
 
-            comments.append(cmtnode)
+                try:
+                    cmtnode['did'] = self.cno_matcher.match(filter(lambda x: x[0] == 'href', n.contents[9].contents[0].attrs)[0][1]).group(1)
+                except:
+                    pass
+
+                comments.append(cmtnode)
+            except:
+                break
 
         output['comments'] = comments
 
+        if len(soup.findAll('input', {'type': 'text'})) == 0:
+            output['nocomments'] = True
+        if soup.find('a', text='[Write]') and soup.find('a', text='[Modify]'):
+            output['modify'] = True
+
+        return output
+
+    def check_write(self, pid, page, soup):
+        output = {}
+
+        try:
+            output['subject'] = filter(lambda x: x[0] == 'value', soup.find('input', {'type': 'text', 'name': 'subject'}).attrs)[0][1]
+            output['contents'] = soup.find('textarea', {'name': 'memo'}).text
+        except:
+            pass
+
+        categories = []
+        nodes = soup.find('select', {'name': 'category'})
+        
+        for i in nodes.findAll('option')[1:]:
+            cat = {'value': i.attrs[0][1], 'name': postprocess_string(i.text)}
+            if len(filter(lambda x: x[0] == 'selected', i.attrs)) > 0:
+                cat['selected'] = True
+            categories.append(cat)
+        
+        if len(categories) > 0:
+            output['categories'] = categories
+        
         return output
 
     def check_error(self, page, soup):

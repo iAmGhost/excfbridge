@@ -29,6 +29,7 @@ from flexigate.parser import parser as parser_base, postprocess_string
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')
+    cno_matcher = re.compile(r'.*c_no=(\d+)')
 
     def parse_list(self, pid, page, soup):
         output = {}
@@ -81,6 +82,11 @@ class parser(parser_base):
         output['body'] = cnode.renderContents()
         output['date'] = soup.findAll('table')[2].contents[1].contents[3].getText()
 
+        if len(soup.findAll('input', {'type': 'text'})) == 0:
+            output['nocomments'] = True
+        if soup.find('a', text='Write') and soup.find('a', text='Modify'):
+            output['modify'] = True
+
         comments = []
         cmtnodes = soup.findAll('table', {'border': '0', 'align': 'center', 'cellpadding': '2', 'cellspacing': '1', 'width': '100%'})
         for n in cmtnodes:
@@ -89,10 +95,25 @@ class parser(parser_base):
             cmtnode['id'] = n.contents[1].contents[1].contents[3].text[1:-1]
             cmtnode['body'] = postprocess_string(n.contents[1].contents[5].text)
             cmtnode['date'] = n.contents[1].contents[9].contents[0].contents[1].contents[0][1:-1] + ' ' + n.contents[1].contents[9].contents[0].contents[1].contents[2][1:-1]
+            try:
+                cmtnode['did'] = self.cno_matcher.match(filter(lambda x: x[0] == 'href', n.contents[1].contents[7].contents[0].attrs)[0][1]).group(1)
+            except:
+                pass
 
             comments.append(cmtnode)
 
         output['comments'] = comments
+
+        return output
+
+    def check_write(self, pid, page, soup):
+        output = {}
+
+        try:
+            output['subject'] = filter(lambda x: x[0] == 'value', soup.find('input', {'type': 'text', 'name': 'subject'}).attrs)[0][1]
+            output['contents'] = soup.find('textarea', {'name': 'memo'}).text
+        except:
+            pass
 
         return output
 

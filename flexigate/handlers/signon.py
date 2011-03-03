@@ -28,8 +28,6 @@ import urllib, urllib2
 import re
 import uuid
 
-#from django.shortcuts import render_to_response, redirect
-
 from flexigate.handlers.index import DEFAULT_INDEX
 from flexigate import registry, remote
 from flexigate.tools import *
@@ -85,7 +83,7 @@ def handle_signon_post(request):
         userid = request.POST['userid'].decode('utf-8')
         password = request.POST['password']
     except:
-        return error(u'아이디와 패스워드를 입력해 주시기 바랍니다.', redir='/signon')
+        return error(request, u'아이디와 패스워드를 입력해 주시기 바랍니다.', redir='/signon')
 
     try:
         raddr = request.POST['redirect']
@@ -97,7 +95,7 @@ def handle_signon_post(request):
     if attempt_sign_on(request, response, userid, password):
         return response
     else:
-        return error(u'로그인에 실패하였습니다.', redir='/signon')
+        return error(request, u'로그인에 실패하였습니다.', redir='/signon')
 
 def handle_signon_get(request):
     userid = ''

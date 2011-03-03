@@ -44,6 +44,9 @@ class parser:
     def parse_view(self, pid, page, soup):
         return {}
 
+    def parse_write(self, pid, page, soup):
+        return {}
+
     def check_session(self, page, soup):
         errcode, errmsg = self.check_error(page, soup)
         if errcode == self.ERROR_SIGNED_OUT:

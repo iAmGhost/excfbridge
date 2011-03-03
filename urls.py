@@ -26,8 +26,10 @@
 from django.conf.urls.defaults import *
 
 from flexigate.handlers.admin import handle as admin
+from flexigate.handlers.delete import handle_delete_post as delete, handle_delete_comment as delete_comment
 from flexigate.handlers.index import handle as index
 from flexigate.handlers.list import handle as listing
+from flexigate.handlers.modify import handle as modify
 from flexigate.handlers.post import handle_article as post, handle_comment as post_comment
 from flexigate.handlers.signon import handle_signon as signon, handle_signoff as signoff
 from flexigate.handlers.view import handle as view
@@ -35,9 +37,12 @@ from flexigate.handlers.view import handle as view
 urlpatterns = patterns('',
     (r'^$', index),
     (r'^admin$', admin),
+    (r'^delete/(.*)$', delete),
+    (r'^delete_comment/(.*)$', delete_comment),
     (r'^signon$', signon),
     (r'^signoff$', signoff),
     (r'^list/(.*)$', listing),
+    (r'^modify/(.*)$', modify),
     (r'^post/(.*)$', post),
     (r'^post_comment/(.*)$', post_comment),
     (r'^view/(.*)$', view),

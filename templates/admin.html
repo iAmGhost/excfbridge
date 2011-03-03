@@ -1,11 +1,11 @@
 {% extends "skel.html" %}
 
 {% block body %}
-<h2>열린 세션</h2>
+<h3>열린 세션</h3>
 <ul>
 {% for ac in sessions %}<li>{{ac.signon_time}} (<strong>{{ac.elapsed}}</strong> elapsed, <strong>{{ac.active_usage}}</strong> used): <strong>{{ac.userid}}</strong></li>{% endfor %}
 </ul>
-<h2>로그인 내역 (최근 {{limit_audit}}건)</h2>
+<h3>로그인 내역 (최근 {{limit_audit}}건)</h3>
 <ul>
 {% for al in audit %}<li>{{al.time}}: <strong>{{al.userid}}</strong> (from {{al.ipaddress}}{% if al.useragent %}, using {{al.browser}}{% endif %})</li>{% endfor %}
 </ul>

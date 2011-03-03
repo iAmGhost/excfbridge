@@ -2,9 +2,16 @@
 
 {% block body %}
 <div id='post'>
-  <form action='/post/{{bid}}' method='post' onsubmit='return validate();'>
-    <input type='text' id='post_subject' name='subject' maxlength='200' /><br />
-    <textarea name='contents' id='post_contents' rows='8'></textarea>
+  <form action='{{target}}' method='post' onsubmit='return validate();'>
+{% if categories %}
+    <select name='category' id='post_category' size='1'>
+{% for i in categories %}
+      <option value='{{i.value}}' {% if i.selected %}selected='selected'{% endif %}>{{i.name}}</option>
+{% endfor %}
+    </select>
+{% endif %}
+    <input type='text' id='post_subject' name='subject' maxlength='200' value='{{subject}}' /><br />
+    <textarea name='contents' id='post_contents' rows='8'>{{contents}}</textarea>
     <input type='submit' value='게시' />
   </form>
 </div>

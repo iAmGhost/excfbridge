@@ -60,17 +60,25 @@ def handle_article_post(request, path):
     try:
         subject = request.POST['subject'].encode('cp949')
         contents = request.POST['contents'].encode('cp949')
+
+        if not subject or not contents:
+            raise Exception
     except:
         return error(request, u'내용을 입력해 주셔야 합니다.')
     
     query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
+
+    try:
+        query['category'] = request.POST['category']
+    except:
+        pass
     
     l = remote.send_request(request, URL_POST, urllib.urlencode(query), referer=URL_REFERER)
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
     if errcode != parser.ERROR_NONE:
-        return error_forward(errmsg)
+        return error_forward(request, errmsg)
 
     return redirect('/list/%s' % dest)
 
@@ -95,10 +103,14 @@ def handle_article_get(request, path):
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
     if errcode != parser.ERROR_NONE:
-        return error_forward(errmsg)
+        return error_forward(request, errmsg)
     
     data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
+    
+    data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
+    
     data['bid'] = dest
+    data['target'] = '/post/%s' % dest
     
     return render_to_response('post.html', data)
 

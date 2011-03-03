@@ -34,7 +34,7 @@
     <td class='date'>{{comment.date}}</td>
   </tr>
   <tr class='body'>
-    <td colspan='2' class='body'>{% autoescape off %}{{comment.body}}{% endautoescape %}</td>
+    <td colspan='2' class='body'>{{comment.body}} {% if comment.did %}<a class='delete' href='/delete_comment/{{bid}}/{{pid}}/{{comment.did}}' onclick='return confirmDelete();'>삭제</a>{% endif %}</td>
   </tr>
 {% endfor %}
 </table>
@@ -48,16 +48,22 @@
     return true;
   }
 </script>
+{% if not nocomments %}
 <form action='/post_comment/{{bid}}/{{pid}}' method='post' onsubmit='return validate();'>
   <input id='input_comment' name='comment' maxlength='150'></textarea>
   <input id='input_submit' type='submit' value='게시' />
 </form>
+{% endif %}
 </div>
 <table class='nav'>
   <tbody>
     <tr>
       <td><a href='/view/{{bid}}/{{pid}}'>새로고침</a></td>
       <td><a href='/list/{{bid}}'>목록</a></td>
+{% if modify %}
+      <td><a href='/modify/{{bid}}/{{pid}}'>수정</a></td>
+      <td><a href='/delete/{{bid}}/{{pid}}' onclick='return confirmDelete();'>삭제</a></td>
+{% endif %}
       <td><a href='/post/{{bid}}'>글쓰기</a></td>
   </tbody>
 </table>

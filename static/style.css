@@ -102,7 +102,7 @@ input, textarea {
     padding-bottom: 0.4em;
 }
 
-.comment {
+.comment, .delete {
     font-size: 0.9em;
     padding: 2px 5px 2px 5px;
     background-color: #000033;
