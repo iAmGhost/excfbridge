@@ -26,10 +26,15 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-BASE_PATH = '/home/segfault/wsgi/excfbridge'
-SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
-UPLOAD_PATH = BASE_PATH + '/uploads'
-UPLOAD_URL = 'http://e.influx.kr/uploads'
+BASE_PATH = '/home/segfault/Projects/excfbridge'
+SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger2'
+
+UPLOAD = 'local'
+UPLOAD_LOCAL_PATH = BASE_PATH + '/uploads'
+UPLOAD_LOCAL_URL = 'http://e.influx.kr/uploads'
+UPLOAD_LOCAL_SIZE = 1280
+
+TARGET_ENCODING = 'cp949'
 
 ADMINS = (
     ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),

@@ -23,34 +23,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from BeautifulSoup import BeautifulStoneSoup
-import pycurl
+from settings import UPLOAD
 
-from settings import IMAGESHACK_API_KEY
+if UPLOAD == 'imageshack':
+    from flexigate.uploaders import imageshack as uploader
+else:
+    from flexigate.uploaders import local as uploader
 
-class response_handler:
-    def __init__(self):
-        self.contents = ''
+def upload(request, fileobj):
+    return uploader.upload(request, fileobj)
 
-    def write(self, buf):
-        self.contents = self.contents + buf
-
-def upload(filename):
-    c = pycurl.Curl()
-    c.setopt(c.POST, 1)
-    c.setopt(c.URL, 'http://www.imageshack.us/upload_api.php')
-
-    opts = []
-    opts.append(('fileupload', (c.FORM_FILE, filename.encode('utf-8'))))
-    opts.append(('key', IMAGESHACK_API_KEY.encode('utf-8')))
-    opts.append(('optimage', '1'))
-    opts.append(('optsize', '1280x1280'))
-    c.setopt(c.HTTPPOST, opts)
-    cb = response_handler()
-    c.setopt(c.WRITEFUNCTION, cb.write)
-    c.perform()
-
-    try:
-        return BeautifulStoneSoup(cb.contents).find('image_link').renderContents()
-    except:
-        return None

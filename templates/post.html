@@ -1,6 +1,18 @@
 {% extends "skel.html" %}
 
 {% block body %}
+<script type='text/javascript'>
+function validate() {
+  if (!document.getElementById('post_subject').value || !document.getElementById('post_contents').value) {
+    alert('본문을 입력해 주십시오.');
+    return false;
+  }
+
+  nodoubleclick(document.getElementById('post_submit'));
+
+  return true;
+}
+</script>
 <div id='post'>
   <form action='{{target}}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
 {% if categories %}

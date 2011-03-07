@@ -23,24 +23,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from settings import ADMINS_EXCF
-from flexigate import registry, models
-from flexigate.tools import *
+from BeautifulSoup import BeautifulStoneSoup
+import pycurl
 
-LIMIT_AUDIT = 100
+from settings import IMAGESHACK_API_KEY
 
-def handle(request):
-    out = registry.query(get_session_id(request))
-    
-    if not out:
-        return error(request, u'로그인되어 있지 않습니다.', redir='/signon')
-    
-    if not out[0] in ADMINS_EXCF:
-        return error(request, u'권한이 없습니다.')
+class response_handler:
+    def __init__(self):
+        self.contents = ''
 
-    data = default_template_vars(u'관리자 페이지', request)
-    data['limit_audit'] = LIMIT_AUDIT
-    data['sessions'] = models.registry.objects.order_by('-signon_time').all()
-    data['audit'] = models.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
-        
-    return render_to_response('admin.html', data)
+    def write(self, buf):
+        self.contents = self.contents + buf
+
+def upload(request, fileobj):
+    c = pycurl.Curl()
+    c.setopt(c.POST, 1)
+    c.setopt(c.URL, 'http://www.imageshack.us/upload_api.php')
+
+    opts = []
+    opts.append(('fileupload', (c.FORM_FILE, filename.encode('utf-8'))))
+    opts.append(('key', IMAGESHACK_API_KEY.encode('utf-8')))
+    opts.append(('optimage', '1'))
+    opts.append(('optsize', '1280x1280'))
+    c.setopt(c.HTTPPOST, opts)
+    cb = response_handler()
+    c.setopt(c.WRITEFUNCTION, cb.write)
+    c.perform()
+
+    try:
+        return BeautifulStoneSoup(cb.contents).find('image_link').renderContents()
+    except:
+        return None
