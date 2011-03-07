@@ -43,6 +43,8 @@ def upload(filename):
     opts = []
     opts.append(('fileupload', (c.FORM_FILE, filename.encode('utf-8'))))
     opts.append(('key', IMAGESHACK_API_KEY.encode('utf-8')))
+    opts.append(('optimage', '1'))
+    opts.append(('optsize', '1280x1280'))
     c.setopt(c.HTTPPOST, opts)
     cb = response_handler()
     c.setopt(c.WRITEFUNCTION, cb.write)

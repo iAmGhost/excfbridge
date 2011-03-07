@@ -23,12 +23,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from os import unlink
+import os
 import urllib
 
 from flexigate.parser import parser
-from flexigate import pagedefs, remote, imageshack
+from flexigate import pagedefs, remote
 from flexigate.tools import *
+from settings import UPLOAD_PATH, UPLOAD_URL
 
 URL_POST = 'http://excf.com/bbs/write_ok.php'
 URL_POST_COMMENT = 'http://excf.com/bbs/comment_ok.php'
@@ -52,8 +53,10 @@ def check_arg(path):
 def handle_article_post(request, path):
     redir = redirect_if_no_session(request)
     if redir:
-        return
+        return redir
     
+    sid = get_session_id(request)
+
     dest = check_arg(path)
     if not dest:
         return error(request, u'잘못된 인자입니다.')
@@ -68,18 +71,25 @@ def handle_article_post(request, path):
         return error(request, u'내용을 입력해 주셔야 합니다.')
 
     if request.FILES.has_key('file'):
-        filename = '/tmp/flexigate_%s' % request.FILES['file'].name
-        f = open(filename, 'wb+')
+        retrycnt = 0
+        while True:
+            if retrycnt == 0:
+                filename = '%s_%s' % (sid, request.FILES['file'].name)
+            else:
+                filename = '%s_%d_%s' % (sid, retrycnt, request.FILES['file'].name)
+            fpath = '%s/%s' % (UPLOAD_PATH, filename)
+
+            if not os.path.exists(fpath):
+                break
+            retrycnt += 1 
+     
+        f = open(fpath, 'wb+')
         for chunk in request.FILES['file'].chunks():
             f.write(chunk)
         f.close()
 
-        fn = imageshack.upload(filename).encode('utf-8')
-        if fn:
-            cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (fn, request.FILES['file'].name)
-            contents = cx.encode('cp949') + contents
-        
-        unlink(filename)
+        cx = '<img src=\'%s/%s\' alt=\'%s\' />\n\n' % (UPLOAD_URL, filename, request.FILES['file'].name)
+        contents = cx.encode('cp949') + contents
     
     query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
 

@@ -13,7 +13,7 @@
     <input type='text' id='post_subject' name='subject' maxlength='200' value='{{subject}}' /><br />
     <textarea name='contents' id='post_contents' rows='8'>{{contents}}</textarea><br />
 {% if mode == 'post' %}
-    <input type='file' id='post_file', name='file' /><br />
+    <input type='file' id='post_file', name='file' accept='image/*' /><br />
 {% endif %}
     <input id='post_submit' type='submit' value='게시' />
   </form>

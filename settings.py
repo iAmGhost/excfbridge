@@ -26,10 +26,10 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-IMAGESHACK_API_KEY = '5AGJMPSY9bb081f160571c5bdd8402348ffff72f'
-
-BASE_PATH = '/home/segfault/Projects/excfbridge'
-SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger2'
+BASE_PATH = '/home/segfault/wsgi/excfbridge'
+SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
+UPLOAD_PATH = BASE_PATH + '/uploads'
+UPLOAD_URL = 'http://e.influx.kr/uploads'
 
 ADMINS = (
     ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),
