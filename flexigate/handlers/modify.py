@@ -28,6 +28,7 @@ import urllib
 from flexigate.parser import parser
 from flexigate import pagedefs, remote
 from flexigate.tools import *
+from settings import TARGET_ENCODING
 
 URL = 'http://excf.com/bbs/write.php'
 URL_POST = 'http://excf.com/bbs/write_ok.php'
@@ -81,8 +82,8 @@ def handle_post(request, path):
     no = int(args[1])
 
     try:
-        subject = request.POST['subject'].encode('cp949')
-        contents = request.POST['contents'].encode('cp949')
+        subject = request.POST['subject'].encode(TARGET_ENCODING)
+        contents = request.POST['contents'].encode(TARGET_ENCODING)
 
         if not subject or not contents:
             raise Exception

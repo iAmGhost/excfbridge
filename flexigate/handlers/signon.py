@@ -31,6 +31,7 @@ import uuid
 from flexigate.handlers.index import DEFAULT_INDEX
 from flexigate import registry, remote
 from flexigate.tools import *
+from settings import TARGET_ENCODING
 
 URL_MENU = 'http://excf.com/menu.html'
 URL_SIGN_ON = 'http://excf.com/bbs/login_check.php'
@@ -38,7 +39,7 @@ URL_SIGN_OFF = 'http://excf.com/bbs/logout.php?s_url=about:blank'
 
 def attempt_sign_on(request, response, userid, passwd):
     encoded = urllib.urlencode(
-        {'user_id': userid.encode('cp949'), 'password': passwd, 's_url': 'about:blank'}
+        {'user_id': userid.encode(TARGET_ENCODING), 'password': passwd, 's_url': 'about:blank'}
     )
 
     try:

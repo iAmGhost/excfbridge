@@ -75,7 +75,7 @@ def handle_article_post(request, path):
         else:
             cx = '<b>업로드 실패하였습니다: %s</b>\n\n' % (request.FILES['file'].name)
 
-        contents = cx.encode('cp949') + contents
+        contents = cx.encode(TARGET_ENCODING) + contents
     
     query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
 
@@ -150,7 +150,7 @@ def handle_comment(request, path):
         return error(request, u'정의되지 않은 페이지입니다.')
 
     try:
-        memo = request.POST['comment'].encode('cp949')
+        memo = request.POST['comment'].encode(TARGET_ENCODING)
     except:
         return error(request, u'내용을 입력하셔야 합니다.')
 

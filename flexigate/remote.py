@@ -28,6 +28,7 @@ import urllib, urllib2
 
 from flexigate import registry
 from flexigate.tools import *
+from settings import TARGET_ENCODING
 
 def send_request(request, url, data=None, sessid=None, referer=None):
     if not sessid:
@@ -45,6 +46,6 @@ def send_request(request, url, data=None, sessid=None, referer=None):
     return urllib2.urlopen(req)
 
 def postprocess(data):
-    data = data.decode('cp949', 'ignore')
+    data = data.decode(TARGET_ENCODING, 'ignore')
     return data, BeautifulSoup(data)
 

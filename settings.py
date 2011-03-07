@@ -43,7 +43,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 ADMINS_EXCF = ['segfault87', 'excf']
-SESSION_EXPIRE = 1800
+SESSION_EXPIRE = 3600
 
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = BASE_PATH + '/database/excfbridge.db'
