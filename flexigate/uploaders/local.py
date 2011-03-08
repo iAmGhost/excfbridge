@@ -23,9 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import os
 from urllib import quote
 import Image
 
+from flexigate.tools import *
 from settings import UPLOAD_LOCAL_PATH, UPLOAD_LOCAL_URL, UPLOAD_LOCAL_SIZE, TARGET_ENCODING
 
 def resize(filename):
@@ -75,7 +77,7 @@ def upload(request, fileobj):
         if not resize(fpath):
             return None
     except:
-        return None
+        return None 
 
     return '%s/%s' % (UPLOAD_LOCAL_URL, quote(filename))
     

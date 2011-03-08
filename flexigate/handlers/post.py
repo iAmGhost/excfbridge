@@ -71,9 +71,9 @@ def handle_article_post(request, path):
         url = uploader.upload(request, request.FILES['file'])
 
         if url:
-            cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, filename, request.FILES['file'].name)
+            cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES['file'].name)
         else:
-            cx = '<b>업로드 실패하였습니다: %s</b>\n\n' % (request.FILES['file'].name)
+            cx = u'<b>업로드 실패하였습니다: %s</b>\n\n' % (request.FILES['file'].name)
 
         contents = cx.encode(TARGET_ENCODING) + contents
     
