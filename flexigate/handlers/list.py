@@ -57,7 +57,7 @@ def handle(request, path):
         return redirect
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
 
     output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)

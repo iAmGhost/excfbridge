@@ -29,6 +29,7 @@ import re
 import uuid
 
 from flexigate.handlers.index import DEFAULT_INDEX
+from flexigate.parsers.common import find_error
 from flexigate import registry, remote
 from flexigate.tools import *
 from settings import TARGET_ENCODING
@@ -36,6 +37,9 @@ from settings import TARGET_ENCODING
 URL_MENU = 'http://excf.com/menu.html'
 URL_SIGN_ON = 'http://excf.com/bbs/login_check.php'
 URL_SIGN_OFF = 'http://excf.com/bbs/logout.php?s_url=about:blank'
+
+class SignOnException(Exception):
+    pass
 
 def attempt_sign_on(request, response, userid, passwd):
     encoded = urllib.urlencode(
@@ -49,10 +53,22 @@ def attempt_sign_on(request, response, userid, passwd):
         response.set_cookie('session', sessid)
     
     m = urllib2.urlopen(URL_MENU)
-    phpsessid = re.match('PHPSESSID=([0-9a-f]+)', m.headers['set-cookie']).group(1)
+    result, soup = remote.postprocess(m.read())
+    errid, errmsg = find_error(result, soup)
+    if errid:
+        raise SignOnException(error(request, errmsg))
+
+    try:
+        phpsessid = re.match('PHPSESSID=([0-9a-f]+)', m.headers['set-cookie']).group(1)
+    except:
+        raise SignOnException(error(request, u'사이트 상태가 이상합니다.'))
 
     l = remote.send_request(request, URL_SIGN_ON, encoded, phpsessid)
     result, soup = remote.postprocess(l.read())
+
+    errid, errmsg = find_error(result, soup)
+    if errid:
+        raise SignOnException(error(request, errmsg))
 
     if 'about:blank' in result:
         # succeeded
@@ -93,10 +109,13 @@ def handle_signon_post(request):
 
     response = redirect(raddr)
 
-    if attempt_sign_on(request, response, userid, password):
-        return response
-    else:
-        return error(request, u'로그인에 실패하였습니다.', redir='/signon')
+    try:
+        if attempt_sign_on(request, response, userid, password):
+            return response
+        else:
+            return error(request, u'로그인에 실패하였습니다.', redir='/signon')
+    except SignOnException, e:
+        return e.args[0]
 
 def handle_signon_get(request):
     userid = ''

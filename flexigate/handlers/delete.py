@@ -51,7 +51,7 @@ def handle_delete_post(request, path):
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
 
     return redirect('/list/%s' % dest)
@@ -76,7 +76,7 @@ def handle_delete_comment(request, path):
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
 
     return redirect('/view/%s/%d' % (dest, no))

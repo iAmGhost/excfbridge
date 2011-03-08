@@ -88,7 +88,7 @@ def handle_article_post(request, path):
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
 
     return redirect('/list/%s' % dest)
@@ -113,7 +113,7 @@ def handle_article_get(request, path):
         return redir
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
     
     data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
@@ -160,7 +160,7 @@ def handle_comment(request, path):
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
     
     return redirect('/view/%s/%s' % (dest, no))

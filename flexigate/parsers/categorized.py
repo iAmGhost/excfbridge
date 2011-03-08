@@ -26,6 +26,7 @@
 import re
 
 from flexigate.parser import parser as parser_base, postprocess_string
+from flexigate.parsers.common import *
 
 class parser(parser_base):
     no_matcher = re.compile(r'.*no=(\d+)')
@@ -134,15 +135,22 @@ class parser(parser_base):
 
     def check_error(self, page, soup):
         try:
+            error = find_common_error(page, soup)
+            if error:
+                return error
+
             msg = soup.find('td').find('font', {'color': 'red'}).text.strip()
             if not msg:
-                return (self.ERROR_NONE, None)
+                return (None, None)
             
             if u'사용권한이 없습니다' in msg:
-                return (self.ERROR_SIGNED_OUT, msg)
+                if not get_sign_on_status(page, soup):
+                    return (self.ERROR_SIGNED_OUT, msg)
+                else:
+                    return (self.ERROR_GENERIC, msg)
             else:
                 return (self.ERROR_GENERIC, msg)
         except:
-            return (self.ERROR_NONE, None)
+            return (None, None)
 
 parser_object = parser()

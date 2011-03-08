@@ -56,7 +56,7 @@ def handle_get(request, path):
         return redir
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
     
     data = default_template_vars(u'%s - 글 수정' % pagedefs.PAGE_NAMES[dest], request, dest)
@@ -101,7 +101,7 @@ def handle_post(request, path):
     result, soup = remote.postprocess(l.read())
 
     errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode != parser.ERROR_NONE:
+    if errcode:
         return error_forward(request, errmsg)
 
     return redirect('/view/%s/%d' % (dest, no))

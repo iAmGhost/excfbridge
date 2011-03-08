@@ -32,9 +32,9 @@ def postprocess_string(text):
     return text.replace('&nbsp;', ' ').strip().replace('/span>', '')
 
 class parser:
-    ERROR_NONE = 0
     ERROR_SIGNED_OUT = 1
-    ERROR_GENERIC = 2
+    ERROR_THROTTLE_LIMIT = 2
+    ERROR_GENERIC = 3
 
     DECIMAL_MATCHER = re.compile(r'.*(\d+)')
 
@@ -55,4 +55,4 @@ class parser:
         return True
 
     def check_error(self, page, soup):
-        return (self.ERROR_NONE, None)
+        return (None, None)

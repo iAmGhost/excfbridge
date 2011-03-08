@@ -2,5 +2,5 @@
 
 {% block body %}
 <div id='error'><p>{% autoescape off %}{{errmsg}}{% endautoescape %}</p>
-<a class='button' style='color: white;' {{attr}}>확인</a></div>
+<a class='button' style='color: white;' {% autoescape off %}{{attr}}{% endautoescape %}>확인</a></div>
 {% endblock %}
