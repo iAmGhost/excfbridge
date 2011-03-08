@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 import pickle
 
 from settings import SESSION_EXPIRE, SESSION_FLUSH_TRIGGER_PATH
-from flexigate.models import registry, auditlog
+from flexigate.models import registry, auditlog, faillog
 
 def query(sid):
     if not sid:
@@ -81,6 +81,9 @@ def flush_outdated():
 
         open(SESSION_FLUSH_TRIGGER_PATH, 'w').write(pickle.dumps(datetime.now() + timedelta(minutes=5)))
 
-def audit(uid, sid, ip, ua):
-    auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).save()
+def audit(uid, sid, ip, ua, success=True):
+    if success:
+        auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).save()
+    else:
+        faillog(userid=uid, ipaddress=ip, useragent=ua).save()
 

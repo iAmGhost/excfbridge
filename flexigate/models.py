@@ -27,6 +27,40 @@ from datetime import datetime
 
 from django.db import models
 
+def useragent(ua):
+    ua = self.useragent
+    
+    if 'Chrom' in ua:
+        return 'Google Chrome'
+    elif 'Firefox' in ua:
+        return 'Mozilla Firefox'
+    elif 'MSIE 6.0' in ua:
+        return u'Internet Explorer 6'
+    elif 'MSIE 7.0' in ua:
+        return u'Internet Explorer 7'
+    elif 'MSIE 8.0' in ua:
+        return u'Internet Explorer 8'
+    elif 'MSIE' in ua:
+        return u'Internet Explorer'
+    elif 'Opera Mobi' in ua:
+        return u'Opera Mobile'
+    elif 'Opera' in ua:
+        return u'Opera'
+    elif 'iPod' in ua:
+        return u'iPod'
+    elif 'iPhone' in ua:
+        return u'iPhone'
+    elif 'Android' in ua:
+        return u'Android'
+    elif 'Skyfire' in ua:
+        return u'Skyfire'
+    elif 'SymbianOS' in ua:
+        return u'SymbianOS'
+    elif 'Safari' in ua:
+        return u'Safari'
+    else:
+        return u'Unknown Agent'
+
 def elapsed(a, b):
     delta = (a - b).seconds
 
@@ -60,6 +94,15 @@ class registry(models.Model):
     def elapsed(self):
         return elapsed(datetime.now(), self.signon_time)
 
+class faillog(models.Model):
+    userid = models.CharField(max_length=20)
+    ipaddress = models.IPAddressField()
+    useragent = models.CharField(max_length=300, null=True, blank=True)
+    time = models.DateTimeField(auto_now_add=True)
+
+    def browser(self):
+        return useragent(self.useragent)
+
 class auditlog(models.Model):
     userid = models.CharField(max_length=20)
     session = models.CharField(max_length=36)
@@ -68,28 +111,5 @@ class auditlog(models.Model):
     time = models.DateTimeField(auto_now_add=True)
 
     def browser(self):
-        ua = self.useragent
-
-        if 'Chrom' in ua:
-            return 'Google Chrome'
-        elif 'Firefox' in ua:
-            return 'Mozilla Firefox'
-        elif 'MSIE' in ua:
-            return u'Internet Explorer'
-        elif 'Opera Mobi' in ua:
-            return u'Opera Mobile'
-        elif 'Opera' in ua:
-            return u'Opera'
-        elif 'iPod' in ua:
-            return u'iPod'
-        elif 'iPhone' in ua:
-            return u'iPhone'
-        elif 'Android' in ua:
-            return u'Android'
-        elif 'SymbianOS' in ua:
-            return u'SymbianOS'
-        elif 'Safari' in ua:
-            return u'Safari'
-        else:
-            return u'Unknown Agent'
+        return useragent(self.useragent)
     

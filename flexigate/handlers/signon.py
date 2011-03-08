@@ -42,6 +42,9 @@ class SignOnException(Exception):
     pass
 
 def attempt_sign_on(request, response, userid, passwd):
+    ip = request.META['REMOTE_ADDR']
+    ua = request.META['HTTP_USER_AGENT'] if request.META.has_key('HTTP_USER_AGENT') else None
+
     encoded = urllib.urlencode(
         {'user_id': userid.encode(TARGET_ENCODING), 'password': passwd, 's_url': 'about:blank'}
     )
@@ -72,11 +75,8 @@ def attempt_sign_on(request, response, userid, passwd):
 
     if 'about:blank' in result:
         # succeeded
-        ip = request.META['REMOTE_ADDR']
-        ua = request.META['HTTP_USER_AGENT'] if request.META.has_key('HTTP_USER_AGENT') else None
-
         registry.register(sessid, userid, phpsessid)
-        registry.audit(userid, sessid, ip, ua)
+        registry.audit(userid, sessid, ip, ua, True)
 
         # save form data if needed
         if request.POST.has_key('saveform') and request.POST['saveform'] == 'true':
@@ -90,6 +90,7 @@ def attempt_sign_on(request, response, userid, passwd):
 
         return True
     else:
+        registry.audit(userid, sessid, ip, ua, False)
         return False
 
 def generate_session_id():
