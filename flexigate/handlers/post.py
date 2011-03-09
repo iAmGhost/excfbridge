@@ -68,10 +68,10 @@ def handle_article_post(request, path):
 
         for f in request.FILES:
             try:
-                url = uploader.upload(request, request.FILES[f])
-                cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
+                 url = uploader.upload(request, request.FILES[f])
+                 cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
             except Exception, e:
-                cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
+                 cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
                 
             contents = cx.encode(TARGET_ENCODING) + contents
     

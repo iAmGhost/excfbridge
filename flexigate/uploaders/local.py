@@ -66,7 +66,7 @@ def upload(request, fileobj):
         retrycnt += 1 
      
     f = open(fpath, 'wb+')
-    for chunk in request.FILES['file'].chunks():
+    for chunk in fileobj.chunks():
         f.write(chunk)
     f.close()
 

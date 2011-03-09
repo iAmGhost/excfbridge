@@ -27,11 +27,13 @@ function add_file_upload_form() {
   var input = document.createElement('input');
   input.setAttribute('type', 'file');
   input.setAttribute('name', 'file' + cnt);
+  input.setAttribute('class', 'file');
   input.setAttribute('accept', 'image/*');
 
   var del = document.createElement('input');
   del.setAttribute('type', 'button');
   del.setAttribute('value', '삭제');
+  del.setAttribute('class', 'remove');
   del.setAttribute('onclick', 'del_file_upload_form(\'post_file' + cnt + '\')');
 
   div.appendChild(input);  
