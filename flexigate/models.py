@@ -28,8 +28,6 @@ from datetime import datetime
 from django.db import models
 
 def useragent(ua):
-    ua = self.useragent
-    
     if 'Chrom' in ua:
         return 'Google Chrome'
     elif 'Firefox' in ua:
@@ -98,6 +96,7 @@ class faillog(models.Model):
     userid = models.CharField(max_length=20)
     ipaddress = models.IPAddressField()
     useragent = models.CharField(max_length=300, null=True, blank=True)
+    reason = models.CharField(max_length=100, null=True, blank=True)
     time = models.DateTimeField(auto_now_add=True)
 
     def browser(self):

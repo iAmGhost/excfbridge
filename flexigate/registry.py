@@ -81,9 +81,9 @@ def flush_outdated():
 
         open(SESSION_FLUSH_TRIGGER_PATH, 'w').write(pickle.dumps(datetime.now() + timedelta(minutes=5)))
 
-def audit(uid, sid, ip, ua, success=True):
+def audit(uid, sid, ip, ua, success=True, why=''):
     if success:
         auditlog(userid=uid, session=sid, ipaddress=ip, useragent=ua).save()
     else:
-        faillog(userid=uid, ipaddress=ip, useragent=ua).save()
+        faillog(userid=uid, ipaddress=ip, useragent=ua, reason=why).save()
 

@@ -27,7 +27,7 @@ from settings import ADMINS_EXCF
 from flexigate import registry, models
 from flexigate.tools import *
 
-LIMIT_AUDIT = 100
+LIMIT_AUDIT = 50
 
 def handle(request):
     out = registry.query(get_session_id(request))
@@ -42,5 +42,6 @@ def handle(request):
     data['limit_audit'] = LIMIT_AUDIT
     data['sessions'] = models.registry.objects.order_by('-signon_time').all()
     data['audit'] = models.auditlog.objects.order_by('-time').all()[:LIMIT_AUDIT]
-        
+    data['faillog'] = models.faillog.objects.order_by('-time').all()[:LIMIT_AUDIT]
+    
     return render_to_response('admin.html', data)

@@ -59,11 +59,13 @@ def attempt_sign_on(request, response, userid, passwd):
     result, soup = remote.postprocess(m.read())
     errid, errmsg = find_error(result, soup)
     if errid:
+        registry.audit(userid, sessid, ip, ua, False, why=errmsg)
         raise SignOnException(error(request, errmsg))
 
     try:
         phpsessid = re.match('PHPSESSID=([0-9a-f]+)', m.headers['set-cookie']).group(1)
     except:
+        registry.audit(userid, sessid, ip, ua, False, why=u'알 수 없음')
         raise SignOnException(error(request, u'사이트 상태가 이상합니다.'))
 
     l = remote.send_request(request, URL_SIGN_ON, encoded, phpsessid)
@@ -71,6 +73,7 @@ def attempt_sign_on(request, response, userid, passwd):
 
     errid, errmsg = find_error(result, soup)
     if errid:
+        registry.audit(userid, sessid, ip, ua, False, why=errmsg)
         raise SignOnException(error(request, errmsg))
 
     if 'about:blank' in result:
@@ -90,7 +93,7 @@ def attempt_sign_on(request, response, userid, passwd):
 
         return True
     else:
-        registry.audit(userid, sessid, ip, ua, False)
+        registry.audit(userid, sessid, ip, ua, False, why=u'잘못된 아이디 또는 비밀번호 조합')
         return False
 
 def generate_session_id():

@@ -9,4 +9,8 @@
 <ul>
 {% for al in audit %}<li>{{al.time}}: <strong>{{al.userid}}</strong> (from {{al.ipaddress}}{% if al.useragent %}, using {{al.browser}}{% endif %})</li>{% endfor %}
 </ul>
+<h3>로그인 실패 내역 (최근 {{limit_audit}}건)</h3>
+<ul>
+{% for al in faillog %}<li>{{al.time}}: <strong>{{al.userid}}</strong> (from {{al.ipaddress}}{% if al.useragent %}, using {{al.browser}}{% endif %}) - {{al.reason}}</li>{% endfor %}
+</ul>
 {% endblock %}
