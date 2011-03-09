@@ -24,6 +24,7 @@
 # THE SOFTWARE.
 
 import os
+from hashlib import md5
 from urllib import quote
 import Image
 
@@ -31,14 +32,11 @@ from flexigate.tools import *
 from settings import UPLOAD_LOCAL_PATH, UPLOAD_LOCAL_URL, UPLOAD_LOCAL_SIZE, TARGET_ENCODING
 
 def resize(filename):
-    try:
-        im = Image.open(filename)
-    except:
-        return False
-
+    im = Image.open(filename)
+    
     size = im.size
     if size[0] < UPLOAD_LOCAL_SIZE and size[1] < UPLOAD_LOCAL_SIZE:
-        return True
+        return
 
     if size[0] > size[1]:
         nx = UPLOAD_LOCAL_SIZE
@@ -50,34 +48,29 @@ def resize(filename):
     im = im.resize((nx, ny), Image.ANTIALIAS)
     im.save(filename, quality=90)
 
-    return True
-
 def upload(request, fileobj):
-    try:
-        sid = get_session_id(request)
+    sid = md5(get_session_id(request)).hexdigest()
 
-        retrycnt = 0
-        while True:
-            if retrycnt == 0:
-                filename = '%s_%s' % (sid, fileobj.name)
-            else:
-                filename = '%s_%d_%s' % (sid, retrycnt, fileobj.name)
-            fpath = '%s/%s' % (UPLOAD_LOCAL_PATH, filename)
+    retrycnt = 0
+    while True:
+        if retrycnt == 0:
+            filename = '%s_%s' % (sid, fileobj.name)
+        else:
+            filename = '%s_%d_%s' % (sid, retrycnt, fileobj.name)
+        filename = filename.encode('utf-8')
+        fpath = '%s/%s' % (UPLOAD_LOCAL_PATH, filename)
 
-            if not os.path.exists(fpath):
-                break
+        if not os.path.exists(fpath):
+            break
         
-            retrycnt += 1 
+        retrycnt += 1 
      
-        f = open(fpath, 'wb+')
-        for chunk in request.FILES['file'].chunks():
-            f.write(chunk)
-        f.close()
+    f = open(fpath, 'wb+')
+    for chunk in request.FILES['file'].chunks():
+        f.write(chunk)
+    f.close()
 
-        if not resize(fpath):
-            return None
-    except:
-        return None 
+    resize(fpath)
 
     return '%s/%s' % (UPLOAD_LOCAL_URL, quote(filename))
     

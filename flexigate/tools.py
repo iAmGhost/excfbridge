@@ -31,6 +31,10 @@ from settings import ADMINS_EXCF
 from flexigate import registry
 from flexigate.pagedefs import PAGES
 
+class redirection(Exception):
+    def __init__(self, redirection):
+        self.where = redirection
+
 def redirect_if_no_session(request):
     # we have to kill inactive session first.
     registry.flush_outdated()
@@ -48,7 +52,7 @@ def redirect_if_no_session(request):
         ret = True
 
     if ret:
-        return redir
+        raise redirection(redir)
 
     # there is an activity
     registry.touch(sid)
@@ -58,7 +62,7 @@ def redirect_if_not_signed_on(request, page, soup, pagedef):
         # Remote session is expired
         redir = redirect('/signon?%s' % urllib.urlencode({'redirect': request.path})) 
         force_sign_out(request, redir)
-        return redir
+        raise redirection(redir)
 
 def get_session_id(request):
     if not request.COOKIES.has_key('session'):

@@ -50,79 +50,80 @@ def check_arg(path):
 
 # POST handler
 def handle_article_post(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return redir
-
-    dest = check_arg(path)
-    if not dest:
-        return error(request, u'잘못된 인자입니다.')
-
     try:
-        subject = request.POST['subject'].encode(TARGET_ENCODING)
-        contents = request.POST['contents'].encode(TARGET_ENCODING)
+        redirect_if_no_session(request)
+        
+        dest = check_arg(path)
+        if not dest:
+            return error(request, u'잘못된 인자입니다.')
 
-        if not subject or not contents:
-            raise Exception
-    except:
-        return error(request, u'내용을 입력해 주셔야 합니다.')
+        try:
+            subject = request.POST['subject'].encode(TARGET_ENCODING)
+            contents = request.POST['contents'].encode(TARGET_ENCODING)
+        
+            if not subject or not contents:
+                raise Exception
+        except:
+            return error(request, u'내용을 입력해 주셔야 합니다.')
 
-    if request.FILES.has_key('file'):
-        url = uploader.upload(request, request.FILES['file'])
-
-        if url:
-            cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES['file'].name)
-        else:
-            cx = u'<b>업로드 실패하였습니다: %s</b>\n\n' % (request.FILES['file'].name)
-
-        contents = cx.encode(TARGET_ENCODING) + contents
+        for f in request.FILES:
+            try:
+                url = uploader.upload(request, request.FILES[f])
+                cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
+            except Exception, e:
+                cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
+                
+            contents = cx.encode(TARGET_ENCODING) + contents
     
-    query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
+        query = {'subject': subject, 'memo': contents, 'mode': 'write', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1'}
 
-    try:
-        query['category'] = request.POST['category']
-    except:
-        pass
-    
-    l = remote.send_request(request, URL_POST, urllib.urlencode(query), referer=URL_REFERER)
-    result, soup = remote.postprocess(l.read())
+        try:
+            query['category'] = request.POST['category']
+        except:
+            pass
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        l = remote.send_request(request, URL_POST, urllib.urlencode(query), referer=URL_REFERER)
+        result, soup = remote.postprocess(l.read())
+
+        redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
+
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        if errcode:
+            return error_forward(request, errmsg)
+    except redirection, e:
+        return e.where
 
     return redirect('/list/%s' % dest)
 
 # GET handler
 def handle_article_get(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return redir
+    try:
+        redirect_if_no_session(request)
 
-    dest = check_arg(path)
-    if not dest:
-        return error(request, u'잘못된 인자입니다.')
+        dest = check_arg(path)
+        if not dest:
+            return error(request, u'잘못된 인자입니다.')
 
-    query = URL_POST_PAGE + '?id=%s' % (pagedefs.PAGE_IDS[dest])
+        query = URL_POST_PAGE + '?id=%s' % (pagedefs.PAGE_IDS[dest])
         
-    result = remote.send_request(request, query, referer=URL_POST_PAGE)
-    html, soup = remote.postprocess(result.read())
+        result = remote.send_request(request, query, referer=URL_POST_PAGE)
+        html, soup = remote.postprocess(result.read())
         
-    redir = redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
-    if redir:
-        return redir
+        redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode:
+            return error_forward(request, errmsg)
     
-    data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
+        data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
     
-    data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
+        data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
     
-    data['bid'] = dest
-    data['target'] = '/post/%s' % dest
-    data['mode'] = 'post'
+        data['bid'] = dest
+        data['target'] = '/post/%s' % dest
+        data['mode'] = 'post'
+    except redirection, e:
+        return e.where
     
     return render_to_response('post.html', data)
 
@@ -135,32 +136,35 @@ def handle_article(request, path):
 
 # Handler for posting comment
 def handle_comment(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return redir
-    
-    args = path.split('/')
-    if len(args) < 2:
-        return error(request, u'잘못된 인자입니다.')
-        
-    dest = args[0]
-    no = args[1]
-
-    if not pagedefs.PAGE_IDS.has_key(dest):
-        return error(request, u'정의되지 않은 페이지입니다.')
-
     try:
-        memo = request.POST['comment'].encode(TARGET_ENCODING)
-    except:
-        return error(request, u'내용을 입력하셔야 합니다.')
+        redirect_if_no_session(request)
+        
+        args = path.split('/')
+        if len(args) < 2:
+            return error(request, u'잘못된 인자입니다.')
+        
+        dest = args[0]
+        no = args[1]
 
-    query = {'id': pagedefs.PAGE_IDS[dest], 'no': no, 'memo': memo}
+        if not pagedefs.PAGE_IDS.has_key(dest):
+            return error(request, u'정의되지 않은 페이지입니다.')
 
-    l = remote.send_request(request, URL_POST_COMMENT, urllib.urlencode(query), referer=URL_REFERER)
-    result, soup = remote.postprocess(l.read())
+        try:
+            memo = request.POST['comment'].encode(TARGET_ENCODING)
+        except:
+            return error(request, u'내용을 입력하셔야 합니다.')
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        query = {'id': pagedefs.PAGE_IDS[dest], 'no': no, 'memo': memo}
+
+        l = remote.send_request(request, URL_POST_COMMENT, urllib.urlencode(query), referer=URL_REFERER)
+        result, soup = remote.postprocess(l.read())
+
+        redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
+
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        if errcode:
+            return error_forward(request, errmsg)
+    except redirection, e:
+        return e.where
     
     return redirect('/view/%s/%s' % (dest, no))

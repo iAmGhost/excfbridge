@@ -34,75 +34,77 @@ URL = 'http://excf.com/bbs/write.php'
 URL_POST = 'http://excf.com/bbs/write_ok.php'
 
 def handle_get(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return redir
+    try:
+        redirect_if_no_session(request)
 
-    args = path.split('/')
+        args = path.split('/')
 
-    if len(args) < 2:
-        return error(request, u'잘못된 인자입니다.')
+        if len(args) < 2:
+            return error(request, u'잘못된 인자입니다.')
 
-    dest = args[0]
-    no = int(args[1])
+        dest = args[0]
+        no = int(args[1])
 
-    query = URL + '?id=%s&no=%d&mode=modify' % (pagedefs.PAGE_IDS[dest], no)
+        query = URL + '?id=%s&no=%d&mode=modify' % (pagedefs.PAGE_IDS[dest], no)
         
-    result = remote.send_request(request, query, referer=URL)
-    html, soup = remote.postprocess(result.read())
+        result = remote.send_request(request, query, referer=URL)
+        html, soup = remote.postprocess(result.read())
         
-    redir = redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
-    if redir:
-        return redir
+        redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode:
+            return error_forward(request, errmsg)
     
-    data = default_template_vars(u'%s - 글 수정' % pagedefs.PAGE_NAMES[dest], request, dest)
+        data = default_template_vars(u'%s - 글 수정' % pagedefs.PAGE_NAMES[dest], request, dest)
     
-    data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
+        data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
     
-    data['bid'] = dest
-    data['target'] = '/modify/%s/%d' % (dest, no)
+        data['bid'] = dest
+        data['target'] = '/modify/%s/%d' % (dest, no)
     
-    return render_to_response('post.html', data)
+        return render_to_response('post.html', data)
+    except redirection, e:
+        return e.where
 
 def handle_post(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return
-    
-    args = path.split('/')
-
-    if len(args) < 2:
-        return error(request, u'잘못된 인자입니다.')
-
-    dest = args[0]
-    no = int(args[1])
-
     try:
-        subject = request.POST['subject'].encode(TARGET_ENCODING)
-        contents = request.POST['contents'].encode(TARGET_ENCODING)
-
-        if not subject or not contents:
-            raise Exception
-    except:
-        return error(request, u'내용을 입력해 주셔야 합니다.')
+        redirect_if_no_session(request)
     
-    query = {'subject': subject, 'memo': contents, 'mode': 'modify', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1', 'no': no}
+        args = path.split('/')
 
-    try:
-        query['category'] = request.POST['category']
-    except:
-        pass
+        if len(args) < 2:
+            return error(request, u'잘못된 인자입니다.')
+
+        dest = args[0]
+        no = int(args[1])
+
+        try:
+            subject = request.POST['subject'].encode(TARGET_ENCODING)
+            contents = request.POST['contents'].encode(TARGET_ENCODING)
+
+            if not subject or not contents:
+                raise Exception
+        except:
+            return error(request, u'내용을 입력해 주셔야 합니다.')
     
-    l = remote.send_request(request, URL_POST, urllib.urlencode(query), referer=URL_POST)
-    result, soup = remote.postprocess(l.read())
+        query = {'subject': subject, 'memo': contents, 'mode': 'modify', 'id': pagedefs.PAGE_IDS[dest], 'use_html': '1', 'no': no}
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        try:
+            query['category'] = request.POST['category']
+        except:
+            pass
+    
+        l = remote.send_request(request, URL_POST, urllib.urlencode(query), referer=URL_POST)
+        result, soup = remote.postprocess(l.read())
+
+        redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
+
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        if errcode:
+            return error_forward(request, errmsg)
+    except redirection, e:
+        return e.where
 
     return redirect('/view/%s/%d' % (dest, no))
 

@@ -32,43 +32,42 @@ from flexigate.tools import *
 URL = 'http://excf.com/bbs/zboard.php'
 
 def handle(request, path):
-    redirect = redirect_if_no_session(request)
-    if redirect:
-        return redirect
+    try:
+        redirect_if_no_session(request)
 
-    args = path.split('/')
+        args = path.split('/')
 
-    dest = args[0]
-    page = 1
+        dest = args[0]
+        page = 1
 
-    if len(args) > 1:
-        page = int(args[1])
+        if len(args) > 1:
+            page = int(args[1])
 
-    if not pagedefs.PAGE_IDS.has_key(dest):
-        return error(request, u'정의되지 않은 페이지입니다.')
+        if not pagedefs.PAGE_IDS.has_key(dest):
+            return error(request, u'정의되지 않은 페이지입니다.')
         
-    query = URL + '?id=%s&page=%d' % (pagedefs.PAGE_IDS[dest], page)
+        query = URL + '?id=%s&page=%d' % (pagedefs.PAGE_IDS[dest], page)
 
-    result = remote.send_request(request, query)
-    html, soup = remote.postprocess(result.read())
+        result = remote.send_request(request, query)
+        html, soup = remote.postprocess(result.read())
         
-    redirect = redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
-    if redirect:
-        return redirect
+        redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
+        
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode:
+            return error_forward(request, errmsg)
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
+        output['bid'] = dest
+        output['page'] = page
 
-    output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
-    output['bid'] = dest
-    output['page'] = page
+        maxpages = 500 # FIXME
+        pages = filter(lambda x: x > 0 and x <= maxpages, range(page-2, page+3))
+        output['pages'] = pages
 
-    maxpages = 500 # FIXME
-    pages = filter(lambda x: x > 0 and x <= maxpages, range(page-2, page+3))
-    output['pages'] = pages
+        data = default_template_vars(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page), request, dest)
+        data.update(output)
 
-    data = default_template_vars(u'%s - %d 페이지' % (pagedefs.PAGE_NAMES[dest], page), request, dest)
-    data.update(output)
-
-    return render_to_response('list.html', data)
+        return render_to_response('list.html', data)
+    except redirection, e:
+        return e

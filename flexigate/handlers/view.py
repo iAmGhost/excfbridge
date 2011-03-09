@@ -30,39 +30,38 @@ from flexigate.tools import *
 URL = 'http://excf.com/bbs/view.php'
 
 def handle(request, path):
-    redir = redirect_if_no_session(request)
-    if redir:
-        return redir
+    try:
+        redirect_if_no_session(request)
 
-    args = path.split('/')
+        args = path.split('/')
 
-    if len(args) < 2:
-        return error(request, u'잘못된 인자입니다.')
+        if len(args) < 2:
+            return error(request, u'잘못된 인자입니다.')
     
-    dest = args[0]
-    no = int(args[1])
+        dest = args[0]
+        no = int(args[1])
     
-    if not pagedefs.PAGE_IDS.has_key(dest):
-        return error(request, u'정의되지 않은 페이지입니다.')
+        if not pagedefs.PAGE_IDS.has_key(dest):
+            return error(request, u'정의되지 않은 페이지입니다.')
     
-    query = URL + "?id=%s&no=%d" % (pagedefs.PAGE_IDS[dest], no)
+        query = URL + "?id=%s&no=%d" % (pagedefs.PAGE_IDS[dest], no)
 
-    result = remote.send_request(request, query)
-    html, soup = remote.postprocess(result.read())
+        result = remote.send_request(request, query)
+        html, soup = remote.postprocess(result.read())
 
-    redir = redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
-    if redir:
-        return redir
+        redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
 
-    errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
-    if errcode:
-        return error_forward(request, errmsg)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        if errcode:
+            return error_forward(request, errmsg)
 
-    output = pagedefs.PAGE_PARSERS[dest].parse_view(dest, html, soup)
-    output['bid'] = dest
-    output['pid'] = no
+        output = pagedefs.PAGE_PARSERS[dest].parse_view(dest, html, soup)
+        output['bid'] = dest
+        output['pid'] = no
 
-    data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request, dest)
-    data.update(output)
+        data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request, dest)
+        data.update(output)
 
-    return render_to_response('view.html', data)
+        return render_to_response('view.html', data)
+    except redirection, e:
+        return e.where

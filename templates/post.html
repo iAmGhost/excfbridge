@@ -12,6 +12,38 @@ function validate() {
 
   return true;
 }
+
+var cnt = 1;
+
+function del_file_upload_form(id) {
+  var root = document.getElementById('fileuploads');
+  root.removeChild(document.getElementById(id));
+}
+
+function add_file_upload_form() {
+  var div = document.createElement('div');
+  div.setAttribute('id', 'post_file' + cnt);
+
+  var input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('name', 'file' + cnt);
+  input.setAttribute('accept', 'image/*');
+
+  var del = document.createElement('input');
+  del.setAttribute('type', 'button');
+  del.setAttribute('value', '삭제');
+  del.setAttribute('onclick', 'del_file_upload_form(\'post_file' + cnt + '\')');
+
+  div.appendChild(input);  
+  div.appendChild(del);
+
+  var fileuploads = document.getElementById('fileuploads');
+  fileuploads.appendChild(div);
+
+  ++cnt;
+}
+
+window.onload = add_file_upload_form;
 </script>
 <div id='post'>
   <form action='{{target}}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
@@ -25,9 +57,14 @@ function validate() {
     <input type='text' id='post_subject' name='subject' maxlength='200' value='{{subject}}' /><br />
     <textarea name='contents' id='post_contents' rows='8'>{{contents}}</textarea><br />
 {% if mode == 'post' %}
-    <input type='file' id='post_file', name='file' accept='image/*' /><br />
+    <div id='fileuploads'>
+      <input type='button' id='post_add' value='첨부파일 추가' onclick='add_file_upload_form()' />
+    </div>
 {% endif %}
-    <input id='post_submit' type='submit' value='게시' />
+    <div id='buttonbox'>
+      <input id='post_back' type='button' value='취소' onclick='history.back();' />
+      <input id='post_submit' type='submit' value='게시' />
+    </div>
   </form>
 </div>
 {% endblock %}

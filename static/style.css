@@ -155,23 +155,19 @@ img {
     width: 20%;
 }
 
-#post #post_subject {
-    width: 75%;
+#post #post_submit, #post #post_back {
+    width: 42%;
 }
 
-#post #post_submit {
-    width: 95%;
-}
-
-#post input {
+#post #buttonbox, #post #fileuploads {
     margin-left: auto;
     margin-right: auto;
 }
 
-#post textarea {
+#post #post_contents, #post #post_subject {
     margin-left: auto;
     margin-right: auto;
-    width: 95%;
+    width: 90%;
 }
 
 #header {
