@@ -66,7 +66,8 @@ def handle_article_post(request, path):
         except:
             return error(request, u'내용을 입력해 주셔야 합니다.')
 
-        for f in request.FILES:
+	keys = map(lambda x: 'file%d' % x, sorted(map(lambda x: int(x[4:]), request.FILES.keys())))
+        for f in keys:
             try:
                  url = uploader.upload(request, request.FILES[f])
                  cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)

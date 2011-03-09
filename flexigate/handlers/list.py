@@ -70,4 +70,4 @@ def handle(request, path):
 
         return render_to_response('list.html', data)
     except redirection, e:
-        return e
+        return e.where
