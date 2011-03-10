@@ -24,12 +24,14 @@
 # THE SOFTWARE.
 
 from flexigate.parser import parser
+from flexigate import remote
 
 URL_MENU = 'http://excf.com/menu.html'
 
 def get_sign_on_status(request, page, soup):
-    result, soup = remote.send_request(request, URL_MENU)
-    
+    result = remote.send_request(request, URL_MENU)
+    html, soup = remote.postprocess(result.read())
+
     if len(soup.findAll('input', {'type': 'password'})) > 0:
         return False
     else:

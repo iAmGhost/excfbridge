@@ -25,7 +25,7 @@
 
 from django.shortcuts import render_to_response
 
-from flexigate import pagedefs, remote
+from flexigate import remote, pagedefs
 from flexigate.parser import parser
 from flexigate.tools import *
 
@@ -50,7 +50,7 @@ def handle(request, path):
 
         result = remote.send_request(request, query)
         html, soup = remote.postprocess(result.read())
-        
+
         redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
         
         errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, html, soup)

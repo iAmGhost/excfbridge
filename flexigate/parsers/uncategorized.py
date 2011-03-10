@@ -94,7 +94,7 @@ class parser(parser_base):
             cmtnode = {}
             cmtnode['name'] = postprocess_string(n.contents[1].contents[1].contents[0].text)
             cmtnode['id'] = n.contents[1].contents[1].contents[3].text[1:-1]
-            cmtnode['body'] = postprocess_string(n.contents[1].contents[5].text)
+            cmtnode['body'] = postprocess_string(n.contents[1].contents[5].renderContents())
             cmtnode['date'] = n.contents[1].contents[9].contents[0].contents[1].contents[0][1:-1] + ' ' + n.contents[1].contents[9].contents[0].contents[1].contents[2][1:-1]
             try:
                 cmtnode['did'] = self.cno_matcher.match(filter(lambda x: x[0] == 'href', n.contents[1].contents[7].contents[0].attrs)[0][1]).group(1)
@@ -127,7 +127,7 @@ class parser(parser_base):
             msg = soup.find('tr', {'height': '27', 'align': 'right'}).contents[3].text.strip()
             if not msg:
                 return (None, None)
-            
+
             if u'사용권한이 없습니다' in msg:
                 if not get_sign_on_status(request, page, soup):
                     return (self.ERROR_SIGNED_OUT, msg)

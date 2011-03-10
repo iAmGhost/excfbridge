@@ -27,16 +27,17 @@ from BeautifulSoup import BeautifulSoup
 import urllib, urllib2
 
 from flexigate import registry
-from flexigate.tools import *
 from settings import TARGET_ENCODING
 
 def send_request(request, url, data=None, sessid=None, referer=None):
     if not sessid:
-        lsid = get_session_id(request)
-        if lsid:
+        try:
+            lsid = request.COOKIES['session']
             sessid = registry.query(lsid)[1]
+        except:
+            pass
 
-    headers  = {}
+    headers = {}
     if sessid:
         headers['Cookie'] = 'PHPSESSID=%s' % sessid
     if referer:

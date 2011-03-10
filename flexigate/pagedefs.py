@@ -23,7 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from flexigate.parsers import uncategorized, categorized
+from flexigate.parsers.uncategorized import parser_object as uncategorized
+from flexigate.parsers.categorized import parser_object as categorized
 
 PAGE_IDS = {
     'free': 'free3',
@@ -44,12 +45,12 @@ PAGE_NAMES = {
 }
 
 PAGE_PARSERS = {
-    'free': uncategorized.parser_object,
-    'general': categorized.parser_object,
-    'creation': categorized.parser_object,
-    'cartoon': uncategorized.parser_object,
-    'playground': uncategorized.parser_object,
-    'game': categorized.parser_object,
+    'free': uncategorized,
+    'general': categorized,
+    'creation': categorized,
+    'cartoon': uncategorized,
+    'playground': uncategorized,
+    'game': categorized,
 }
 
 PAGES = (

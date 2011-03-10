@@ -88,7 +88,7 @@ class parser(parser_base):
             cmtnode = {}
             try:
                 cmtnode['name'] = postprocess_string(n.contents[1].contents[0].text)
-                cmtnode['body'] = postprocess_string(n.contents[7].text)
+                cmtnode['body'] = postprocess_string(n.contents[7].renderContents)
                 date = map(lambda x: x[:-1], n.contents[3].contents[0].contents[1].attrs[0][1].split())
                 cmtnode['date'] = '%s/%s %s:%s:%s' % (date[1], date[2], date[3], date[4], date[5])
 
