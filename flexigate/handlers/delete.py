@@ -51,7 +51,7 @@ def handle_delete_post(request, path):
 
         redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
 
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, result, soup)
         if errcode:
             return error_forward(request, errmsg)
     except redirection, e:
@@ -79,7 +79,7 @@ def handle_delete_comment(request, path):
 
         redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
 
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, result, soup)
         if errcode:
             return error_forward(request, errmsg)
     except redirection, e:

@@ -53,7 +53,7 @@ def handle(request, path):
         
         redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
         
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, html, soup)
         if errcode:
             return error_forward(request, errmsg)
 

@@ -133,7 +133,7 @@ class parser(parser_base):
         
         return output
 
-    def check_error(self, page, soup):
+    def check_error(self, request, page, soup):
         try:
             error = find_common_error(page, soup)
             if error:
@@ -144,7 +144,7 @@ class parser(parser_base):
                 return (None, None)
             
             if u'사용권한이 없습니다' in msg:
-                if not get_sign_on_status(page, soup):
+                if not get_sign_on_status(request, page, soup):
                     return (self.ERROR_SIGNED_OUT, msg)
                 else:
                     return (self.ERROR_GENERIC, msg)

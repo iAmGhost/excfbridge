@@ -88,7 +88,7 @@ def handle_article_post(request, path):
 
         redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
 
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, result, soup)
         if errcode:
             return error_forward(request, errmsg)
     except redirection, e:
@@ -112,7 +112,7 @@ def handle_article_get(request, path):
         
         redirect_if_not_signed_on(request, html, soup, pagedefs.PAGE_PARSERS[dest])
 
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(html, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, html, soup)
         if errcode:
             return error_forward(request, errmsg)
     
@@ -162,7 +162,7 @@ def handle_comment(request, path):
 
         redirect_if_not_signed_on(request, result, soup, pagedefs.PAGE_PARSERS[dest])
 
-        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(result, soup)
+        errcode, errmsg = pagedefs.PAGE_PARSERS[dest].check_error(request, result, soup)
         if errcode:
             return error_forward(request, errmsg)
     except redirection, e:

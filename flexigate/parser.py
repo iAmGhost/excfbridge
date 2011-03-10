@@ -47,12 +47,12 @@ class parser:
     def parse_write(self, pid, page, soup):
         return {}
 
-    def check_session(self, page, soup):
-        errcode, errmsg = self.check_error(page, soup)
+    def check_session(self, request, page, soup):
+        errcode, errmsg = self.check_error(request, page, soup)
         if errcode == self.ERROR_SIGNED_OUT:
             return False
         
         return True
 
-    def check_error(self, page, soup):
+    def check_error(self, request, page, soup):
         return (None, None)

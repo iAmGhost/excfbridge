@@ -27,8 +27,13 @@ from flexigate.parser import parser
 
 URL_MENU = 'http://excf.com/menu.html'
 
-def get_sign_on_status(page, soup):
-    return False
+def get_sign_on_status(request, page, soup):
+    result, soup = remote.send_request(request, URL_MENU)
+    
+    if len(soup.findAll('input', {'type': 'password'})) > 0:
+        return False
+    else:
+        return True
 
 def find_common_error(page, soup):
     # Traffic check

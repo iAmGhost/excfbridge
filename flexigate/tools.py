@@ -58,7 +58,7 @@ def redirect_if_no_session(request):
     registry.touch(sid)
 
 def redirect_if_not_signed_on(request, page, soup, pagedef):
-    if not pagedef.check_session(page, soup):
+    if not pagedef.check_session(request, page, soup):
         # Remote session is expired
         redir = redirect('/signon?%s' % urllib.urlencode({'redirect': request.path})) 
         force_sign_out(request, redir)
