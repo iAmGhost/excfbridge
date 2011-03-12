@@ -35,13 +35,22 @@ class parser(parser_base):
         output['article_lists'] = alist
 
         pages = soup.findAll('td', {'align': 'center', 'colspan': '2', 'nowrap': 'nowrap'})[0]
-        output['maxpages'] = int(self.maxpages_matcher.match(pages.text.replace('[', ' ').replace(']', ' ')).group(1))
 
         for pagelink in pages.findAll('a'):
             if pagelink.text == u'[계속 검색]':
                 output['divnext'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
             elif pagelink.text == u'[이전 검색]':
                 output['divprev'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
+
+        maxpages = 1
+        for page in pages.findAll('font'):
+            try:
+                pnum = int(self.decimal_matcher.match(page.text).group(1))
+                if pnum > maxpages:
+                    maxpages = pnum
+            except Exception, e:
+                pass
+        output['maxpages'] = maxpages
         
         trs = soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''})
 
@@ -145,7 +154,7 @@ class parser(parser_base):
             if error:
                 return error
 
-            msg = soup.find('td').find('font', {'color': 'red'}).text.strip()
+            msg = soup.find('td').find('font', {'color': 'red'}).find('b').text.strip()
             if not msg:
                 return (None, None)
             

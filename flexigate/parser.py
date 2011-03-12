@@ -38,6 +38,7 @@ class parser:
     ERROR_THROTTLE_LIMIT = 2
     ERROR_GENERIC = 3
 
+    decimal_matcher = re.compile(r'.*?(\d+)')
     no_matcher = re.compile(r'.*no=(\d+)')
     cno_matcher = re.compile(r'.*c_no=(\d+)')
     divpage_matcher = re.compile(r'.*divpage=(\d+)')

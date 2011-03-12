@@ -35,13 +35,25 @@ class parser(parser_base):
         output['article_lists'] = alist
         
         pages = soup.findAll('td', {'valign': 'absbottom'})[0]
-        output['maxpages'] = int(self.maxpages_matcher.match(pages.text.replace('[', ' ').replace(']', ' ')).group(1))
+
+        maxpages = 1
+
+        print pages.text
 
         for pagelink in pages.findAll('a'):
             if pagelink.text == u'[계속 검색]':
                 output['divnext'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
             elif pagelink.text == u'[이전 검색]':
                 output['divprev'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
+        
+        for page in pages.findAll('font'):
+            try:
+                pnum = int(self.decimal_matcher.match(page.text).group(1))
+                if pnum > maxpages:
+                    maxpages = pnum
+            except:
+                pass
+        output['maxpages'] = maxpages
         
         trs = soup.findAll('tr', {'align': 'center', 'valign': 'middle', 'height': '26'})
 

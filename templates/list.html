@@ -47,5 +47,71 @@
     </tbody>
   </table>
 </div>
+<script type='text/javascript'>
+var sname = {
+  elem: 'search_name',
+  state: {% if 'name' in search or 'name_exact' in search %}true{% else %}false{% endif %},
+  id: 'name'
+}
+
+var ssubject = {
+  elem: 'search_subject',
+  state: {% if 'subject' in search %}true{% else %}false{% endif %},
+  id: 'subject'
+}
+
+var sbody = {
+  elem: 'search_body',
+  state: {% if 'body' in search %}true{% else %}false{% endif %},
+  id: 'body'
+}
+
+var toggle = function(sobj) {
+  var elem = document.getElementById(sobj.elem);
+
+  sobj.state = !sobj.state;
+  if (sobj.state)
+    sclass = 'search_on';
+  else
+    sclass = 'search_off';
+
+  elem.setAttribute('class', sclass);
+}
+
+function validate() {
+  var sterm = document.getElementById('search_term').value;
+  if (!sterm) {
+    alert('검색어를 입력해 주십시오.');
+    return false;
+  }
+
+  if (!sname.state && !sbody.state && !ssubject.state) {
+    alert('최소한 하나의 검색 대상은 지정해 주셔야 합니다.');
+    return false;
+  }
+
+  var res = new Array();
+  if (sname.state)
+    res = res.concat(sname.id);
+  if (ssubject.state)
+    res = res.concat(ssubject.id);
+  if (sbody.state)
+    res = res.concat(sbody.id);
+
+  document.location = '/list/{{bid}}/search/' + res.join('+') + '/' + encodeURI(sterm);
+
+  return false;
+}
+
+</script>
+<div id='search'>
+  <form action='/list' onsubmit='return validate()'>
+    <span class='search_off' id='search_name'><a href='#' onclick='toggle(sname)'>이름</a></span>
+    <span class='search_off' id='search_subject'><a href='#' onclick='toggle(ssubject)'>제목</a></span>
+    <span class='search_off' id='search_body'><a href='#' onclick='toggle(sbody)'>본문</a></span>
+    <input type='text' id='search_term' value='{{searchterm}}' />
+    <input type='submit' id='search_button' value='검색' />
+  </form> 
+</div>
 {% endautoescape %}
 {% endblock %}
