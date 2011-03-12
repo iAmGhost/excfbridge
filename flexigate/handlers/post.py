@@ -67,6 +67,7 @@ def handle_article_post(request, path):
             return error(request, u'내용을 입력해 주셔야 합니다.')
 
 	keys = map(lambda x: 'file%d' % x, sorted(map(lambda x: int(x[4:]), request.FILES.keys())))
+        keys.reverse()
         for f in keys:
             try:
                  url = uploader.upload(request, request.FILES[f])
@@ -94,7 +95,11 @@ def handle_article_post(request, path):
     except redirection, e:
         return e.where
 
-    return redirect('/list/%s' % dest)
+    response = redirect('/list/%s' % dest)
+    response.delete_cookie('unsaved_body')
+    response.delete_cookie('unsaved_subject')
+
+    return response
 
 # GET handler
 def handle_article_get(request, path):
