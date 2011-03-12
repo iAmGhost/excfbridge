@@ -23,6 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import urllib
+
 from flexigate.parser import parser
 from flexigate import pagedefs, remote
 from flexigate.tools import *
@@ -40,6 +42,11 @@ def handle(request, path):
     
         dest = args[0]
         no = int(args[1])
+
+        try:
+            pq = request.GET['pq']
+        except:
+            pq = None
     
         if not pagedefs.PAGE_IDS.has_key(dest):
             return error(request, u'정의되지 않은 페이지입니다.')
@@ -58,6 +65,8 @@ def handle(request, path):
         output = pagedefs.PAGE_PARSERS[dest].parse_view(dest, html, soup)
         output['bid'] = dest
         output['pid'] = no
+        if pq:
+            output['pq'] = urllib.unquote(pq)
 
         data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request, dest)
         data.update(output)

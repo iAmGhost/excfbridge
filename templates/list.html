@@ -12,7 +12,7 @@
   <tbody>
 {% for article in article_lists %}
     <tr>
-      <td><a href='{{article.link}}'>{{article.name}} {% if article.comment %}<span class='comment'>{{article.comment}}</span>{% endif %}</a></td>
+      <td><a href='{{article.link}}?pq={{listquery}}'>{{article.name}} {% if article.comment %}<span class='comment'>{{article.comment}}</span>{% endif %}</a></td>
       <td class='column_author'>{{article.author}}</td>
     </tr>
 {% endfor %}
@@ -21,8 +21,9 @@
 <table class='nav'>
   <tbody>
     <tr>
-      <td><a href='/list/{{bid}}'>첫페이지로</a></td>
-      <td><a href='/list/{{bid}}/{{page}}'>새로고침</a></td>
+      <td><a href='/list/{{bid}}/search/myself'>내가쓴글</a></td>
+      <td><a href='/list/{{bid}}'>{% if search %}검색취소{% else %}첫페이지로{% endif %}</a></td>
+      <td><a href='#' onclick='document.location.reload()'>새로고침</a></td>
       <td><a href='/post/{{bid}}'>글쓰기</a></td>
   </tbody>
 </table>
@@ -30,9 +31,18 @@
   <table class='pagenav'>
     <tbody>
       <tr>
+{% if divprev %}
+        <td><a href='/list/{{bid}}/1/div/{{divprev}}{{searchquery}}'>&lt;&lt;</a></td>
+{% endif %}
 {% for p in pages %}
-        <td><a {% if p == page %}class='btnhighlight'{% endif %} href='/list/{{bid}}/{{p}}'>{{p}}</a></td>
+        <td><a {% if p == page %}class='btnhighlight'{% endif %} href='/list/{{bid}}/{{p}}{{divquery}}{{searchquery}}'>{{p}}</a></td>
 {% endfor %}
+{% if maxpages and not maxpages in pages %}
+	<td><a href='/list/{{bid}}/{{maxpages}}{{divquery}}{{searchquery}}'>&gt;</a></td>
+{% endif %}
+{% if divnext %}
+        <td><a href='/list/{{bid}}/1/div/{{divnext}}{{searchquery}}'>&gt;&gt;</a></td>
+{% endif %}
       </tr>
     </tbody>
   </table>

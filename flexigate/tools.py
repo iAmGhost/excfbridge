@@ -41,7 +41,7 @@ def redirect_if_no_session(request):
 
     ret = False
 
-    redir = redirect('/signon?%s' % urllib.urlencode({'redirect': request.path}))
+    redir = redirect('/signon?%s' % urllib.urlencode({'redirect': request.path.encode('utf-8')}))
 
     sid = get_session_id(request)
 

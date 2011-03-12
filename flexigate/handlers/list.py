@@ -27,6 +27,7 @@ from django.shortcuts import render_to_response
 
 from flexigate import remote, pagedefs
 from flexigate.parser import parser
+from flexigate.parsers import common
 from flexigate.tools import *
 
 URL = 'http://excf.com/bbs/zboard.php'
@@ -39,15 +40,52 @@ def handle(request, path):
 
         dest = args[0]
         page = 1
+        divpage = -1
+        search = []
 
-        if len(args) > 1:
-            page = int(args[1])
+        base = 1
+        try:
+            page = int(args[base])
+            base += 1
+        except:
+            pass
+
+        it = iter(args[base:])
+        while True:
+            try:
+                key = it.next()
+                
+                if key == 'div':
+                    divpage = int(it.next())
+                elif key == 'search':
+                    sq = it.next()
+                    if sq == 'myself':
+                        search = ['name_exact']
+                        searchterm = common.get_my_nickname(request)
+                    else:
+                        search = sq.split('+')
+                        searchterm = it.next()
+            except StopIteration:
+                break
 
         if not pagedefs.PAGE_IDS.has_key(dest):
             return error(request, u'정의되지 않은 페이지입니다.')
         
         query = URL + '?id=%s&page=%d' % (pagedefs.PAGE_IDS[dest], page)
 
+        if divpage >= 0:
+            query += '&divpage=%d' % divpage
+        if search:
+            comp = lambda x: 'on' if x in search else 'off'
+            sn1 = comp('name_exact')
+            if sn1 == 'on':
+                sn = 'on'
+            else:
+                sn = comp('name')
+            ss = comp('subject')
+            sc = comp('body')
+            query += '&sn1=%s&sn=%s&ss=%s&sc=%s&keyword=%s' % (sn1, sn, ss, sc, urllib.quote(searchterm.encode('cp949')))
+            
         result = remote.send_request(request, query)
         html, soup = remote.postprocess(result.read())
 
@@ -60,8 +98,19 @@ def handle(request, path):
         output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
         output['bid'] = dest
         output['page'] = page
+        if search:
+            output['search'] = search
+            output['searchterm'] = searchterm
+            output['searchquery'] = '/search/%s/%s' % ('+'.join(search), searchterm)
+        if divpage >= 0:
+            output['div'] = divpage
+            output['divquery'] = '/div/%d' % divpage
+        output['listquery'] = urllib.quote(path.encode('utf-8'))
 
-        maxpages = 500 # FIXME
+        try:
+            maxpages = output['maxpages']
+        except:
+            maxpages = 1
         pages = filter(lambda x: x > 0 and x <= maxpages, range(page-2, page+3))
         output['pages'] = pages
 

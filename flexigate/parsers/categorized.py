@@ -25,17 +25,23 @@
 
 import re
 
-from flexigate.parser import parser as parser_base, postprocess_string
+from flexigate.parser import parser as parser_base, postprocess_string, find_attr
 from flexigate.parsers.common import *
 
 class parser(parser_base):
-    no_matcher = re.compile(r'.*no=(\d+)')
-    cno_matcher = re.compile(r'.*c_no=(\d+)')
-
     def parse_list(self, pid, page, soup):
         output = {}
         alist = []
         output['article_lists'] = alist
+
+        pages = soup.findAll('td', {'align': 'center', 'colspan': '2', 'nowrap': 'nowrap'})[0]
+        output['maxpages'] = int(self.maxpages_matcher.match(pages.text.replace('[', ' ').replace(']', ' ')).group(1))
+
+        for pagelink in pages.findAll('a'):
+            if pagelink.text == u'[계속 검색]':
+                output['divnext'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
+            elif pagelink.text == u'[이전 검색]':
+                output['divprev'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
         
         trs = soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''})
 
@@ -54,7 +60,7 @@ class parser(parser_base):
             author = tags.contents[8].text
             
             try:
-                link = '/view/%s/%s' % (pid, self.no_matcher.match(filter(lambda x: x[0] == 'href', tags.contents[6].contents[5].attrs)[0][1]).group(1))
+                link = '/view/%s/%s' % (pid, self.no_matcher.match(find_attr(tags.contents[6].contents[5], 'href')).group(1))
             except:
                 link = '#'
 

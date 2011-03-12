@@ -37,6 +37,15 @@ def get_sign_on_status(request, page, soup):
     else:
         return True
 
+def get_my_nickname(request):
+    result = remote.send_request(request, URL_MENU)
+    html, soup = remote.postprocess(result.read())
+    
+    try:
+        return soup.find('a', {'onfocus': 'blur()'}).text
+    except:
+        return None
+
 def find_common_error(page, soup):
     # Traffic check
     title = soup.find('title', text=u'트래픽초과안내')

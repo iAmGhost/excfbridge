@@ -25,17 +25,23 @@
 
 import re
 
-from flexigate.parser import parser as parser_base, postprocess_string
+from flexigate.parser import parser as parser_base, postprocess_string, find_attr
 from flexigate.parsers.common import *
 
 class parser(parser_base):
-    no_matcher = re.compile(r'.*no=(\d+)')
-    cno_matcher = re.compile(r'.*c_no=(\d+)')
-
     def parse_list(self, pid, page, soup):
         output = {}
         alist = []
         output['article_lists'] = alist
+        
+        pages = soup.findAll('td', {'valign': 'absbottom'})[0]
+        output['maxpages'] = int(self.maxpages_matcher.match(pages.text.replace('[', ' ').replace(']', ' ')).group(1))
+
+        for pagelink in pages.findAll('a'):
+            if pagelink.text == u'[계속 검색]':
+                output['divnext'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
+            elif pagelink.text == u'[이전 검색]':
+                output['divprev'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
         
         trs = soup.findAll('tr', {'align': 'center', 'valign': 'middle', 'height': '26'})
 
@@ -48,7 +54,7 @@ class parser(parser_base):
             author = tags.contents[9].getText().replace('/span>', '').strip()
             
             try:
-                link = '/view/%s/%s' % (pid, self.no_matcher.match(filter(lambda x: x[0] == 'href', tags.contents[7].contents[3].contents[2].attrs)[0][1]).group(1))
+                link = '/view/%s/%s' % (pid, self.no_matcher.match(find_attr(tags.contents[7].contents[3].contents[2], 'href')).group(1))
             except:
                 link = '#'
 
@@ -97,7 +103,7 @@ class parser(parser_base):
             cmtnode['body'] = postprocess_string(n.contents[1].contents[5].renderContents())
             cmtnode['date'] = n.contents[1].contents[9].contents[0].contents[1].contents[0][1:-1] + ' ' + n.contents[1].contents[9].contents[0].contents[1].contents[2][1:-1]
             try:
-                cmtnode['did'] = self.cno_matcher.match(filter(lambda x: x[0] == 'href', n.contents[1].contents[7].contents[0].attrs)[0][1]).group(1)
+                cmtnode['did'] = self.cno_matcher.match(find_attr(n.contents[1].contents[7].contents[0], 'href')).group(1)
             except:
                 pass
 
