@@ -22,7 +22,7 @@
   <tbody>
     <tr>
       <td><a href='/list/{{bid}}/search/myself'>내가쓴글</a></td>
-      <td><a href='/list/{{bid}}'>{% if search %}검색취소{% else %}첫페이지로{% endif %}</a></td>
+      <td><a href='/list/{{bid}}'>{% if searchterm %}검색취소{% else %}첫페이지로{% endif %}</a></td>
       <td><a href='#' onclick='document.location.reload()'>새로고침</a></td>
       <td><a href='/post/{{bid}}'>글쓰기</a></td>
   </tbody>
@@ -71,11 +71,9 @@ var toggle = function(sobj) {
 
   sobj.state = !sobj.state;
   if (sobj.state)
-    sclass = 'search_on';
+    elem.setAttribute('class', 'search_on');
   else
-    sclass = 'search_off';
-
-  elem.setAttribute('class', sclass);
+    elem.setAttribute('class', 'search_off');
 }
 
 function validate() {
@@ -103,11 +101,24 @@ function validate() {
   return false;
 }
 
+function initialize() {
+  var sitems = [sname, ssubject, sbody]
+  for (var i = 0; i < sitems.length; ++i) {
+    var elem = document.getElementById(sitems[i].elem);
+    if (sitems[i].state)
+      elem.setAttribute('class', 'search_on');
+    else
+      elem.setAttribute('class', 'search_off');
+  }
+}
+
+window.onload = initialize;
+
 </script>
 <div id='search'>
   <form action='/list' onsubmit='return validate()'>
-    <span class='search_off' id='search_name'><a href='#' onclick='toggle(sname)'>이름</a></span>
-    <span class='search_off' id='search_subject'><a href='#' onclick='toggle(ssubject)'>제목</a></span>
+    <span class='search_off' id='search_name'><a href='#' onclick='javascript:toggle(sname)'>이름</a></span>
+    <span class='search_off' id='search_subject'><a href='#' onclick='javascript:toggle(ssubject)'>제목</a></span>
     <span class='search_off' id='search_body'><a href='#' onclick='toggle(sbody)'>본문</a></span>
     <input type='text' id='search_term' value='{{searchterm}}' />
     <input type='submit' id='search_button' value='검색' />
