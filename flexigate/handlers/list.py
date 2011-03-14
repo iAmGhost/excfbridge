@@ -87,8 +87,6 @@ def handle(request, path):
             sc = comp('body')
             query += '&sn1=%s&sn=%s&ss=%s&sc=%s&keyword=%s' % (sn1, sn, ss, sc, urllib.quote(searchterm.encode('cp949')))
 
-        print query
-            
         result = remote.send_request(request, query)
         html, soup = remote.postprocess(result.read())
 

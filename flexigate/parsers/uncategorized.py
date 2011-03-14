@@ -38,8 +38,6 @@ class parser(parser_base):
 
         maxpages = 1
 
-        print pages.text
-
         for pagelink in pages.findAll('a'):
             if pagelink.text == u'[계속 검색]':
                 output['divnext'] = int(self.divpage_matcher.match(find_attr(pagelink, 'href')).group(1))
