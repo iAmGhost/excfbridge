@@ -61,7 +61,10 @@ class parser(parser_base):
                 comments = tags.contents[7].contents[3].contents[4].text[1:-1]
             except:
                 comments = ''
-            author = tags.contents[9].getText().replace('/span>', '').strip()
+            try:
+                author = tags.contents[9].getText().replace('/span>', '').strip()
+            except:
+                author = ''
             
             try:
                 link = '/view/%s/%s' % (pid, self.no_matcher.match(find_attr(tags.contents[7].contents[3].contents[2], 'href')).group(1))

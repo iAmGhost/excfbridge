@@ -4,7 +4,7 @@
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
     <meta http-equiv='Content-Script-Type' content='text/javascript' />
     <meta http-equiv='Content-Style-Type' content='text/css' />
-    <meta name='viewport' content='initial-scale=1.0' />
+    <meta name='viewport' content='initial-scale=1.0, width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no' />
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
     <title>ⓢ.excf.com | {{title}}</title>
     <style type="text/css">
@@ -16,13 +16,13 @@
   <body>
 <h2>{{title}}</h2>
 <div id='header'>
-  <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>
-    <option value=''>메뉴</option>
-{% for item in jumplist %}
-    <option value='{{item.location}}' {% if location == item.id %}selected='selected'{% endif %}>{{item.name}}</option>
-{% endfor %}
-  </select>
-  {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
+  <div id='topnav'>
+    <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>
+      <option value=''>메뉴</option>
+{% for item in jumplist %}      <option value='{{item.location}}' {% if location == item.id %}selected='selected'{% endif %}>{{item.name}}</option>{% endfor %}
+    </select>
+    {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
+  </div>
 </div>
 <div id='body'>
 {% block body%}{% endblock %}

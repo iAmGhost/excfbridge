@@ -27,6 +27,10 @@ a:link {
     text-decoration: none;
 }
 
+#topnav {
+    height: 2.0em;
+}
+
 #view_header th {
     width: 60px;
 }
@@ -191,7 +195,6 @@ img {
 }
 
 h2 {
-    float: left;
     background-color: white;
     width: 95%;
     color: #383B39;
@@ -289,7 +292,7 @@ h2 {
 }
 
 .disclaimer {
-    padding: 0.4em;
+    padding-top: 0.4em;
     width: 100%;
     font-size: 1.1em;
     text-align: center;
@@ -314,8 +317,7 @@ h2 {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #f0f0f0;
-    border: 1px solid #cccccc;
+    background-color: #ffffff;
     border-radius: 4px;
 }
 
@@ -323,8 +325,7 @@ h2 {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #b0b0b0;
-    border: 1px solid #cccccc;
+    background-color: #dedede;
     border-radius: 4px;
 }
 

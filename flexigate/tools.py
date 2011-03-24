@@ -45,7 +45,7 @@ def redirect_if_no_session(request):
 
     sid = get_session_id(request)
 
-    if not get_session_id(request):
+    if not sid:
         ret = True
     elif not registry.query(sid):
         force_sign_out(request, redir)
