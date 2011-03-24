@@ -57,10 +57,18 @@ class parser(parser_base):
 
         for tags in trs:
             title = postprocess_string(tags.contents[7].contents[3].contents[2].text)
+            comments = ''
+            if not title:
+                title = postprocess_string(tags.contents[7].contents[3].text)
+                if title.endswith(']'):
+                    comments = title[title.rfind('[')+1:title.rfind(']')]
+                    title = title[:title.rfind('[')]
+
             try:
                 comments = tags.contents[7].contents[3].contents[4].text[1:-1]
             except:
-                comments = ''
+                pass
+            
             try:
                 author = tags.contents[9].getText().replace('/span>', '').strip()
             except:
@@ -75,6 +83,9 @@ class parser(parser_base):
                 title = title[title.rindex('>')+1:]
             except:
                 pass
+
+            if not title:
+                print tags.contents[7].contents[3].text
 
             alist.append({'name': title, 'author': author, 'comment': comments, 'link': link})
         
