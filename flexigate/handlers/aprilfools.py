@@ -23,34 +23,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from django.conf.urls.defaults import *
+from django.shortcuts import redirect
 
-from flexigate.handlers.admin import handle as admin
-from flexigate.handlers.delete import handle_delete_post as delete, handle_delete_comment as delete_comment
-from flexigate.handlers.index import handle as index
-from flexigate.handlers.list import handle as listing
-from flexigate.handlers.modify import handle as modify
-from flexigate.handlers.post import handle_article as post, handle_comment as post_comment
-from flexigate.handlers.signon import handle_signon as signon, handle_signoff as signoff
-from flexigate.handlers.view import handle as view
+def handle(request):
+    response = redirect('/')
 
-from flexigate.handlers.aprilfools import handle as aprilfools
+    if request.COOKIES.has_key('aprilfools'):
+        response.delete_cookie('aprilfools')
+    else:
+        response.set_cookie('aprilfools', '1')
 
-urlpatterns = patterns('',
-    (r'^$', index),
-    (r'^admin$', admin),
-    (r'^delete/(.*)$', delete),
-    (r'^delete_comment/(.*)$', delete_comment),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/favicon.ico'}),
-    (r'^signon$', signon),
-    (r'^signoff$', signoff),
-    (r'^apf$', aprilfools),
-    (r'^list/(.*)$', listing),
-    (r'^modify/(.*)$', modify),
-    (r'^post/(.*)$', post),
-    (r'^post_comment/(.*)$', post_comment),
-    (r'^view/(.*)$', view),
-)
-
-
-
+    return response
