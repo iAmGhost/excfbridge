@@ -30,10 +30,43 @@ from flexigate import pagedefs, remote, uploader
 from flexigate.tools import *
 from settings import TARGET_ENCODING
 
+import random
+
 URL_POST = 'http://excf.com/bbs/write_ok.php'
 URL_POST_COMMENT = 'http://excf.com/bbs/comment_ok.php'
 URL_POST_PAGE = 'http://excf.com/bbs/write.php'
 URL_REFERER = 'http://excf.com/bbs/view.php'
+
+def manuzelizer(data):
+    out = []
+    for i in data.split(u'\n'):
+        trailing = u''
+        i = i.strip()
+        for j in i[::-1]:
+            if j == '.' or j == '!' or j == '?' or j == ';' or j == ' ' or j == u'ㅋ' or j == u'ㅎ':
+                trailing += j
+            else:
+                break
+
+        trailing = trailing[::-1]
+        if len(trailing) > 0:
+            stmp = i[:-len(trailing)]
+        else:
+            stmp = i
+
+        if random.choice(range(3)) != 0:
+            if stmp.endswith(u'요') or stmp.endswith(u'오'):
+                stmp += u'동' * random.choice(range(1, 7)) + u'도' * random.choice(range(1, 4)) + u'동'
+            elif stmp.endswith(u'다'):
+                stmp += u'당' * random.choice(range(1, 7)) + u'다' * random.choice(range(1, 4)) + u'당'
+            elif stmp.endswith(u'데'):
+                stmp += u'뎅' * random.choice(range(1, 6)) + u'딍'
+            else:
+                stmp += u'디기딩' * random.choice(range(5))
+
+        out.append(stmp + trailing)
+
+    return u'\n'.join(out)
 
 def check_arg(path):
     args = path.split('/')
@@ -59,12 +92,14 @@ def handle_article_post(request, path):
 
         try:
             subject = request.POST['subject'].encode(TARGET_ENCODING)
-            contents = request.POST['contents'].encode(TARGET_ENCODING)
+            contents = request.POST['contents']
         
             if not subject or not contents:
                 raise Exception
         except:
             return error(request, u'내용을 입력해 주셔야 합니다.')
+
+        contents = manuzelizer(contents).encode(TARGET_ENCODING)
 
 	keys = map(lambda x: 'file%d' % x, sorted(map(lambda x: int(x[4:]), request.FILES.keys())))
         keys.reverse()
@@ -156,9 +191,11 @@ def handle_comment(request, path):
             return error(request, u'정의되지 않은 페이지입니다.')
 
         try:
-            memo = request.POST['comment'].encode(TARGET_ENCODING)
+            memo = request.POST['comment']
         except:
             return error(request, u'내용을 입력하셔야 합니다.')
+
+        memo = manuzelizer(memo).encode(TARGET_ENCODING)
 
         query = {'id': pagedefs.PAGE_IDS[dest], 'no': no, 'memo': memo}
 
