@@ -27,6 +27,7 @@ from flexigate.parser import parser
 from flexigate import remote
 
 URL_MENU = 'http://excf.com/menu.html'
+URL_MODIFY = 'http://excf.com/bbs/member_modify.php'
 
 def get_sign_on_status(request, page, soup):
     result = remote.send_request(request, URL_MENU)
@@ -36,6 +37,15 @@ def get_sign_on_status(request, page, soup):
         return False
     else:
         return True
+
+def get_zantan(request):
+    result = remote.send_request(request, URL_MODIFY)
+    html, soup = remote.postprocess(result.read())
+
+    try:
+        return soup.findAll('td', {'style': 'text-align:left;padding-left:10px;'})[1].contents[1].text
+    except:
+        return None
 
 def get_my_nickname(request):
     result = remote.send_request(request, URL_MENU)

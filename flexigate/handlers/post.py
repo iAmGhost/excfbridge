@@ -26,6 +26,7 @@
 import urllib
 
 from flexigate.parser import parser
+from flexigate.parsers.common import get_zantan
 from flexigate import pagedefs, remote, uploader
 from flexigate.tools import *
 from settings import TARGET_ENCODING
@@ -162,6 +163,10 @@ def handle_article_get(request, path):
         data = default_template_vars(u'%s - 새 글 쓰기' % pagedefs.PAGE_NAMES[dest], request, dest)
     
         data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
+
+        zantan = get_zantan(request)
+        if zantan:
+            data['zantan'] = zantan
     
         data['bid'] = dest
         data['target'] = '/post/%s' % dest

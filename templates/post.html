@@ -69,6 +69,9 @@ function init() {
 window.onload = init;
 </script>
 <div id='post'>
+{% if zantan %}
+  <p>잔탄 수: {{zantan}}</p>
+{% endif %}
   <form action='{{target}}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
 {% if categories %}
     <select name='category' id='post_category' size='1'>
