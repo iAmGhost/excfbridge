@@ -26,8 +26,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-BASE_PATH = '/home/segfault/Projects/excfbridge'
-SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger2'
+BASE_PATH = '/home/segfault/sites/excfbridge'
+SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
 
 UPLOAD = 'local'
 UPLOAD_LOCAL_PATH = BASE_PATH + '/uploads'
@@ -81,5 +81,5 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'excfbridge.flexigate',
+    'flexigate',
 )

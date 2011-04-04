@@ -108,14 +108,6 @@ def handle(request, path):
             output['divquery'] = '/div/%d' % divpage
         output['listquery'] = urllib.quote(path.encode('utf-8'))
 
-        if request.COOKIES.has_key('aprilfools'):
-            output['aprilfools'] = u'난 만우절이 좋아요!'
-        else:
-            for i in output['article_lists']:
-                i['name'] = i['name'][::-1]
-                i['author'] = i['author'][::-1]
-            output['aprilfools'] = u'!요어싫 이절우만 난'
-
         try:
             maxpages = output['maxpages']
         except:

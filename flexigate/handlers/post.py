@@ -42,6 +42,11 @@ def manuzelizer(data):
     for i in data.split(u'\n'):
         trailing = u''
         i = i.strip()
+
+        if not i:
+            out.append(u'')
+            continue
+
         for j in i[::-1]:
             if j == '.' or j == '!' or j == '?' or j == ';' or j == ' ' or j == u'ㅋ' or j == u'ㅎ':
                 trailing += j
@@ -92,14 +97,12 @@ def handle_article_post(request, path):
 
         try:
             subject = request.POST['subject'].encode(TARGET_ENCODING)
-            contents = request.POST['contents']
+            contents = request.POST['contents'].encode(TARGET_ENCODING)
         
             if not subject or not contents:
                 raise Exception
         except:
             return error(request, u'내용을 입력해 주셔야 합니다.')
-
-        contents = manuzelizer(contents).encode(TARGET_ENCODING)
 
 	keys = map(lambda x: 'file%d' % x, sorted(map(lambda x: int(x[4:]), request.FILES.keys())))
         keys.reverse()
@@ -191,11 +194,9 @@ def handle_comment(request, path):
             return error(request, u'정의되지 않은 페이지입니다.')
 
         try:
-            memo = request.POST['comment']
+            memo = request.POST['comment'].encode(TARGET_ENCODING)
         except:
             return error(request, u'내용을 입력하셔야 합니다.')
-
-        memo = manuzelizer(memo).encode(TARGET_ENCODING)
 
         query = {'id': pagedefs.PAGE_IDS[dest], 'no': no, 'memo': memo}
 

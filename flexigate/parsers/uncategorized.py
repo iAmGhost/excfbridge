@@ -84,9 +84,6 @@ class parser(parser_base):
             except:
                 pass
 
-            if not title:
-                print tags.contents[7].contents[3].text
-
             alist.append({'name': title, 'author': author, 'comment': comments, 'link': link})
         
         return output

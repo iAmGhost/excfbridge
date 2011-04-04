@@ -123,8 +123,14 @@ input, textarea {
     color: #ff0000;
 }
 
+embed {
+    width: 100%;
+    height: auto;
+}
+
 img {
     width: 100%;
+    height: auto;
 }
 
 #postcomment {
@@ -159,11 +165,12 @@ img {
     width: 20%;
 }
 
-#post #post_submit, #post #post_back {
+#btn_submit, #btn_back {
     width: 42%;
 }
 
-#post #buttonbox, #post #fileuploads {
+#buttonbox, #fileuploads {
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
 }

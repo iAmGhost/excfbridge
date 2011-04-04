@@ -69,22 +69,6 @@ def handle(request, path):
         if pq:
             output['pq'] = urllib.unquote(pq)
 
-        ultimate_regexp = "(?i)<\/?\w+((\s+\w+(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)\/?>"
-
-        if not request.COOKIES.has_key('aprilfools'):
-            output['name'] = output['name'][::-1]
-            output['subject'] = output['subject'][::-1]
-            bl = output['body'].decode('utf-8').split('<br />')
-            no = u''
-            for li in bl:
-                line = re.sub(ultimate_regexp, '', li)[::-1]
-                no += line + '<br />'
-            output['body'] = no
-
-            for i in output['comments']:
-                i['name'] = i['name'][::-1]
-                i['body'] = re.sub(ultimate_regexp, '', i['body']).decode('utf-8')[::-1]
-
         data = default_template_vars(u'%s - %s' % (pagedefs.PAGE_NAMES[dest], output['subject']), request, dest)
         data.update(output)
 

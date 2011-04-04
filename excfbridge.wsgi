@@ -1,7 +1,7 @@
 import os
 import sys
 
-path = ['/home/segfault/wsgi', '/home/segfault/wsgi/excfbridge']
+path = ['/home/segfault/sites/excfbridge']
 for i in path:
     if i not in sys.path:
         sys.path.append(i)
