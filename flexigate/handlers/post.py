@@ -164,9 +164,10 @@ def handle_article_get(request, path):
     
         data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
 
-        zantan = get_zantan(request)
-        if zantan:
-            data['zantan'] = zantan
+        if dest == 'free':
+            zantan = 15 - get_zantan(request)
+            if zantan:
+                data['zantan'] = zantan
     
         data['bid'] = dest
         data['target'] = '/post/%s' % dest

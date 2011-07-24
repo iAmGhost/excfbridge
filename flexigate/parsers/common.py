@@ -43,7 +43,7 @@ def get_zantan(request):
     html, soup = remote.postprocess(result.read())
 
     try:
-        return soup.findAll('td', {'style': 'text-align:left;padding-left:10px;'})[1].contents[1].text
+        return int(soup.findAll('td', {'style': 'text-align:left;padding-left:10px;'})[1].contents[1].text)
     except:
         return None
 
