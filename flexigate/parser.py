@@ -33,17 +33,17 @@ def postprocess_string(text):
 
 find_attr = lambda node, attr: filter(lambda x: x[0] == attr, node.attrs)[0][1]
 
+decimal_matcher = re.compile(r'.*?(\d+)')
+no_matcher = re.compile(r'.*no=(\d+)')
+cno_matcher = re.compile(r'.*c_no=(\d+)')
+divpage_matcher = re.compile(r'.*divpage=(\d+)')
+    
+maxpages_matcher = re.compile(r'.* (\d+)')
+
 class parser:
     ERROR_SIGNED_OUT = 1
     ERROR_THROTTLE_LIMIT = 2
     ERROR_GENERIC = 3
-
-    decimal_matcher = re.compile(r'.*?(\d+)')
-    no_matcher = re.compile(r'.*no=(\d+)')
-    cno_matcher = re.compile(r'.*c_no=(\d+)')
-    divpage_matcher = re.compile(r'.*divpage=(\d+)')
-    
-    maxpages_matcher = re.compile(r'.* (\d+)')
 
     def parse_list(self, pid, page, soup):
         return {}

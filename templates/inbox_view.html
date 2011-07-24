@@ -1,0 +1,46 @@
+{% extends "skel.html" %}
+
+{% block body %}
+{% autoescape off %}
+<table id='view_header'>
+  <tr>
+    <th>보낸이</th>
+    <td><span class='name'>{{name}}</span> <span class='id'>({{userid}})</span></td>
+  </tr>
+  <tr>
+    <th>시각</th>
+    <td>{{date}}</td>
+  </tr>
+  <tr>
+    <th>제목</th>
+    <td>{{topic}}</td>
+  </tr>
+</table>
+<div id='view_body'>
+{{body}}
+</div>
+<div id='post'>
+<script type='text/javascript'>
+  function validate() {
+    if (!document.getElementById('input_comment').value) {
+      alert('내용을 입력해 주십시오.');
+      return false;
+    }
+    return true;
+  }
+</script>
+<form action='/inbox/to/{{uid}}' method='post' onsubmit='return validate();'>
+  <input id='post_subject' name='subject' maxlength='150'></input><br />
+  <textarea id='post_contents' name='body' rows='8'></textarea><br />
+  <input id='btn_submit' type='submit' value='답장' />
+</form>
+</div>
+<table class='nav'>
+  <tbody>
+    <tr>
+      <td><a href='/inbox'>목록</a></td>
+      <td><a href='/inbox/delete/{{no}}' onclick='return confirmDelete();'>삭제</a></td>
+  </tbody>
+</table>
+{% endautoescape %}
+{% endblock %}

@@ -33,8 +33,7 @@ from flexigate.handlers.modify import handle as modify
 from flexigate.handlers.post import handle_article as post, handle_comment as post_comment
 from flexigate.handlers.signon import handle_signon as signon, handle_signoff as signoff
 from flexigate.handlers.view import handle as view
-
-from flexigate.handlers.aprilfools import handle as aprilfools
+from flexigate.handlers.inbox import handle_list as inbox_list, handle_view as inbox_view, handle_send as inbox_send, handle_delete as inbox_delete
 
 urlpatterns = patterns('',
     (r'^$', index),
@@ -44,12 +43,15 @@ urlpatterns = patterns('',
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/favicon.ico'}),
     (r'^signon$', signon),
     (r'^signoff$', signoff),
-    (r'^apf$', aprilfools),
     (r'^list/(.*)$', listing),
     (r'^modify/(.*)$', modify),
     (r'^post/(.*)$', post),
     (r'^post_comment/(.*)$', post_comment),
     (r'^view/(.*)$', view),
+    (r'^inbox/view/([0-9]*)$', inbox_view),
+    (r'^inbox/to/([0-9]*)$', inbox_send),
+    (r'^inbox/delete/([0-9]*)$', inbox_delete),
+    (r'^inbox/([0-9]*)$', inbox_list),
 )
 
 

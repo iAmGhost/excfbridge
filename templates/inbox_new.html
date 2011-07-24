@@ -1,0 +1,44 @@
+{% extends "skel.html" %}
+
+{% block body %}
+<script type='text/javascript'>
+function validate() {
+  if (!document.getElementById('post_subject').value || !document.getElementById('post_contents').value) {
+    alert('본문을 입력해 주십시오.');
+    return false;
+  }
+
+  nodoubleclick(document.getElementById('post_submit'));
+
+  Cookies.create('unsaved_subject', document.getElementById('post_subject').value);
+  Cookies.create('unsaved_body', document.getElementById('post_contents').value);
+
+  return true;
+}
+
+function init() {
+  if (Cookies['unsaved_body'] && Cookies['unsaved_subject']) {
+    if (confirm('게시하지 못한 글이 있습니다. 복원하시겠습니까?')) {
+      document.getElementById('post_subject').value = Cookies['unsaved_subject'];
+      document.getElementById('post_contents').value = Cookies['unsaved_body'];
+    } else {
+      Cookies.erase('unsaved_subject');
+      Cookies.erase('unsaved_body');
+    }
+  }
+}
+
+window.onload = init;
+</script>
+<div id='post'>
+  <p>받는 이: <b>{{name}}</b> ({{userid}})</p>
+  <form action='/inbox/to/{{uid}}{% if redirect_to %}?redirect_to={{redirect_to}}{% endif %}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
+    <input type='text' id='post_subject' name='subject' maxlength='200' value='' /><br />
+    <textarea name='body' id='post_contents' rows='8'>{{contents}}</textarea><br />
+    <div id='buttonbox'>
+      <input id='btn_submit' type='submit' value='게시' />
+      <input id='btn_back' type='button' value='취소' onclick='history.back();' />
+    </div>
+  </form>
+</div>
+{% endblock %}

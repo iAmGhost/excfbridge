@@ -42,6 +42,7 @@ PAGE_NAMES = {
     'cartoon': u'만화 게시판',
     'playground': u'놀이 게시판',
     'game': u'오락실',
+    'inbox': u'쪽지함',
 }
 
 PAGE_PARSERS = {
@@ -60,4 +61,5 @@ PAGES = (
     ('cartoon', '/list/cartoon', PAGE_NAMES['cartoon']),
     ('playground', '/list/playground', PAGE_NAMES['playground']),
     ('game', '/list/game', PAGE_NAMES['game']),
+    ('inbox', '/inbox', PAGE_NAMES['inbox']),
 )

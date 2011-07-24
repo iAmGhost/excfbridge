@@ -24,6 +24,7 @@
     {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
   </div>
 </div>
+{% if new_privmsg %}<div id='privmsg'><a href='/inbox/'>새 쪽지가 있습니다.</a></div>{% endif %}
 <div id='body'>
 {% block body%}{% endblock %}
 </div>
