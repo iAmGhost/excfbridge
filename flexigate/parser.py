@@ -26,7 +26,33 @@
 # BeautifulSoup's HTML parsing capability is somewhat problematic, so
 # we have to do additional (dirty) shovelling to get the desired result.
 
+from base64 import b64decode
+from urllib import unquote_plus
 import re
+
+from settings import TARGET_ENCODING
+
+def parse_layer_info(script):
+    output = {}
+
+    for line in script.split('\n'):
+        line = line.strip()
+        if not line.startswith('print_ZBlayer'):
+            continue
+
+        splitinfo = line.split()
+
+        number = int(splitinfo[0][22:-2])
+        
+        item = {}
+        item['user_no'] = int(splitinfo[3][1:-2])
+        item['user_name'] = unquote_plus(str(splitinfo[5][1:-2])).decode(TARGET_ENCODING).replace('\'', '\\\'')
+        item['user_website'] = unquote_plus(str(splitinfo[1][1:-2])).decode(TARGET_ENCODING).replace('\'', '\\\'')
+        item['user_email'] = b64decode(str(splitinfo[2][1:-2])).decode(TARGET_ENCODING).replace('\'', '\\\'')
+
+        output[number] = item
+
+    return output
 
 def postprocess_string(text):
     return text.replace('&nbsp;', ' ').strip().replace('/span>', '')

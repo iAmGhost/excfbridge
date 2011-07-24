@@ -8,13 +8,22 @@
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
     <title>ⓢ.excf.com | {{title}}</title>
     <style type="text/css">
-      @import url('/static/style.css');
+      @import url('http://e.influx.kr/static/style.css');
     </style>
-    <script type="text/javascript" src="/static/common.js"></script>
+    <script type="text/javascript" src="http://e.influx.kr/static/common.js"></script>
     {% block head %}{% endblock %}
   </head>
   <body>
 <h2>{{title}}</h2>
+<div id='popup'>
+  <div id='popup_username'></div>
+  <table id='popup_table'>
+    <tr id='popup1'><td><a href='#' onclick='return visitHome();'>홈페이지 가기</a></td></tr>
+    <tr id='popup2'><td><a href='#' onclick='return sendMail();'>메일 보내기</a></td></tr>
+    <tr id='popup3'><td><a href='#' onclick='return sendMessage();'>쪽지 보내기</a></td></tr>
+    <tr id='popup4'><td><a href='#' onclick='return findByName();'>이름으로 검색</a></td></tr>
+  </table>
+</div>
 <div id='header'>
   <div id='topnav'>
     <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>

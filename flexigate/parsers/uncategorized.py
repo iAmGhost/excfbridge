@@ -33,11 +33,13 @@ class parser(parser):
         output = {}
         alist = []
         output['article_lists'] = alist
-        
-        pages = soup.findAll('td', {'valign': 'absbottom'})[0]
 
+        zbllist = parse_layer_info(soup.findAll('script')[3].text)
+        
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
+        
+        pages = soup.findAll('td', {'valign': 'absbottom'})[0]
 
         maxpages = 1
 
@@ -58,6 +60,7 @@ class parser(parser):
         
         trs = soup.findAll('tr', {'align': 'center', 'valign': 'middle', 'height': '26'})
 
+        cnt = 1
         for tags in trs:
             title = postprocess_string(tags.contents[7].contents[3].contents[2].text)
             comments = ''
@@ -87,12 +90,20 @@ class parser(parser):
             except:
                 pass
 
-            alist.append({'name': title, 'author': author, 'comment': comments, 'link': link})
+            nitem = {'name': title, 'author': author, 'comment': comments, 'link': link}
+            if zbllist.has_key(cnt):
+                nitem.update(zbllist[cnt])
+
+            alist.append(nitem)
+            cnt += 1
         
         return output
 
     def parse_view(self, pid, page, soup):
         output = {}
+
+        if 'memo_on.swf' in page:
+            output['new_privmsg'] = True
 
         cnode = soup.find('span', {'style': 'line-height:160%'})
         try:

@@ -34,6 +34,8 @@ class parser(parser):
         alist = []
         output['article_lists'] = alist
 
+        zbllist = parse_layer_info(soup.findAll('script')[3].text)
+
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
 
@@ -57,6 +59,7 @@ class parser(parser):
         
         trs = soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''})
 
+        cnt = 1
         for tags in trs:
             dtitle = tags.contents[6].contents[5].text
             try:
@@ -76,12 +79,20 @@ class parser(parser):
             except:
                 link = '#'
 
-            alist.append({'name': title, 'author': author, 'comment': comments, 'link': link})
+            nitem = {'name': title, 'author': author, 'comment': comments, 'link': link}
+            if zbllist.has_key(cnt):
+                nitem.update(zbllist[cnt])
+
+            alist.append(nitem)
+            cnt += 1
         
         return output
 
     def parse_view(self, pid, page, soup):
         output = {}
+
+        if 'memo_on.swf' in page:
+            output['new_privmsg'] = True
 
         headers = soup.find('table', {'bgcolor': '#EFEFEF'}).findAll('tr')
         for n in headers:
