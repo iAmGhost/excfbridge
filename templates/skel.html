@@ -15,6 +15,7 @@
   </head>
   <body>
 <h2>{{title}}</h2>
+{% if bid %}
 <div id='popup'>
   <div id='popup_username'></div>
   <table id='popup_table'>
@@ -24,23 +25,30 @@
     <tr id='popup4'><td><a href='#' onclick='return findByName();'>이름으로 검색</a></td></tr>
   </table>
 </div>
+{% endif %}
 <div id='header'>
   <div id='topnav'>
     <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>
       <option value=''>메뉴</option>
-{% for item in jumplist %}      <option value='{{item.location}}' {% if location == item.id %}selected='selected'{% endif %}>{{item.name}}</option>{% endfor %}
+{% for item in jumplist %}
+      <option value='{{item.location}}' {% if location == item.id %}selected='selected'{% endif %}>{{item.name}}</option>
+{% endfor %}
     </select>
-    {% if signed_on %}<a class='button' href='/signoff'>로그아웃 ({{user}})</a>{% endif %}
+{% if signed_on %}
+    <a class='button' href='/signoff'>로그아웃 ({{user}})</a>
+{% endif %}
   </div>
 </div>
-{% if new_privmsg %}<div id='privmsg'><a href='/inbox/'>새 쪽지가 있습니다.</a></div>{% endif %}
+{% if new_privmsg %}
+<div id='privmsg'><a href='/inbox/'>읽지 않은 쪽지가 있습니다.</a></div>
+{% endif %}
 <div id='body'>
 {% block body%}{% endblock %}
 </div>
     <div id='footer'>
       <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 직접적인 관계가 없습니다.</p>
       Powered by <a href='http://influx.kr'><span class='emph'>!</span>nflux</a><br />
-      <a href='mailto:mastermind@planetmono.org'>피드백</a> | <a href='https://github.com/segfault87/excfbridge'>소스 코드</a>{% if admin %} | <a href='/admin'>관리자</a>{% endif %}
+      <a href='/inbox/to/1622'>피드백</a> | <a href='https://github.com/segfault87/excfbridge'>소스 코드</a>{% if admin %} | <a href='/admin'>관리자</a>{% endif %}
     </div>
   </body>
 </html>

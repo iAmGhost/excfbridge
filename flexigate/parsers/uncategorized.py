@@ -34,7 +34,9 @@ class parser(parser):
         alist = []
         output['article_lists'] = alist
 
-        zbllist = parse_layer_info(soup.findAll('script')[3].text)
+        zbllist = {}
+        for i in soup.findAll('script'):
+            zbllist.update(parse_layer_info(i.text))
         
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
@@ -102,7 +104,9 @@ class parser(parser):
     def parse_view(self, pid, page, soup):
         output = {}
 
-        zbllist = parse_layer_info(soup.findAll('script')[1].text)
+        zbllist = {}
+        for i in soup.findAll('script'):
+            zbllist.update(parse_layer_info(i.text))
 
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True

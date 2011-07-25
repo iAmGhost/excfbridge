@@ -103,7 +103,7 @@ function sendMessage()
 	hidePopupDiv();
 	
 	if (cur_no)
-		document.location = '/inbox/to/' + cur_no + '?qp=' + encodeURI(document.location);
+		document.location = '/inbox/to/' + cur_no + '?qp=' + encodeURI(document.location.toString().replace('http://e.influx.kr', ''));
 
 	return false;
 }
@@ -122,7 +122,7 @@ function checkClick(event)
 {
 	var elem = document.getElementById('popup');
 
-	if (event.pageY >= elem.offsetHeight) {
+	if (event.pageY >= window.pageYOffset + elem.offsetHeight) {
 		hidePopupDiv();
 		setTimeout(function() { document.onclick = null; }, 0);
 		if ((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))

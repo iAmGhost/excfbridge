@@ -32,7 +32,7 @@ window.onload = init;
 </script>
 <div id='post'>
   <p>수신: <b>{{name}}</b> ({{userid}})</p>
-  <form action='/inbox/to/{{uid}}{% if redirect_to %}?pq={{redirect_to}}{% endif %}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
+  <form action='/inbox/to/{{uid}}{% if redirect_to %}?qp={{redirect_to}}{% endif %}' method='post' onsubmit='return validate();' enctype='multipart/form-data'>
     <input type='text' id='post_subject' name='subject' maxlength='200' value='' /><br />
     <textarea name='body' id='post_contents' rows='8'>{{contents}}</textarea><br />
     <div id='buttonbox'>

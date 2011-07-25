@@ -36,21 +36,25 @@ a:link {
 }
 
 #view_header td {
+    padding-top: 7px;
+    padding-bottom: 7px;
     padding-left: 10px;
+    border-bottom: 1px solid #eeeeee;
 }
 
 #comments {
     border-top: 1px solid #dddddd;
-    border-bottom: 1px solid #ddddd;
+    border-bottom: 1px solid #dddddd;
 }
 
 #comments .header {
-    margin-top: 10px;
     background-color: #f8f8f8;
 }
 
 #comments .author {
     padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 #comments .date {
@@ -62,8 +66,9 @@ a:link {
     padding-left: 10px;
     padding-right: 10px;
     font-size: 1.1em;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dfdfdf;
 }
 
 #view_body {

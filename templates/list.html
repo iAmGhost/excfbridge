@@ -14,7 +14,7 @@ var cur_bid = '{{bid}}';
   </thead>
   <tbody>
 {% for article in article_lists %}
-    <tr>
+    <tr {% if article.sticky %}class='highlight'{% endif %}>
       <td><a href='{{article.link}}?pq={{listquery}}'>{{article.name}} {% if article.comment %}<span class='comment'>{{article.comment}}</span>{% endif %}</a></td>
       <td class='column_author'>
         {% if article.user_no %}<a href='#' onclick="return setPopupLayer({{article.user_no}}, '{{article.user_name}}', '{{article.user_website}}', '{{article.user_email}}');">{{article.author}}</a>{% else %}{{article.author}}{% endif %}

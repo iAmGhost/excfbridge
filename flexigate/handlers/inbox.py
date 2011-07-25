@@ -109,14 +109,14 @@ def handle_send_get(request, uid):
     except:
         return error(request, u'없는 사용자입니다.')
     data['uid'] = uid
-    if request.GET.has_key('pq'):
-        data['redirect_to'] = request.GET['pq']
+    if request.GET.has_key('qp'):
+        data['redirect_to'] = request.GET['qp']
 
     return render_to_response('inbox_new.html', data)
 
 def handle_send_post(request, uid):
-    if request.GET.has_key('pq'):
-        redir = request.GET['pq']
+    if request.GET.has_key('qp'):
+        redir = request.GET['qp']
     else:
         redir = '/inbox'
     

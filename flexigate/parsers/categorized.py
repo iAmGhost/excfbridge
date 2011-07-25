@@ -34,7 +34,9 @@ class parser(parser):
         alist = []
         output['article_lists'] = alist
 
-        zbllist = parse_layer_info(soup.findAll('script')[3].text)
+        zbllist = {}
+        for i in soup.findAll('script'):
+            zbllist.update(parse_layer_info(i.text))
 
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
@@ -77,7 +79,7 @@ class parser(parser):
             except:
                 link = '#'
 
-            nitem = {'name': title, 'author': author, 'comment': comments, 'link': link}
+            nitem = {'name': title, 'author': author, 'comment': comments, 'link': link, 'sticky': True}
             if zbllist.has_key(cnt):
                 nitem.update(zbllist[cnt])
 
@@ -114,7 +116,9 @@ class parser(parser):
     def parse_view(self, pid, page, soup):
         output = {}
 
-        zbllist = parse_layer_info(soup.findAll('script')[1].text)
+        zbllist = {}
+        for i in soup.findAll('script'):
+            zbllist.update(parse_layer_info(i.text))
 
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
@@ -128,6 +132,9 @@ class parser(parser):
                 output['homepage'] = n.contents[3].text
             elif 'Subject' in n.contents[1].text:
                 output['subject'] = n.contents[3].text
+
+        if zbllist.has_key(3):
+            output.update(zbllist[3])
 
         if len(soup.findAll('form')) == 0:
             output['nocomments'] = True
