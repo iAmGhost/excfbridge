@@ -23,7 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from django.http import HttpResponse
 import urllib
+from md5 import md5
 
 from flexigate.parser import parser
 from flexigate.parsers.common import get_zantan
@@ -164,6 +166,12 @@ def handle_article_get(request, path):
     
         data.update(pagedefs.PAGE_PARSERS[dest].check_write(dest, html, soup))
 
+        if request.META['HTTP_USER_AGENT']:
+            ua = request.META['HTTP_USER_AGENT']
+            if ('iPhone' in ua or 'iPod' in ua) and 'iPhone OS' in ua:
+                data['iphone'] = True
+                data['session'] = md5(request.COOKIES['session']).hexdigest()
+
         if dest == 'free':
             zantan = 15 - get_zantan(request)
             if zantan:
@@ -176,6 +184,20 @@ def handle_article_get(request, path):
         return e.where
     
     return render_to_response('post.html', data)
+
+import traceback
+
+# Handler for picup uploader
+def handle_picup(request, path):
+    if not request.FILES.has_key('filedata') and not request.POST.has_key('sid'):
+        return HttpResponse('no image', mimetype='text/plain')
+
+    try:
+        url = uploader.upload(request, request.FILES['filedata'], request.POST['sid'])
+    except Exception, e:
+        return HttpResponse(repr(e), mimetype='text/plain')
+
+    return HttpResponse(url, mimetype='text/plain')
 
 # Handler for posting article
 def handle_article(request, path):

@@ -1,7 +1,12 @@
 {% extends "skel.html" %}
 
 {% block body %}
+{% if iphone %}
+<script type='text/javascript' src='http://e.influx.kr/static/picup.js'></script>
+{% endif %}
 <script type='text/javascript'>
+var imgtags = '';
+
 function validate() {
   if (!document.getElementById('post_subject').value || !document.getElementById('post_contents').value) {
     alert('본문을 입력해 주십시오.');
@@ -14,6 +19,11 @@ function validate() {
   Cookies.create('unsaved_subject', document.getElementById('post_subject').value);
   Cookies.create('unsaved_body', document.getElementById('post_contents').value);
 {% endif %}
+
+  if (imgtags) {
+    var elem = document.getElementById('post_contents');
+    elem.value = imgtags + elem.value;
+  }
 
   return true;
 }
@@ -50,8 +60,37 @@ function add_file_upload_form() {
   ++cnt;
 }
 
+{% if iphone %}
+var picupParams = {
+  'callbackUrl': escape('http://203.255.3.34:8080/post/{{bid}}'),
+  'referrerName': 'flexigate',
+  'purpose': 'ExCF Mobile Gateway',
+  'debug': 'true',
+  'returnServerResponse': 'true',
+  'postImageParam': 'filedata',
+  'postURL': escape('http://203.255.3.34:8080/post/picup/{{bid}}'),
+  'postValues': escape('sid={{session}}')
+};
+{% endif %}
+
 function init() {
+{% if iphone %}
+  Picup.convertFileInput(document.getElementById('picup_file'), picupParams);
+  Picup.callbackHandler = function(data) {
+    var url = unescape(data['serverResponse']);
+    if (!url || url.indexOf('http://') == -1) {
+      alert('업로드 실패했습니다: ' + url);
+      return;
+    }
+
+    imgtag = '<img src="' + url + '" alt="" />';
+    imgtags += imgtag + '<br />\n';
+
+    document.getElementById('picup_image_container').innerHTML += imgtag;
+  }
+{% else %}
   add_file_upload_form();
+{% endif %}
 
 {% if mode == 'post' %}  
   if (Cookies['unsaved_body'] && Cookies['unsaved_subject']) {
@@ -83,9 +122,17 @@ window.onload = init;
     <input type='text' id='post_subject' name='subject' maxlength='200' value='{{subject}}' /><br />
     <textarea name='contents' id='post_contents' rows='8'>{{contents}}</textarea><br />
 {% if mode == 'post' %}
+{% if iphone %}
+    <div id='picup'>
+      <input type='file' id='picup_file' name='filedata' class='file' /><br />
+      <div id='picup_image_container'></div>
+      <p>iPhone에서 사진을 올리기 위해서는 Picup이 필요합니다. <a href='http://itunes.apple.com/us/app/picup/id354101378?mt=8'>다운로드</a></p>
+    </div>
+{% else %}
     <div id='fileuploads'>
       <input type='button' id='post_add' value='첨부파일 추가' onclick='add_file_upload_form()' />
     </div>
+{% endif %}
 {% endif %}
     <div id='buttonbox'>
       <input id='btn_submit' type='submit' value='게시' />

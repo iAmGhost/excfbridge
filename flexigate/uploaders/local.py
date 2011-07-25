@@ -48,8 +48,9 @@ def resize(filename):
     im = im.resize((nx, ny), Image.ANTIALIAS)
     im.save(filename, quality=90)
 
-def upload(request, fileobj):
-    sid = md5(get_session_id(request)).hexdigest()
+def upload(request, fileobj, sid = None):
+    if not sid:
+        sid = md5(get_session_id(request)).hexdigest()
 
     retrycnt = 0
     while True:
