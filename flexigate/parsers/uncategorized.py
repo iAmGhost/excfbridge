@@ -102,6 +102,8 @@ class parser(parser):
     def parse_view(self, pid, page, soup):
         output = {}
 
+        zbllist = parse_layer_info(soup.findAll('script')[1].text)
+
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
 
@@ -120,6 +122,9 @@ class parser(parser):
                 output['homepage'] = n.contents[5].text
             elif n.contents[3].text == 'Subject':
                 output['subject'] = n.contents[5].text
+
+        if zbllist.has_key(3):
+            output.update(zbllist[3])
         
         output['body'] = cnode.renderContents()
         output['date'] = soup.findAll('table')[2].contents[1].contents[3].getText()
@@ -131,6 +136,7 @@ class parser(parser):
 
         comments = []
         cmtnodes = soup.findAll('table', {'border': '0', 'align': 'center', 'cellpadding': '2', 'cellspacing': '1', 'width': '100%'})
+        cnt = 4
         for n in cmtnodes:
             cmtnode = {}
             cmtnode['name'] = postprocess_string(n.contents[1].contents[1].contents[0].text)
@@ -142,7 +148,11 @@ class parser(parser):
             except:
                 pass
 
+            if zbllist.has_key(cnt):
+                cmtnode.update(zbllist[cnt])
+
             comments.append(cmtnode)
+            cnt += 1
 
         output['comments'] = comments
 

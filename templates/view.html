@@ -2,10 +2,13 @@
 
 {% block body %}
 {% autoescape off %}
+<script type='text/javascript'>
+var cur_bid = '{{bid}}'; 
+</script>
 <table id='view_header'>
   <tr>
     <th>이름</th>
-    <td><span class='name'>{{name}}</span> <span class='id'>({{userid}})</span></td>
+    <td><a href='#' onclick="return setPopupLayer({{user_no}}, '{{user_name}}', '{{user_website}}', '{{user_email}}');"><span class='name'>{{name}}</span> <span class='id'>({{userid}})</span></a></td>
   </tr>
 {% if date %}
   <tr>
@@ -30,7 +33,7 @@
 <table id='comments'>
 {% for comment in comments %}
   <tr class='header'>
-    <td class='author'><span class='name'>{{comment.name}}</span>{% if comment.id %} <span class='id'>({{comment.id}})</span>{% endif %}</td>
+    <td class='author'><a href='#' onclick="return setPopupLayer({{comment.user_no}}, '{{comment.user_name}}', '{{comment.user_website}}', '{{comment.user_email}}');"><span class='name'>{{comment.name}}</span>{% if comment.id %} <span class='id'>({{comment.id}})</span>{% endif %}</a></td>
     <td class='date'>{{comment.date}}</td>
   </tr>
   <tr class='body'>

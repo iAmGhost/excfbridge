@@ -2,6 +2,9 @@
 
 {% block body %}
 {% autoescape off %}
+<script type='text/javascript'>
+var cur_bid = '{{bid}}'; 
+</script>
 <table id='list'>
   <thead>
     <tr>
@@ -33,17 +36,23 @@
   <table class='pagenav'>
     <tbody>
       <tr>
-        {% if divprev %}<td><a href='/list/{{bid}}/1/div/{{divprev}}{{searchquery}}'>&lt;&lt;</a></td>{% endif %}
-        {% for p in pages %}<td><a {% if p == page %}class='btnhighlight'{% endif %} href='/list/{{bid}}/{{p}}{{divquery}}{{searchquery}}'>{{p}}</a></td>{% endfor %}
-        {% if maxpages and not maxpages in pages %}<td><a href='/list/{{bid}}/{{maxpages}}{{divquery}}{{searchquery}}'>&gt;</a></td>{% endif %}
-        {% if divnext %}<td><a href='/list/{{bid}}/1/div/{{divnext}}{{searchquery}}'>&gt;&gt;</a></td>{% endif %}
+{% if divprev %}
+        <td><a href='/list/{{bid}}/1/div/{{divprev}}{{searchquery}}'>&lt;&lt;</a></td>
+{% endif %}
+{% for p in pages %}
+        <td><a {% if p == page %}class='btnhighlight'{% endif %} href='/list/{{bid}}/{{p}}{{divquery}}{{searchquery}}'>{{p}}</a></td>
+{% endfor %}
+{% if maxpages and not maxpages in pages %}
+        <td><a href='/list/{{bid}}/{{maxpages}}{{divquery}}{{searchquery}}'>&gt;</a></td>
+{% endif %}
+{% if divnext %}
+        <td><a href='/list/{{bid}}/1/div/{{divnext}}{{searchquery}}'>&gt;&gt;</a></td>
+{% endif %}
       </tr>
     </tbody>
   </table>
 </div>
 <script type='text/javascript'>
-cur_bid = '{{bid}}'; 
-
 var sname = {
   elem: 'search_name',
   state: {% if 'name' in search or 'name_exact' in search %}true{% else %}false{% endif %},

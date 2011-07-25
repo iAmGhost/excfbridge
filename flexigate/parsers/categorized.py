@@ -57,10 +57,33 @@ class parser(parser):
                 pass
         output['maxpages'] = maxpages
         
-        trs = soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''})
-
         cnt = 1
-        for tags in trs:
+        for tags in soup.findAll('tr', {'align': 'center', 'bgcolor': '#EBEBEB'}):
+            dtitle = tags.contents[5].contents[5].text
+            try:
+                dtitle = dtitle[dtitle.rindex('>')+1:]
+            except:
+                pass
+
+            title = '[%s] %s' %  (tags.contents[4].text, dtitle)
+            try:
+                comments = tags.contents[5].contents[7].text[1:-1]
+            except:
+                comments = ''
+            author = tags.contents[7].text
+            
+            try:
+                link = '/view/%s/%s' % (pid, no_matcher.match(find_attr(tags.contents[5].contents[5], 'href')).group(1))
+            except:
+                link = '#'
+
+            nitem = {'name': title, 'author': author, 'comment': comments, 'link': link}
+            if zbllist.has_key(cnt):
+                nitem.update(zbllist[cnt])
+
+            alist.append(nitem)
+            cnt += 1
+        for tags in soup.findAll('tr', {'align': 'center', 'onmouseover': 'this.style.backgroundColor=\'#F5F5F5\''}):
             dtitle = tags.contents[6].contents[5].text
             try:
                 dtitle = dtitle[dtitle.rindex('>')+1:]
@@ -91,6 +114,8 @@ class parser(parser):
     def parse_view(self, pid, page, soup):
         output = {}
 
+        zbllist = parse_layer_info(soup.findAll('script')[1].text)
+
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
 
@@ -113,6 +138,7 @@ class parser(parser):
 
         comments = []
         cmtnodes = soup.findAll('table', {'border': '0', 'cellspacing': '0', 'cellpadding': '0', 'width': '95%'})[4].findAll('tr', {'align': 'center'})
+        cnt = 4
         for n in cmtnodes:
             cmtnode = {}
             try:
@@ -126,7 +152,12 @@ class parser(parser):
                 except:
                     pass
 
+                if zbllist.has_key(cnt):
+                    cmtnode.update(zbllist[cnt])
+
                 comments.append(cmtnode)
+                
+                cnt += 1
             except:
                 break
 

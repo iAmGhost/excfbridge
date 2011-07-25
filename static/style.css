@@ -19,8 +19,8 @@ table, tr, td {
     border: 0;
     border-spacing: 0;
     border-color: white;
-    margin: 0;
-    padding: 0;
+//    margin: 0;
+//    padding: 0;
 }
 
 a:link {
@@ -83,7 +83,7 @@ table {
     border-collapse: separate;
 }
 
-td, th {
+#list td, th {
     border-bottom: 1px solid #ededed;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
@@ -102,6 +102,10 @@ th {
     display: block;
     padding: 0.8em 0.4em 0.8em 0.4em;
     height: 100%;
+}
+
+#list .highlight {
+    background-color: #ffddff;
 }
 
 input, textarea {
@@ -311,6 +315,25 @@ h2 {
     margin-right: auto;
 }
 
+#privmsg {
+    margin: 3px;
+    padding: 2px;
+    border: 1px solid #cc0000;
+    border-radius: 5px;
+}
+
+#privmsg a {
+    text-align: center;
+    margin: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: #ffcccc;
+    border-radius: 5px;
+    display: block;
+    color: #990000;
+    font-weight: bold;
+}
+
 #search {
     width: 100%;
     text-align: center;
@@ -334,6 +357,46 @@ h2 {
     padding: 4px;
     background-color: #dedede;
     border-radius: 4px;
+}
+
+#popup {
+    position: fixed;
+    background: rgba(242, 248, 255, 0.9);
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 10;
+
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+    display: none;
+}
+
+#popup_username {
+    text-align: center;
+    width: 100%;
+    font-size: 1.6em;
+    border-bottom: #bbccee 2px solid;
+    padding-top: 20px;
+}
+
+#popup table {
+    text-align: center;
+    font-size: 1.3em;
+    width: 100%;
+    border: 0px;
+    padding: 15px;
+}
+
+#popup td {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#popup a {
+    color: #333388;
 }
 
 #footer a {
