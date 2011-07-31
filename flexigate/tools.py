@@ -27,7 +27,7 @@ import urllib
 
 from django.shortcuts import redirect, render_to_response
 
-from settings import ADMINS_EXCF
+from settings import ADMINS_EXCF, BASE_URL
 from flexigate import registry
 from flexigate.pagedefs import PAGES
 
@@ -84,6 +84,7 @@ def default_template_vars(title, request, location=None):
     out = {}
 
     out['title'] = title
+    out['base_url'] = BASE_URL
 
     try:
         admin = registry.query(get_session_id(request))

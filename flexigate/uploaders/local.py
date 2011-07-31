@@ -26,13 +26,47 @@
 import os
 from hashlib import md5
 from urllib import quote
-import Image
+from PIL import Image
+from PIL.ExifTags import TAGS
 
 from flexigate.tools import *
 from settings import UPLOAD_LOCAL_PATH, UPLOAD_LOCAL_URL, UPLOAD_LOCAL_SIZE, TARGET_ENCODING
 
+def rotate(img):
+    try:
+        exif = img._getexif()
+    except:
+        return img
+
+    if not exif or not exif.items:
+        return img
+
+    for tag, value in exif.items():
+        decoded = TAGS.get(tag, tag)
+        if decoded == 'Orientation':
+            if value == 1:
+                return img
+            elif value == 2:
+                return img.transpose(Image.FLIP_LEFT_RIGHT)
+            elif value == 3:
+                return img.transpose(Image.ROTATE_180)
+            elif value == 4:
+                return img.transpose(Image.FLIP_TOP_BOTTOM)
+            elif value == 5:
+                return img.transpose(Image.ROTATE_90).transpose(Image.FLIP_LEFT_RIGHT)
+            elif value == 6:
+                return img.transpose(Image.ROTATE_270)
+            elif value == 7:
+                return img.transpose(Image.ROTATE_270).transpose(Image.FLIP_LEFT_RIGHT)
+            elif value == 8:
+                return img.transpose(Image.ROTATE_90)
+            else:
+                return img
+
 def resize(filename):
     im = Image.open(filename)
+
+    im = rotate(im)
     
     size = im.size
     if size[0] < UPLOAD_LOCAL_SIZE and size[1] < UPLOAD_LOCAL_SIZE:

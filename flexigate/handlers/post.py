@@ -168,7 +168,7 @@ def handle_article_get(request, path):
 
         if request.META['HTTP_USER_AGENT']:
             ua = request.META['HTTP_USER_AGENT']
-            if ('iPhone' in ua or 'iPod' in ua) and 'iPhone OS' in ua:
+            if (('iPhone' in ua or 'iPod' in ua) and 'iPhone OS' in ua) or 'iPad' in ua:
                 data['iphone'] = True
                 data['session'] = md5(request.COOKIES['session']).hexdigest()
 

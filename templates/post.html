@@ -2,7 +2,7 @@
 
 {% block body %}
 {% if iphone %}
-<script type='text/javascript' src='http://e.influx.kr/static/picup.js'></script>
+<script type='text/javascript' src='/static/picup.js'></script>
 {% endif %}
 <script type='text/javascript'>
 var imgtags = '';
@@ -13,17 +13,19 @@ function validate() {
     return false;
   }
 
-  nodoubleclick(document.getElementById('post_submit'));
+  //nodoubleclick(document.getElementById('post_submit'));
+
+{% if iphone %}
+  if (imgtags) {
+    var elem = document.getElementById('post_contents');
+    elem.value = imgtags + '\n' + elem.value;
+  }
+{% endif %}
 
 {% if mode == 'post' %}
   Cookies.create('unsaved_subject', document.getElementById('post_subject').value);
   Cookies.create('unsaved_body', document.getElementById('post_contents').value);
 {% endif %}
-
-  if (imgtags) {
-    var elem = document.getElementById('post_contents');
-    elem.value = imgtags + elem.value;
-  }
 
   return true;
 }
@@ -62,13 +64,14 @@ function add_file_upload_form() {
 
 {% if iphone %}
 var picupParams = {
-  'callbackUrl': escape('http://203.255.3.34:8080/post/{{bid}}'),
+  'callbackUrl': escape('{{base_url}}/post/{{bid}}'),
   'referrerName': 'flexigate',
   'purpose': 'ExCF Mobile Gateway',
-  'debug': 'true',
+  'debug': 'false',
+  'imageSize': '1280',
   'returnServerResponse': 'true',
   'postImageParam': 'filedata',
-  'postURL': escape('http://203.255.3.34:8080/post/picup/{{bid}}'),
+  'postURL': escape('{{base_url}}/post/picup/{{bid}}'),
   'postValues': escape('sid={{session}}')
 };
 {% endif %}
@@ -84,7 +87,7 @@ function init() {
     }
 
     imgtag = '<img src="' + url + '" alt="" />';
-    imgtags += imgtag + '<br />\n';
+    imgtags += imgtag + '\n';
 
     document.getElementById('picup_image_container').innerHTML += imgtag;
   }

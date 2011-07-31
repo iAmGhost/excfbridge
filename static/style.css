@@ -27,6 +27,29 @@ a:link {
     text-decoration: none;
 }
 
+#picup {
+    text-align: center;
+}
+
+#picup_image_container {
+    width: 100%;
+    padding: 5px;
+}
+
+#picup_image_container img {
+    width: 64px;
+    height: auto;
+}
+
+#picup p {
+    padding: 10px;
+}
+
+#picup a:link {
+    font-weight: bold;
+    color: brown;
+}
+
 #topnav {
     height: 2.0em;
 }
