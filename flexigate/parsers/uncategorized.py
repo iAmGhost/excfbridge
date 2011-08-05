@@ -92,8 +92,10 @@ class parser(parser):
             except:
                 pass
 
-            #notice = len(filter(lambda x: 'notice_head.gif' in x['src'], tags.findAll('img'))) > 0
-            notice = False
+            try:
+                notice = len(filter(lambda x: 'notice_head.gif' in x['src'], tags.findAll('img'))) > 0
+            except KeyError:
+                notice = False
 
             nitem = {'name': title, 'author': author, 'comment': comments, 'link': link, 'sticky': notice}
             if zbllist.has_key(cnt):

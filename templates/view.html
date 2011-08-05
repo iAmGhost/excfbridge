@@ -53,7 +53,7 @@ var cur_bid = '{{bid}}';
 </script>
 {% if not nocomments %}
 <form action='/post_comment/{{bid}}/{{pid}}' method='post' onsubmit='return validate();'>
-  <input id='input_comment' name='comment' maxlength='150'></input>
+  <input id='input_comment' name='comment' maxlength='150' />
   <input id='input_submit' type='submit' value='게시' />
 </form>
 {% endif %}

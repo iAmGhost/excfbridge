@@ -14,7 +14,6 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-<h2>{{title}}</h2>
 {% if bid %}
 <div id='popup'>
   <div id='popup_username'></div>
@@ -27,6 +26,7 @@
 </div>
 {% endif %}
 <div id='header'>
+  <h2>{{title}}</h2>
   <div id='topnav'>
     <select name='jump' onchange='jump(this.options[this.selectedIndex].value);' size='1'>
       <option value=''>메뉴</option>
@@ -43,7 +43,7 @@
 <div id='privmsg'><a href='/inbox/'>읽지 않은 쪽지가 있습니다.</a></div>
 {% endif %}
 <div id='body'>
-{% block body%}{% endblock %}
+{% block body %}{% endblock %}
 </div>
     <div id='footer'>
       <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 별개로 운영되고 있습니다.</p>
