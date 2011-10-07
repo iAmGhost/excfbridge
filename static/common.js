@@ -133,4 +133,15 @@ function checkClick(event)
 	return true;
 }
 
+function toggleStyle()
+{
+	if (Cookies['dark'])
+		Cookies.erase('dark');
+	else
+		Cookies.create('dark', '1', 60 * 60 * 24 * 365);
+
+	window.location.reload();
+
+	return false;
+}
 
