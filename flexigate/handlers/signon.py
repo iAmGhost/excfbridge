@@ -49,11 +49,14 @@ def attempt_sign_on(request, response, userid, passwd):
         {'user_id': userid.encode(TARGET_ENCODING), 'password': passwd, 's_url': 'about:blank'}
     )
 
+    max_age = 365*24*60*60
+    expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age)
+
     try:
         sessid = request.COOKIES['session']
     except:
         sessid = generate_session_id()
-        response.set_cookie('session', sessid)
+        response.set_cookie('session', sessid, expires=expires, max_age=max_age)
     
     m = urllib2.urlopen(URL_MENU)
     result, soup = remote.postprocess(m.read())
@@ -83,8 +86,8 @@ def attempt_sign_on(request, response, userid, passwd):
 
         # save form data if needed
         if request.POST.has_key('saveform') and request.POST['saveform'] == 'true':
-            response.set_cookie('userid', userid)
-            response.set_cookie('password', passwd)
+            response.set_cookie('userid', userid, expires=expires, max_age=max_age)
+            response.set_cookie('password', passwd, expires=expires, max_age=max_age)
         else:
             if request.COOKIES.has_key('userid'):
                 # clear cookie if deselected
@@ -131,7 +134,7 @@ def handle_signon_get(request):
         password = request.COOKIES['password']
         checked = "checked='checked'"
 
-    data = default_template_vars(u'로그인', request)
+    data = default_template_vars(u'sExCF: ExCF for Smartphones', request)
     data['userid'] = userid
     data['password'] = password
     data['saveform'] = checked
@@ -142,8 +145,14 @@ def handle_signon_get(request):
 
     response = render_to_response('signon.html', data)
 
-    if get_session_id(request):
-        response.set_cookie('session', generate_session_id())
+    sid = get_session_id(request)
+    if not sid:
+        sid = generate_session_id()
+
+    max_age = 365*24*60*60
+    expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age)
+
+    response.set_cookie('session', sid, expires=expires, max_age=max_age)
         
     return response
 

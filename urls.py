@@ -35,12 +35,16 @@ from flexigate.handlers.signon import handle_signon as signon, handle_signoff as
 from flexigate.handlers.view import handle as view
 from flexigate.handlers.inbox import handle_list as inbox_list, handle_view as inbox_view, handle_send as inbox_send, handle_delete as inbox_delete
 
+import settings
+
 urlpatterns = patterns('',
     (r'^$', index),
     (r'^admin$', admin),
     (r'^delete/(.*)$', delete),
     (r'^delete_comment/(.*)$', delete_comment),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/favicon.ico'}),
+    (r'^static/(.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    (r'^uploads/(.*)$', 'django.views.static.serve', {'document_root': settings.UPLOAD_LOCAL_PATH}),
     (r'^signon$', signon),
     (r'^signoff$', signoff),
     (r'^list/(.*)$', listing),

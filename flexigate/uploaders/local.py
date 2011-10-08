@@ -65,12 +65,12 @@ def rotate(img):
 
 def resize(filename):
     im = Image.open(filename)
+    if not im:
+        return
 
     im = rotate(im)
-    
+   
     size = im.size
-    if not size:
-        return
 
     if size[0] < UPLOAD_LOCAL_SIZE and size[1] < UPLOAD_LOCAL_SIZE:
         return

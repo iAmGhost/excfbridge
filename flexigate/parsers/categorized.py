@@ -140,7 +140,10 @@ class parser(parser):
             output['nocomments'] = True
         
         body = soup.find('span', {'style': 'line-height:160%'})
-        body.find('div').replaceWith('')
+        try:
+            body.find('div').replaceWith('')
+        except:
+            pass
         output['body'] = body.renderContents()
 
         comments = []

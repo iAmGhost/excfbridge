@@ -61,8 +61,11 @@ def useragent(ua):
 
 def elapsed(a, b):
     delta = (a - b).seconds
+    days = (a - b).days
 
     out = []
+    if days > 0:
+        out.append('%dd' % days)
     if delta > 3600:
         hours = delta / 3600
         out.append('%dh' % hours)

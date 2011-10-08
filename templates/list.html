@@ -124,9 +124,9 @@ window.onload = initialize;
 </script>
 <div id='search'>
   <form action='/list' onsubmit='return validate()'>
-    <span class='search_off' id='search_name'><a href='#' onclick='return toggle(sname)'>이름</a></span>
-    <span class='search_off' id='search_subject'><a href='#' onclick='return toggle(ssubject)'>제목</a></span>
-    <span class='search_off' id='search_body'><a href='#' onclick='return toggle(sbody)'>본문</a></span>
+    <a id='search_name' class='search_off' href='#' onclick='return toggle(sname)'>이름</a>
+    <a id='search_subject' class='search_off' href='#' onclick='return toggle(ssubject)'>제목</a>
+    <a id='search_body' class='search_off' href='#' onclick='return toggle(sbody)'>본문</a>
     <input type='text' id='search_term' value='{{searchterm}}' />
     <input type='submit' id='search_button' value='검색' />
   </form> 

@@ -6,9 +6,13 @@
     <meta http-equiv='Content-Style-Type' content='text/css' />
     <meta name='viewport' content='initial-scale=1.0, width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no' />
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
-    <title>ⓢ.excf.com | {{title}}</title>
+    <title>sExCF | {{title}}</title>
     <style type="text/css">
-      @import url('/static/style.css');
+{% if dark %}
+      @import url('/static/dark.css');
+{% else %}
+      @import url('/static/light.css');
+{% endif %}
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
     {% block head %}{% endblock %}
@@ -35,7 +39,7 @@
 {% endfor %}
     </select>
 {% if signed_on %}
-    <a class='button' href='/signoff'>로그아웃 ({{user}})</a>
+    <a class='button' href='/signoff' onclick='return confirm("정말 로그아웃하시겠습니까?")'>로그아웃 ({{user}})</a>
 {% endif %}
   </div>
 </div>
@@ -47,8 +51,15 @@
 </div>
     <div id='footer'>
       <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 별개로 운영되고 있습니다.</p>
+{% if throttle %}
+      <p>트래픽 사용량: <strong>{{throttle}}</strong>%</p>
+{% endif %}
       Powered by <a href='http://github.com/segfault87/excfbridge'>flexigate-0.9.0</a><br />
-      <a href='/inbox/to/1622'>문의</a>{% if admin %} | <a href='/admin'>관리자</a>{% endif %}
+      <a href='/inbox/to/1622'>문의</a>
+      | <a href='#' onclick='return toggleStyle();'>{% if dark %}흰바탕{% else %}검은바탕{% endif %}</a>
+{% if admin %}
+      | <a href='/admin'>관리자</a>
+{% endif %}
     </div>
   </body>
 </html>

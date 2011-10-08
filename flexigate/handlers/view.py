@@ -41,8 +41,11 @@ def handle(request, path):
         if len(args) < 2:
             return error(request, u'잘못된 인자입니다.')
     
-        dest = args[0]
-        no = int(args[1])
+        try:
+            dest = args[0]
+            no = int(args[1])
+        except:
+            return error(request, u'잘못된 대상입니다.')
 
         try:
             pq = request.GET['pq']

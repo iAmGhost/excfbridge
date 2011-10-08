@@ -33,6 +33,7 @@ PAGE_IDS = {
     'cartoon': 'gene1',
     'playground': 'ev',
     'game': 'game',
+    'eatball': 'eatball',
 }
 
 PAGE_NAMES = {
@@ -43,6 +44,7 @@ PAGE_NAMES = {
     'playground': u'놀이 게시판',
     'game': u'오락실',
     'inbox': u'쪽지함',
+    'eatball': u'먹',
 }
 
 PAGE_PARSERS = {
@@ -52,6 +54,7 @@ PAGE_PARSERS = {
     'cartoon': uncategorized,
     'playground': uncategorized,
     'game': categorized,
+    'eatball': uncategorized,
 }
 
 PAGES = (
@@ -61,5 +64,6 @@ PAGES = (
     ('cartoon', '/list/cartoon', PAGE_NAMES['cartoon']),
     ('playground', '/list/playground', PAGE_NAMES['playground']),
     ('game', '/list/game', PAGE_NAMES['game']),
+    ('eatball', '/list/eatball', PAGE_NAMES['eatball']),
     ('inbox', '/inbox', PAGE_NAMES['inbox']),
 )

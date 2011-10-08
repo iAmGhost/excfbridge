@@ -23,15 +23,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
 # THE SOFTWARE.
 
-DEBUG = True
+DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
-BASE_PATH = '/home/segfault/sites/excfbridge'
+BASE_URL = 'http://e.influx.kr'
+BASE_PATH = '/home/segfault/excfbridge'
 SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
+THROTTLE_STAT_PATH = '/tmp/excfbridge_throttle'
 
 UPLOAD = 'local'
 UPLOAD_LOCAL_PATH = BASE_PATH + '/uploads'
-UPLOAD_LOCAL_URL = 'http://e.influx.kr/uploads'
+UPLOAD_LOCAL_URL = BASE_URL + '/uploads'
 UPLOAD_LOCAL_SIZE = 1280
 
 TARGET_ENCODING = 'cp949'
@@ -43,7 +45,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 ADMINS_EXCF = ['segfault87', 'excf']
-SESSION_EXPIRE = 3600
+SESSION_EXPIRE = 3600 * 24
 
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = BASE_PATH + '/database/excfbridge.db'

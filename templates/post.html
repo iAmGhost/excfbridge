@@ -6,6 +6,7 @@
 {% endif %}
 <script type='text/javascript'>
 var imgtags = '';
+var posdata = null;
 
 function validate() {
   if (!document.getElementById('post_subject').value || !document.getElementById('post_contents').value) {
@@ -15,12 +16,15 @@ function validate() {
 
   //nodoubleclick(document.getElementById('post_submit'));
 
+  var elem = document.getElementById('post_contents');
+
 {% if iphone %}
-  if (imgtags) {
-    var elem = document.getElementById('post_contents');
+  if (imgtags)
     elem.value = imgtags + '\n' + elem.value;
-  }
 {% endif %}
+
+  if (posdata && document.getElementById('post_pos').checked)
+    elem.value = elem.value + '\n\n<img src="http://maps.google.com/maps/api/staticmap?center=' + posdata.latitude + ',' + posdata.longitude +'&markers=color:blue|label:S|' + posdata.latitude + ',' + posdata.longitude + '&zoom=16&size=640x400&sensor=false" alt="현재 위치 정보" />';
 
 {% if mode == 'post' %}
   Cookies.create('unsaved_subject', document.getElementById('post_subject').value);
@@ -28,6 +32,46 @@ function validate() {
 {% endif %}
 
   return true;
+}
+
+function revertPos() {
+	document.getElementById('btn_submit').disabled = '';
+        document.getElementById('pos_marker').innerHTML = '현재 위치 첨부';
+}
+
+function gpsSuccessCallback(position) {
+	posdata = {longitude: position.coords.longitude, latitude: position.coords.latitude};
+
+	console.log(posdata);
+
+	revertPos();
+}
+
+function gpsErrorCallback(error) {
+	alert('위치 정보 오류: ' + error.message);
+
+	revertPos();
+}
+
+function setGps() {
+	var gps = navigator.geolocation;
+	if (!gps) {
+		alert('위치 서비스는 현재 웹 브라우저에서 지원하지 않습니다.');
+		return false;
+	}
+
+	var checked = document.getElementById('post_pos').checked;
+
+	if (checked) {
+		document.getElementById('btn_submit').disabled = 'disabled';
+		document.getElementById('pos_marker').innerHTML = '현재 위치 찾는 중...';
+
+		gps.getCurrentPosition(gpsSuccessCallback, gpsErrorCallback);
+	} else {
+		revertPos();
+	}
+
+	return true;
 }
 
 var cnt = 1;
@@ -125,6 +169,9 @@ window.onload = init;
     <input type='text' id='post_subject' name='subject' maxlength='200' value='{{subject}}' /><br />
     <textarea name='contents' id='post_contents' rows='8'>{{contents}}</textarea><br />
 {% if mode == 'post' %}
+    <div id='position'>
+      <input type='checkbox' id='post_pos' value='위치 첨부' onclick='return setGps();' /> <span id='pos_marker'>현재 위치 첨부</span>
+    </div>
 {% if iphone %}
     <div id='picup'>
       <input type='file' id='picup_file' name='filedata' class='file' /><br />
