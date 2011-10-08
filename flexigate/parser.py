@@ -45,7 +45,10 @@ def parse_layer_info(script):
         number = int(splitinfo[0][22:-2])
 
         item = {}
-        item['user_no'] = int(splitinfo[3][1:-2])
+        try:
+            item['user_no'] = int(splitinfo[3][1:-2])
+        except:
+            item['user_no'] = -1
         item['user_name'] = unquote_plus(str(splitinfo[5][1:-2])).decode(TARGET_ENCODING, 'ignore').replace('\'', '\\\'')
         item['user_website'] = unquote_plus(str(splitinfo[1][1:-2])).decode(TARGET_ENCODING, 'ignore').replace('\'', '\\\'')
         item['user_email'] = b64decode(str(splitinfo[2][1:-2])).decode(TARGET_ENCODING, 'ignore').replace('\'', '\\\'')
