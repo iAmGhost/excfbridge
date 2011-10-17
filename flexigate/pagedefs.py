@@ -37,7 +37,7 @@ PAGE_IDS = {
 }
 
 PAGE_NAMES = {
-    'free': u'자유 게시판',
+    'free': u'자유 게이판',
     'general': u'다용도 게시판',
     'creation': u'창작 게시판',
     'cartoon': u'만화 게시판',
