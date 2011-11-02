@@ -64,9 +64,13 @@ class parser(parser):
             try:
                 title = sc.contents[1].contents[0]
                 author = sn.contents[0].renderContents()
-                comments = sc.contents[1].contents[1].renderContents()
             except:
                 continue
+
+            try:
+                comments = sc.contents[1].contents[1].renderContents()
+            except:
+                comments = None
 
             try:
                 link = '/view/%s/%s' % (pid, no_matcher.match(sc.contents[1]['href']).group(1))
@@ -121,15 +125,15 @@ class parser(parser):
         cnt = 4
         for i in soup.find('table', {'id': 'comments'}).findAll('tr'):
             cmtnode = {}
+            try:
+                cmtnode['did'] = cno_matcher.match(i.find('span', {'class': 'delete'}).contents[0]['href']).group(1)
+                i.contents[3].find('span').replaceWith('')
+            except:
+                pass
             cmtnode['name'] = i.contents[1].contents[0].text
             cmtnode['id'] = i.contents[1].contents[2].text
             cmtnode['body'] = i.contents[3].text
             cmtnode['date'] = i.contents[5].text
-
-            try:
-                cmtnode['did'] = cno_matcher.match(i.find('span', {'class': 'delete'}).contents[0]['href']).group(1)
-            except:
-                pass
 
             if zbllist.has_key(cnt):
                 cmtnode.update(zbllist[cnt])
