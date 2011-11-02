@@ -31,14 +31,14 @@ from flexigate.parser import parser
 from flexigate.parsers.common import get_zantan
 from flexigate import pagedefs, remote, uploader
 from flexigate.tools import *
-from settings import TARGET_ENCODING
+from settings import TARGET_ENCODING, TARGET_SITE
 
 import random
 
-URL_POST = 'http://excf.com/bbs/write_ok.php'
-URL_POST_COMMENT = 'http://excf.com/bbs/comment_ok.php'
-URL_POST_PAGE = 'http://excf.com/bbs/write.php'
-URL_REFERER = 'http://excf.com/bbs/view.php'
+URL_POST = TARGET_SITE + '/write_ok.php'
+URL_POST_COMMENT = TARGET_SITE + '/comment_ok.php'
+URL_POST_PAGE = TARGET_SITE + '/write.php'
+URL_REFERER = TARGET_SITE + '/view.php'
 
 def manuzelizer(data):
     out = []

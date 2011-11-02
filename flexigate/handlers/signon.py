@@ -32,11 +32,11 @@ from flexigate.handlers.index import DEFAULT_INDEX
 from flexigate.parsers.common import find_error
 from flexigate import registry, remote
 from flexigate.tools import *
-from settings import TARGET_ENCODING
+from settings import TARGET_ENCODING, TARGET_SITE
 
-URL_MENU = 'http://excf.com/menu.html'
-URL_SIGN_ON = 'http://excf.com/bbs/login_check.php'
-URL_SIGN_OFF = 'http://excf.com/bbs/logout.php?s_url=about:blank'
+URL_MENU = 'http://excf.com/menu.php'
+URL_SIGN_ON = TARGET_SITE + '/login_check.php'
+URL_SIGN_OFF = TARGET_SITE + '/logout.php?s_url=about:blank'
 
 class SignOnException(Exception):
     pass
@@ -66,7 +66,10 @@ def attempt_sign_on(request, response, userid, passwd):
         raise SignOnException(error(request, errmsg))
 
     try:
-        phpsessid = re.match('PHPSESSID=([0-9a-f]+)', m.headers['set-cookie']).group(1)
+        sc = m.headers['set-cookie']
+        if not sc:
+            sc = m.headers['Set-Cookie']
+        phpsessid = re.match('PHPSESSID=([0-9a-f]+)', sc).group(1)
     except:
         registry.audit(userid, sessid, ip, ua, False, why=u'알 수 없음')
         raise SignOnException(error(request, u'사이트 상태가 이상합니다.'))

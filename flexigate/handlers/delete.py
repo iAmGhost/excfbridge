@@ -28,9 +28,10 @@ import urllib
 from flexigate.parser import parser
 from flexigate import pagedefs, remote
 from flexigate.tools import *
+from settings import TARGET_SITE
 
-URL_DELETE_POST = 'http://excf.com/bbs/delete_ok.php'
-URL_DELETE_COMMENT = 'http://excf.com/bbs/del_comment_ok.php'
+URL_DELETE_POST = TARGET_SITE + '/delete_ok.php'
+URL_DELETE_COMMENT = TARGET_SITE + '/del_comment_ok.php'
 
 def handle_delete_post(request, path):
     try:

@@ -28,10 +28,10 @@ import urllib
 from flexigate.parser import parser
 from flexigate import pagedefs, remote
 from flexigate.tools import *
-from settings import TARGET_ENCODING
+from settings import TARGET_ENCODING, TARGET_SITE
 
-URL = 'http://excf.com/bbs/write.php'
-URL_POST = 'http://excf.com/bbs/write_ok.php'
+URL = TARGET_SITE + '/write.php'
+URL_POST = TARGET_SITE + '/write_ok.php'
 
 def handle_get(request, path):
     try:

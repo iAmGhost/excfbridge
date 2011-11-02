@@ -29,11 +29,11 @@ from flexigate import remote, pagedefs
 from flexigate.parser import parser
 from flexigate.parsers import common, inbox
 from flexigate.tools import *
-from settings import TARGET_ENCODING
+from settings import TARGET_ENCODING, TARGET_SITE
 
-URL = 'http://excf.com/bbs/member_memo.php'
-URL_NEW_MEMO = 'http://excf.com/bbs/view_info.php'
-URL_SEND_MEMO = 'http://excf.com/bbs/send_message.php'
+URL = TARGET_SITE + '/member_memo.php'
+URL_NEW_MEMO = TARGET_SITE + '/view_info.php'
+URL_SEND_MEMO = TARGET_SITE + '/send_message.php'
 URL_REFERER = URL_NEW_MEMO
 
 def redirect_if_not_signed_on(request, page, soup):

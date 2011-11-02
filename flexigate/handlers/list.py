@@ -29,8 +29,9 @@ from flexigate import remote, pagedefs
 from flexigate.parser import parser
 from flexigate.parsers import common
 from flexigate.tools import *
+from settings import TARGET_SITE
 
-URL = 'http://excf.com/bbs/zboard.php'
+URL = TARGET_SITE + '/zboard.php'
 
 def handle(request, path):
     try:

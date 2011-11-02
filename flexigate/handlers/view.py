@@ -29,8 +29,9 @@ import re
 from flexigate.parser import parser
 from flexigate import pagedefs, remote
 from flexigate.tools import *
+from settings import TARGET_SITE
 
-URL = 'http://excf.com/bbs/view.php'
+URL = TARGET_SITE + '/view.php'
 
 def handle(request, path):
     try:
