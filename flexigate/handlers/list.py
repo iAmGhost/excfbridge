@@ -29,7 +29,7 @@ from flexigate import remote, pagedefs
 from flexigate.parser import parser
 from flexigate.parsers import common
 from flexigate.tools import *
-from settings import TARGET_SITE
+from settings import TARGET_SITE, TARGET_ENCODING
 
 URL = TARGET_SITE + '/zboard.php'
 
@@ -86,7 +86,8 @@ def handle(request, path):
                 sn = comp('name')
             ss = comp('subject')
             sc = comp('body')
-            query += '&sn1=%s&sn=%s&ss=%s&sc=%s&keyword=%s' % (sn1, sn, ss, sc, urllib.quote(searchterm.encode('cp949')))
+            sr = comp('comments')
+            query += '&sn1=%s&sn=%s&ss=%s&sc=%s&sr=%s&keyword=%s' % (sn1, sn, ss, sc, sr, urllib.quote(searchterm.encode(TARGET_ENCODING)))
 
         result = remote.send_request(request, query)
         html, soup = remote.postprocess(result.read())

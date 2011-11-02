@@ -71,6 +71,12 @@ var sbody = {
   id: 'body'
 }
 
+var scomments = {
+  elem: 'search_comments',
+  state: {% if 'comments' in search %}true{% else %}false{% endif %},
+  id: 'comments'
+}
+
 var toggle = function(sobj) {
   var elem = document.getElementById(sobj.elem);
 
@@ -90,7 +96,7 @@ function validate() {
     return false;
   }
 
-  if (!sname.state && !sbody.state && !ssubject.state) {
+  if (!sname.state && !sbody.state && !ssubject.state && !scomments.state) {
     alert('최소한 하나의 검색 대상은 지정해 주셔야 합니다.');
     return false;
   }
@@ -102,6 +108,8 @@ function validate() {
     res = res.concat(ssubject.id);
   if (sbody.state)
     res = res.concat(sbody.id);
+  if (scomments.state)
+    res = res.concat(scomments.id);
 
   document.location = '/list/{{bid}}/search/' + res.join('+') + '/' + encodeURI(sterm);
 
@@ -127,6 +135,7 @@ window.onload = initialize;
     <a id='search_name' class='search_off' href='#' onclick='return toggle(sname)'>이름</a>
     <a id='search_subject' class='search_off' href='#' onclick='return toggle(ssubject)'>제목</a>
     <a id='search_body' class='search_off' href='#' onclick='return toggle(sbody)'>본문</a>
+    <a id='search_comments' class='search_off' href='#' onclick='return toggle(scomments)'>댓글</a>
     <input type='text' id='search_term' value='{{searchterm}}' />
     <input type='submit' id='search_button' value='검색' />
   </form> 

@@ -49,7 +49,10 @@ class parser(parser):
         if next_div:
             output['divnext'] = int(divpage_matcher.match(next_div['href']).group(1))
         nre = re.compile('^[0-9]+$')
-        maxpages = int(filter(lambda x: nre.match(x), map(lambda y: y.renderContents(), pager.findAll('a')))[-1])
+        try:
+            maxpages = int(filter(lambda x: nre.match(x), map(lambda y: y.renderContents(), pager.findAll('a')))[-1])
+        except:
+            maxpages = 1
 
         output['maxpages'] = maxpages
 
@@ -60,17 +63,18 @@ class parser(parser):
         for i in alist:
             sc = i.find('td', {'class': 'col_subject'})
             sn = i.find('td', {'class': 'col_name'})
+
+            try:
+                comments = sc.contents[1].find('span', {'class': 'comments'}).renderContents()
+                sc.contents[1].find('span', {'class': 'comments'}).replaceWith('')
+            except:
+                comments = None
             
             try:
-                title = sc.contents[1].contents[0]
+                title = sc.contents[1].renderContents()
                 author = sn.contents[0].renderContents()
             except:
                 continue
-
-            try:
-                comments = sc.contents[1].contents[1].renderContents()
-            except:
-                comments = None
 
             try:
                 link = '/view/%s/%s' % (pid, no_matcher.match(sc.contents[1]['href']).group(1))
