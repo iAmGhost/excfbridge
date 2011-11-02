@@ -26,7 +26,7 @@
 DEBUG = False 
 TEMPLATE_DEBUG = DEBUG
 
-BASE_URL = 'http://e.influx.kr'
+BASE_URL = 'http://s.excf.com'
 BASE_PATH = '/home/segfault/excfbridge'
 SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
 THROTTLE_STAT_PATH = '/tmp/excfbridge_throttle'
