@@ -44,6 +44,10 @@ def handle(request, path):
         divpage = -1
         search = ['subject', 'body']
         searchterm = ''
+        category = None
+
+        if request.GET.has_key('category'):
+            category = request.GET['category']
 
         base = 1
         try:
@@ -75,6 +79,9 @@ def handle(request, path):
         
         query = URL + '?id=%s&page=%d' % (pagedefs.PAGE_IDS[dest], page)
 
+        if category:
+            query += '&category=%s' % category
+
         if divpage >= 0:
             query += '&divpage=%d' % divpage
         if searchterm:
@@ -102,9 +109,14 @@ def handle(request, path):
         output['bid'] = dest
         output['page'] = page
         output['search'] = search
+        output['searchquery'] = ''
         if searchterm:
             output['searchterm'] = searchterm
             output['searchquery'] = '/search/%s/%s' % ('+'.join(search), searchterm)
+        if category:
+            output['category'] = category
+            output['searchquery'] += '?category=%s' % category
+        
         if divpage >= 0:
             output['div'] = divpage
             output['divquery'] = '/div/%d' % divpage

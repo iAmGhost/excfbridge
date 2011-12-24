@@ -39,6 +39,21 @@ class parser(parser):
         if 'memo_on.swf' in page:
             output['new_privmsg'] = True
 
+        # categories
+        categories = []
+        cat = soup.find('select', {'name': 'category'})
+        if cat:
+            items = cat.findAll('option')
+            for i in items:
+                selected = False
+                try:
+                    if i['selected']:
+                        selected = True
+                except:
+                    pass
+                categories.append({'value': i['value'], 'name': i.text, 'selected': selected})
+        output['categories'] = categories
+
         # pages
         pager = soup.find('div', {'class': 'navbar_center'})
         prev_div = pager.find('a', {'class': 'prev_div'})
@@ -59,10 +74,22 @@ class parser(parser):
         # posts
         alist = soup.find('table').findAll('tr')
         posts = []
-        cnt = 2
+        cnt = 1
         for i in alist:
             sc = i.find('td', {'class': 'col_subject'})
             sn = i.find('td', {'class': 'col_name'})
+
+            notice = False
+            try:
+                if i['class'] == 'notice':
+                    notice = True
+            except:
+                pass
+            
+            try:
+                header = i.find('td', {'class': 'col_cat'}).renderContents()
+            except:
+                header = None
 
             try:
                 comments = sc.contents[1].find('span', {'class': 'comments'}).renderContents()
@@ -71,17 +98,20 @@ class parser(parser):
                 comments = None
             
             try:
-                title = sc.contents[1].renderContents()
+                if header:
+                    title = '<b>[%s]</b> %s' % (header, sc.contents[1].renderContents())
+
+                else:
+                    title = sc.contents[1].renderContents()
                 author = sn.contents[0].renderContents()
-            except:
+            except Exception, e:
+                print e
                 continue
 
             try:
                 link = '/view/%s/%s' % (pid, no_matcher.match(sc.contents[1]['href']).group(1))
             except:
                 link = '#'
-
-            notice = False
 
             it = {'name': title, 'author': author, 'comment': comments, 'link': link, 'sticky': notice}
             if zbllist.has_key(cnt):
@@ -125,6 +155,27 @@ class parser(parser):
         if zbllist.has_key(3):
             output.update(zbllist[3])
 
+        # adjacent posts
+        adjpost = soup.find('div', {'class': 'adjpost'})
+        if adjpost:
+            prev = adjpost.find('div', {'class': 'prev'})
+            next = adjpost.find('div', {'class': 'next'})
+
+            if prev:
+                link = prev.find('a')
+                title = link.text
+                href = '/view/%s/%s' % (pid, no_matcher.match(link['href']).group(1))
+                author = prev.find('span', {'class': 'name'}).text
+                output['prevpost'] = {'name': author, 'href': href, 'title': title}
+                
+            if next:
+                link = next.find('a')
+                title = link.text
+                href = '/view/%s/%s' % (pid, no_matcher.match(link['href']).group(1))
+                author = next.find('span', {'class': 'name'}).text
+                output['nextpost'] = {'name': author, 'href': href, 'title': title}
+
+        # comments
         comments = []
         cnt = 4
         for i in soup.find('table', {'id': 'comments'}).findAll('tr'):
@@ -136,7 +187,7 @@ class parser(parser):
                 pass
             cmtnode['name'] = i.contents[1].contents[0].text
             cmtnode['id'] = i.contents[1].contents[2].text
-            cmtnode['body'] = i.contents[3].text
+            cmtnode['body'] = i.contents[3].renderContents()
             cmtnode['date'] = i.contents[5].text
 
             if zbllist.has_key(cnt):
@@ -162,6 +213,19 @@ class parser(parser):
             output['contents'] = soup.find('textarea', {'name': 'memo'}).text
         except:
             pass
+
+        categories = []
+        nodes = soup.find('select', {'name': 'category'})
+        
+        if nodes:
+            for i in nodes.findAll('option')[1:]:
+                cat = {'value': i.attrs[0][1], 'name': postprocess_string(i.text)}
+                if len(filter(lambda x: x[0] == 'selected', i.attrs)) > 0:
+                    cat['selected'] = True
+                categories.append(cat)
+        
+            if len(categories) > 0:
+                output['categories'] = categories
 
         return output
 

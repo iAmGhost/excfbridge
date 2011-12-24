@@ -4,11 +4,28 @@
 {% autoescape off %}
 <script type='text/javascript'>
 var cur_bid = '{{bid}}'; 
+
+{% if categories %}
+function categorySelect() {
+  var id = document.getElementById('category').value;
+  document.location = '/list/' + cur_bid + '/?category=' + id;
+}
+{% endif %}
 </script>
 <table id='list'>
   <thead>
     <tr>
-      <th>제목</th>
+      <th>
+      {% if categories %}
+      <select id='category' onchange='return categorySelect();'>
+        {% for cat_item in categories %}
+          <option value='{{cat_item.value}}' {% if cat_item.selected %}selected='selected'{% endif %}>{{cat_item.name}}</option>
+        {% endfor %}
+      </select>
+      {% else %}
+      제목
+      {% endif %}
+      </th>
       <th class='column_author'>글쓴이</th>
     </tr>
   </thead>
@@ -111,7 +128,13 @@ function validate() {
   if (scomments.state)
     res = res.concat(scomments.id);
 
-  document.location = '/list/{{bid}}/search/' + res.join('+') + '/' + encodeURI(sterm);
+  {% if category %}
+  category = '?category={{category}}';
+  {% else %}
+  category = '';
+  {% endif %}
+
+  document.location = '/list/{{bid}}/search/' + res.join('+') + '/' + encodeURI(sterm) + category;
 
   return false;
 }
@@ -131,7 +154,7 @@ window.onload = initialize;
 
 </script>
 <div id='search'>
-  <form action='/list' onsubmit='return validate()'>
+  <form action='/list{% if category %}?category={{category}}{% endif %}' onsubmit='return validate()'>
     <a id='search_name' class='search_off' href='#' onclick='return toggle(sname)'>이름</a>
     <a id='search_subject' class='search_off' href='#' onclick='return toggle(ssubject)'>제목</a>
     <a id='search_body' class='search_off' href='#' onclick='return toggle(sbody)'>본문</a>
