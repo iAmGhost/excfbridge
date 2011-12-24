@@ -27,7 +27,7 @@ import urllib
 
 from django.shortcuts import redirect, render_to_response
 
-from settings import ADMINS_EXCF, BASE_URL, THROTTLE_STAT_PATH
+from settings import ADMINS_EXCF, BASE_URL
 from flexigate import registry
 from flexigate.pagedefs import PAGES
 
@@ -88,11 +88,6 @@ def default_template_vars(title, request, location=None):
 
     if request.COOKIES.has_key('dark'):
         out['dark'] = True
-
-    try:
-        out['throttle'] = open(THROTTLE_STAT_PATH).read().strip()
-    except:
-        pass
 
     try:
         admin = registry.query(get_session_id(request))

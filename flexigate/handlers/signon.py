@@ -46,7 +46,7 @@ def attempt_sign_on(request, response, userid, passwd):
     ua = request.META['HTTP_USER_AGENT'] if request.META.has_key('HTTP_USER_AGENT') else None
 
     encoded = urllib.urlencode(
-        {'user_id': userid.encode(TARGET_ENCODING), 'password': passwd, 's_url': 'about:blank'}
+        {'user_id': userid.encode(TARGET_ENCODING), 'password': passwd.encode(TARGET_ENCODING), 's_url': 'about:blank'}
     )
 
     max_age = 365*24*60*60
@@ -66,13 +66,11 @@ def attempt_sign_on(request, response, userid, passwd):
         raise SignOnException(error(request, errmsg))
 
     try:
-        sc = m.headers['set-cookie']
-        if not sc:
-            sc = m.headers['Set-Cookie']
-        phpsessid = re.match('PHPSESSID=([0-9a-f]+)', sc).group(1)
-    except:
+        sc = m.headers['Set-Cookie']
+        phpsessid = re.match('PHPSESSID=([0-9a-z]+)', sc).group(1)
+    except e:
         registry.audit(userid, sessid, ip, ua, False, why=u'알 수 없음')
-        raise SignOnException(error(request, u'사이트 상태가 이상합니다.'))
+        raise e
 
     l = remote.send_request(request, URL_SIGN_ON, encoded, phpsessid)
     result, soup = remote.postprocess(l.read())

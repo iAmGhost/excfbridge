@@ -51,9 +51,6 @@
 </div>
     <div id='footer'>
       <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 별개로 운영되고 있습니다.</p>
-{% if throttle %}
-      <p>트래픽 사용량: <strong>{{throttle}}</strong>%</p>
-{% endif %}
       Powered by <a href='http://github.com/segfault87/excfbridge'>flexigate-0.9.5</a><br />
       <a href='/inbox/to/1622'>문의</a>
       | <a href='#' onclick='return toggleStyle();'>{% if dark %}흰바탕{% else %}검은바탕{% endif %}</a>

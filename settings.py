@@ -29,14 +29,14 @@ TEMPLATE_DEBUG = DEBUG
 BASE_URL = 'http://s.excf.com'
 BASE_PATH = '/home/segfault/excfbridge'
 SESSION_FLUSH_TRIGGER_PATH = '/tmp/excfbridge_session_flush_trigger'
-THROTTLE_STAT_PATH = '/tmp/excfbridge_throttle'
 
 UPLOAD = 'local'
 UPLOAD_LOCAL_PATH = BASE_PATH + '/uploads'
 UPLOAD_LOCAL_URL = BASE_URL + '/uploads'
 UPLOAD_LOCAL_SIZE = 1280
 
-TARGET_ENCODING = 'cp949'
+TARGET_ENCODING = 'utf-8'
+TARGET_SITE = 'http://excf.com/bbs'
 
 ADMINS = (
     ('Park "segfault" Joon-Kyu', 'mastermind@planetmono.org'),
@@ -44,7 +44,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ADMINS_EXCF = ['segfault87', 'excf']
+ADMINS_EXCF = ['segfault87', 'excf', 'blaxin']
 SESSION_EXPIRE = 3600 * 24
 
 DATABASE_ENGINE = 'sqlite3'

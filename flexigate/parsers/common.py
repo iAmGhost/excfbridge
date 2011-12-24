@@ -28,7 +28,7 @@ from flexigate import remote
 from settings import TARGET_SITE
 
 URL_MENU = 'http://excf.com/menu.php'
-URL_MODIFY = TARGET_SITE + 'member_modify.php'
+URL_MODIFY = TARGET_SITE + '/member_modify.php'
 
 def get_sign_on_status(request, page, soup):
     result = remote.send_request(request, URL_MENU)
