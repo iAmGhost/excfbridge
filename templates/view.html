@@ -61,12 +61,12 @@ var cur_bid = '{{bid}}';
 <div id='adjpost'>
   {% if prevpost %}
   <div class='prev'>
-    <span class='author'>{{prevpost.name}}</span><span class='head'>이전: </span><a href='{{prevpost.href}}'>{{prevpost.title}}</a>
+    <span class='author'>{{prevpost.name}}</span><span class='head'>△ </span><a href='{{prevpost.href}}'>{{prevpost.title}}</a>
   </div>
   {% endif %}
   {% if nextpost %}
   <div class='next'>
-    <span class='author'>{{nextpost.name}}</span><span class='head'>다음: </span><a href='{{nextpost.href}}'>{{nextpost.title}}</a>
+    <span class='author'>{{nextpost.name}}</span><span class='head'>▽ </span><a href='{{nextpost.href}}'>{{nextpost.title}}</a>
   </div>
   {% endif %}
 </div>

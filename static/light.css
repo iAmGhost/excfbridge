@@ -494,7 +494,7 @@ a:visited {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 10px;
-    font-size: 1.2em;
+    font-size: 1.0em;
 }
 
 #adjpost div {
@@ -507,6 +507,9 @@ a:visited {
 }
 
 #adjpost .author {
+    padding-left: 5px;
+    margin-left: 5px;
+    border-left: 1px #ccc solid;
     float: right;
     padding-right: 10px;
 }
