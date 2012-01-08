@@ -63,6 +63,8 @@ def rotate(img):
             else:
                 return img
 
+    return img
+
 def resize(filename):
     im = Image.open(filename)
     if not im:

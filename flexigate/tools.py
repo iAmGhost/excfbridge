@@ -90,11 +90,12 @@ def default_template_vars(title, request, location=None):
         out['dark'] = True
 
     try:
-        admin = registry.query(get_session_id(request))
-        if admin and admin[0] in ADMINS_EXCF:
-            out['admin'] = True
+        sess = registry.query(get_session_id(request))
+        if sess:
             out['signed_on'] = True
-            out['user'] = admin[0]
+            out['user'] = sess[0]
+            if sess[0] in ADMINS_EXCF:
+                out['admin'] = True
     except:
         pass
 

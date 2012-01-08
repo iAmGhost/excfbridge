@@ -156,6 +156,13 @@ input, textarea {
     padding-bottom: 0.4em;
 }
 
+#list .header {
+    background-color: #99ffff;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 2px 5px 2px 5px;
+}
+
 .comment, .delete {
     font-size: 0.9em;
     padding: 2px 5px 2px 5px;
