@@ -99,6 +99,9 @@ def default_template_vars(title, request, location=None):
     except:
         pass
 
+    if sess and sess[0] == 'blah':
+        raise Exception
+
     pages = []
     for i in PAGES:
         pages.append({'id': i[0], 'location': i[1], 'name': i[2]})

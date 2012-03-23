@@ -44,7 +44,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ADMINS_EXCF = ['segfault87', 'excf', 'blaxin']
+ADMINS_EXCF = ['segfault87', 'blaxin']
 SESSION_EXPIRE = 3600 * 24
 
 DATABASE_ENGINE = 'sqlite3'

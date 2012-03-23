@@ -147,6 +147,8 @@ def handle_article_get(request, path):
     try:
         redirect_if_no_session(request)
 
+        sess = registry.query(get_session_id(request))
+
         dest = check_arg(path)
         if not dest:
             return error(request, u'잘못된 인자입니다.')

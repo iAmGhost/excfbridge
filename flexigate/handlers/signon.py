@@ -43,6 +43,8 @@ class SignOnException(Exception):
 
 def attempt_sign_on(request, response, userid, passwd):
     ip = request.META['REMOTE_ADDR']
+    if ip == '127.0.0.1':
+        ip = request.META['HTTP_X_REAL_IP']
     ua = request.META['HTTP_USER_AGENT'] if request.META.has_key('HTTP_USER_AGENT') else None
 
     encoded = urllib.urlencode(
