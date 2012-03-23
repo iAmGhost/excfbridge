@@ -260,7 +260,7 @@ img {
 }
 
 #header select {
-    width: 50%;
+    width: 40%;
 }
 
 h2 {
@@ -525,3 +525,20 @@ input[type="text"], input[type="password"], textarea {
     border-left: 1px solid #ccc;
     padding-right: 10px;
 }
+
+section {
+    margin: 10px;
+}
+
+section h3 {
+    border-bottom: #eeeeff 2px solid;
+}
+
+section input[type=submit] {
+    margin-top: 15px;
+}
+
+section p {
+    margin-left: 5px;
+}
+

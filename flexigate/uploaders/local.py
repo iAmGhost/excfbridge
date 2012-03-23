@@ -65,7 +65,10 @@ def rotate(img):
 
     return img
 
-def resize(filename):
+def resize(filename, resize):
+    if resize == 0:
+        return
+
     im = Image.open(filename)
     if not im:
         return
@@ -74,20 +77,20 @@ def resize(filename):
    
     size = im.size
 
-    if size[0] < UPLOAD_LOCAL_SIZE and size[1] < UPLOAD_LOCAL_SIZE:
+    if size[0] < resize and size[1] < resize:
         return
 
     if size[0] > size[1]:
-        nx = UPLOAD_LOCAL_SIZE
-        ny = int(size[1] * (float(UPLOAD_LOCAL_SIZE) / size[0]))
+        nx = resize
+        ny = int(size[1] * (float(resize) / size[0]))
     else:
-        nx = int(size[0] * (float(UPLOAD_LOCAL_SIZE) / size[1]))
-        ny = UPLOAD_LOCAL_SIZE
+        nx = int(size[0] * (float(resize) / size[1]))
+        ny = resize
 
     im = im.resize((nx, ny), Image.ANTIALIAS)
     im.save(filename, quality=90)
 
-def upload(request, fileobj, sid = None):
+def upload(request, fileobj, size, sid = None):
     if not sid:
         sid = md5(get_session_id(request)).hexdigest()
 
@@ -110,7 +113,7 @@ def upload(request, fileobj, sid = None):
         f.write(chunk)
     f.close()
 
-    resize(fpath)
+    resize(fpath, size)
 
     return '%s/%s' % (UPLOAD_LOCAL_URL, quote(filename))
     

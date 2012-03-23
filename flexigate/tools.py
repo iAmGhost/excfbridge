@@ -85,17 +85,19 @@ def default_template_vars(title, request, location=None):
 
     out['title'] = title
     out['base_url'] = BASE_URL
-
-    if request.COOKIES.has_key('dark'):
-        out['dark'] = True
+    out['css'] = 'light'
 
     try:
-        sess = registry.query(get_session_id(request))
+        sid = get_session_id(request)
+        sess = registry.query(sid)
         if sess:
             out['signed_on'] = True
             out['user'] = sess[0]
             if sess[0] in ADMINS_EXCF:
                 out['admin'] = True
+
+            prefs = registry.get_prefs(sid)
+            out['css'] = prefs.template
     except:
         pass
 

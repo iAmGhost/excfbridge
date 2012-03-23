@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 import pickle
 
 from settings import SESSION_EXPIRE, SESSION_FLUSH_TRIGGER_PATH
-from flexigate.models import registry, auditlog, faillog
+from flexigate.models import registry, auditlog, faillog, prefs
 
 def query(sid):
     if not sid:
@@ -39,6 +39,27 @@ def query(sid):
         return None
 
     return d.userid, d.phpsessid
+
+def get_prefs(sid):
+    try:
+        uid = query(sid)[0]
+        try:
+            return prefs.objects.get(userid=uid)
+        except:
+            return prefs(userid=uid)
+    except:
+        return None
+
+def set_prefs(sid, photo_resize, template):
+    try:
+        o = get_prefs(sid)
+        o.photo_resize = photo_resize
+        o.template = template
+        o.save()
+    except:
+        return False
+
+    return True
 
 def touch(sid):
     if not sid:

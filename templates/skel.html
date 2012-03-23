@@ -8,11 +8,7 @@
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
     <title>ExCF | {{title}}</title>
     <style type="text/css">
-{% if dark %}
-      @import url('/static/dark.css');
-{% else %}
-      @import url('/static/light.css');
-{% endif %}
+      @import url('/static/{{css}}.css');
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript">
@@ -52,7 +48,8 @@
 {% endfor %}
     </select>
 {% if signed_on %}
-    <a class='button' href='/signoff' onclick='return confirm("정말 로그아웃하시겠습니까?")'>로그아웃 ({{user}})</a>
+    <a class='button' href='/signoff' onclick='return confirm("정말 로그아웃하시겠습니까?")'>로그아웃</a>
+    <a class='button' href='/config'>설정</a>
 {% endif %}
   </div>
 </div>
@@ -63,10 +60,9 @@
 {% block body %}{% endblock %}
 </div>
     <div id='footer'>
-      <p>이 사이트는 <a href='http://excf.com'>ExCF</a>와 별개로 운영되고 있습니다.</p>
-      Powered by <a href='http://github.com/segfault87/excfbridge'>flexigate-0.9.5</a><br />
+      <p>현재 로그인: <b>{{user}}</b></p>
+      Powered by <a href='http://github.com/segfault87/excfbridge'>flexigate-0.9.7</a><br />
       <a href='/inbox/to/1622'>문의</a>
-      | <a href='#' onclick='return toggleStyle();'>{% if dark %}흰바탕{% else %}검은바탕{% endif %}</a>
 {% if admin %}
       | <a href='/admin'>관리자</a>
 {% endif %}

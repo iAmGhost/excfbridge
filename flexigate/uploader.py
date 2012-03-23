@@ -24,12 +24,13 @@
 # THE SOFTWARE.
 
 from settings import UPLOAD
+from settings import UPLOAD_LOCAL_SIZE
 
 if UPLOAD == 'imageshack':
     from flexigate.uploaders import imageshack as uploader
 else:
     from flexigate.uploaders import local as uploader
 
-def upload(request, fileobj, sid = None):
-    return uploader.upload(request, fileobj, sid)
+def upload(request, fileobj, size=UPLOAD_LOCAL_SIZE, sid=None):
+    return uploader.upload(request, fileobj, size=size, sid=sid)
 

@@ -29,7 +29,7 @@ from md5 import md5
 
 from flexigate.parser import parser
 from flexigate.parsers.common import get_zantan
-from flexigate import pagedefs, remote, uploader
+from flexigate import pagedefs, remote, uploader, registry
 from flexigate.tools import *
 from settings import TARGET_ENCODING, TARGET_SITE
 
@@ -93,6 +93,7 @@ def check_arg(path):
 def handle_article_post(request, path):
     try:
         redirect_if_no_session(request)
+        sid = get_session_id(request)
         
         dest = check_arg(path)
         if not dest:
@@ -111,10 +112,11 @@ def handle_article_post(request, path):
         keys.reverse()
         for f in keys:
             try:
-                 url = uploader.upload(request, request.FILES[f])
-                 cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
+                prefs = registry.get_prefs(sid)
+                url = uploader.upload(request, request.FILES[f], size=prefs.photo_resize)
+                cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
             except Exception, e:
-                 cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
+                cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
                 
             contents = cx.encode(TARGET_ENCODING) + contents
     
@@ -195,7 +197,7 @@ def handle_picup(request, path):
         return HttpResponse('no image', mimetype='text/plain')
 
     try:
-        url = uploader.upload(request, request.FILES['filedata'], request.POST['sid'])
+        url = uploader.upload(request, request.FILES['filedata'], size=0, sid=request.POST['sid'])
     except Exception, e:
         return HttpResponse(repr(e), mimetype='text/plain')
 

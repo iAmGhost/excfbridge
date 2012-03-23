@@ -26,6 +26,7 @@
 from django.conf.urls.defaults import *
 
 from flexigate.handlers.admin import handle as admin
+from flexigate.handlers.config import handle as config
 from flexigate.handlers.delete import handle_delete_post as delete, handle_delete_comment as delete_comment
 from flexigate.handlers.index import handle as index
 from flexigate.handlers.list import handle as listing
@@ -40,6 +41,7 @@ import settings
 urlpatterns = patterns('',
     (r'^$', index),
     (r'^admin$', admin),
+    (r'^config$', config),
     (r'^delete/(.*)$', delete),
     (r'^delete_comment/(.*)$', delete_comment),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/favicon.ico'}),

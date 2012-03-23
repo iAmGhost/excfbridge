@@ -257,7 +257,7 @@ img {
 }
 
 #header select {
-    width: 50%;
+    width: 40%;
 }
 
 h2 {
@@ -519,4 +519,20 @@ a:visited {
     border-left: 1px #ccc solid;
     float: right;
     padding-right: 10px;
+}
+
+section {
+    margin: 10px;
+}
+
+section h3 {
+    border-bottom: #eeeeff 2px solid;
+}
+
+section input[type=submit] {
+    margin-top: 15px;
+}
+
+section p {
+    margin-left: 5px;
 }
