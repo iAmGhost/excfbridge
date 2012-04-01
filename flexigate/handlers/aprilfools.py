@@ -25,6 +25,8 @@
 
 from django.shortcuts import redirect
 
+import random
+
 def handle(request):
     response = redirect('/')
 
@@ -34,3 +36,48 @@ def handle(request):
         response.set_cookie('aprilfools', '1')
 
     return response
+
+def manuzelize(instr):
+    if type(instr) == unicode:
+        isunicode = True
+        u = instr.strip()
+    else:
+        isunicode = False
+        u = instr.decode('utf-8').strip()
+    u = u.replace('<br />', '\n').replace('<br>', '\n').replace('<BR>', '\n')
+
+    output = []
+    
+    for j in u.split('\n'):
+        j = j.strip()
+
+        if len(j) == 0:
+            output.append('')
+            continue
+
+        trailing = u''
+        for k in j[::-1]:
+            if k == u'.' or k == u'!' or k == u'?' or k == u' ':
+                trailing += k
+            else:
+                break
+
+        trailing = trailing[::-1]
+
+        print trailing
+
+        if len(trailing) > 0:
+            line = j[:-len(trailing)]
+        else:
+            line = j
+        for i in range(random.randrange(4)):
+            line += random.choice([u'♥', u'♡'])
+
+        output.append(line)
+    
+    ostr = u'<br />'.join(output)
+
+    if isunicode:
+        return ostr
+    else:
+        return ostr.encode('utf-8')

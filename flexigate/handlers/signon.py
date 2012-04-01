@@ -107,10 +107,11 @@ def generate_session_id():
 
 def handle_signon_post(request):
     try:
-        userid = request.POST['userid'].decode('utf-8')
+        userid = request.POST['userid']
         password = request.POST['password']
     except:
-        return error(request, u'아이디와 패스워드를 입력해 주시기 바랍니다.', redir='/signon')
+        raise
+        # error(request, u'아이디와 패스워드를 입력해 주시기 바랍니다.', redir='/signon')
 
     try:
         raddr = request.POST['redirect']
