@@ -57,21 +57,20 @@ def manuzelize(instr):
 
         trailing = u''
         for k in j[::-1]:
-            if k == u'.' or k == u'!' or k == u'?' or k == u' ':
+            if k == u'.' or k == u'!' or k == u'?' or k == u' ' or k == u';':
                 trailing += k
             else:
                 break
 
         trailing = trailing[::-1]
-
-        print trailing
+        heart = random.choice([u'♥', u'♡'])
 
         if len(trailing) > 0:
             line = j[:-len(trailing)]
         else:
             line = j
-        for i in range(random.randrange(4)):
-            line += random.choice([u'♥', u'♡'])
+        for i in range(random.randrange(3)+1):
+            line += heart
 
         output.append(line)
     

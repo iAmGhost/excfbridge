@@ -157,10 +157,10 @@ input, textarea {
 }
 
 #list .header {
-    background-color: #99ffff;
+    background-color: #ecf1ef;
     font-weight: bold;
     border-radius: 4px;
-    padding: 2px 5px 2px 5px;
+    padding: 2px 3px 2px 3px;
 }
 
 .comment, .delete {

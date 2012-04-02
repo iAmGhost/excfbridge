@@ -107,7 +107,7 @@ def generate_session_id():
 
 def handle_signon_post(request):
     try:
-        userid = request.POST['userid']
+        userid = request.POST['userid'].decode('utf-8')
         password = request.POST['password']
     except:
         raise

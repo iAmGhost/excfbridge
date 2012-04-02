@@ -8,7 +8,7 @@
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
     <title>ExCF | {{title}}</title>
     <style type="text/css">
-      @import url('/static/{{css}}.css');
+      @import url('/static/{% if css %}{{css}}{% else %}light{% endif %}.css');
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript">
@@ -60,7 +60,7 @@
 {% block body %}{% endblock %}
 </div>
     <div id='footer'>
-      <p>현재 로그인: <b>{{user}}</b></p>
+      {% if user %}<p>현재 로그인: <b>{{user}}</b></p>{% endif %}
       Powered by <a href='http://github.com/segfault87/excfbridge'>flexigate-0.9.7</a><br />
       <a href='/inbox/to/1622'>문의</a>
 {% if admin %}

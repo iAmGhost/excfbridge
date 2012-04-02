@@ -27,7 +27,6 @@ import re
 
 from flexigate.parser import *
 from flexigate.parsers.common import *
-from flexigate.handlers.aprilfools import manuzelize
 
 class parser(parser):
     def parse_list(self, pid, page, soup):
@@ -100,11 +99,11 @@ class parser(parser):
             
             try:
                 if header:
-                    title = '<b>[%s]</b> %s' % (header, manuzelize(sc.contents[1].renderContents()))
+                    title = '<b>[%s]</b> %s' % (header, sc.contents[1].renderContents())
 
                 else:
-                    title = manuzelize(sc.contents[1].renderContents())
-                author = manuzelize(sn.contents[0].renderContents())
+                    title = sc.contents[1].renderContents()
+                author = sn.contents[0].renderContents()
             except Exception, e:
                 print e
                 continue
@@ -146,12 +145,12 @@ class parser(parser):
             elif title == u'홈페이지':
                 output['homepage'] = val.text
             elif title == u'제목':
-                output['subject'] = manuzelize(val.text)
+                output['subject'] = val.text
             elif title == u'작성자':
                 output['name'] = val.contents[0].text
                 output['userid'] = val.contents[2].text
             
-        output['body'] = '<br />' + manuzelize(soup.find('div', {'class': 'contents'}).renderContents())
+        output['body'] = '<br />' + soup.find('div', {'class': 'contents'}).renderContents()
 
         if zbllist.has_key(3):
             output.update(zbllist[3])
@@ -164,16 +163,16 @@ class parser(parser):
 
             if prev:
                 link = prev.find('a')
-                title = manuzelize(link.text)
+                title = link.text
                 href = '/view/%s/%s' % (pid, no_matcher.match(link['href']).group(1))
-                author = manuzelize(prev.find('span', {'class': 'name'}).text)
+                author = prev.find('span', {'class': 'name'}).text
                 output['prevpost'] = {'name': author, 'href': href, 'title': title}
                 
             if next:
                 link = next.find('a')
-                title = manuzelize(link.text)
+                title = link.text
                 href = '/view/%s/%s' % (pid, no_matcher.match(link['href']).group(1))
-                author = manuzelize(next.find('span', {'class': 'name'}).text)
+                author = next.find('span', {'class': 'name'}).text
                 output['nextpost'] = {'name': author, 'href': href, 'title': title}
 
         # comments
@@ -186,9 +185,9 @@ class parser(parser):
                 i.contents[3].find('span').replaceWith('')
             except:
                 pass
-            cmtnode['name'] = manuzelize(i.contents[1].contents[0].text)
+            cmtnode['name'] = i.contents[1].contents[0].text
             cmtnode['id'] = i.contents[1].contents[2].text
-            cmtnode['body'] = manuzelize(i.contents[3].renderContents())
+            cmtnode['body'] = i.contents[3].renderContents()
             cmtnode['date'] = i.contents[5].text
 
             if zbllist.has_key(cnt):
