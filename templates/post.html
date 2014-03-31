@@ -112,7 +112,11 @@ var picupParams = {
   'referrerName': 'flexigate',
   'purpose': 'ExCF Mobile Gateway',
   'debug': 'false',
-  'imageSize': '1280',
+{% if size %}
+  'imageSize': '{{size}}',
+{% else %}
+  'imageSize': null,
+{% endif %}
   'returnServerResponse': 'true',
   'postImageParam': 'filedata',
   'postURL': escape('{{base_url}}/post/picup/{{bid}}'),

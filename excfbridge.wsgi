@@ -11,10 +11,11 @@ for i in path:
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
+patch_all()
+
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
 
-patch_all()
 
-WSGIServer(('', 8000), application).serve_forever()
+#WSGIServer(('', 8000), application).serve_forever()
 

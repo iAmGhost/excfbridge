@@ -18,8 +18,7 @@
 <input type='hidden' name='domain' value='mobile' />
 <h4>사진 업로드시 리사이징 최대 해상도</h4>
 <input type='text' name='resize' value='{{ prefs.photo_resize }}' /><br />
-0: 리사이징하지 않음, 최소 해상도: 450<br />
-iPhone/iPod touch/iPad는 적용되지 않습니다.
+0: 리사이징하지 않음, 최소 해상도: 450
 <h4>색상 설정</h4>
 <label><input type='radio' name='css' value='light' {% if prefs.template == 'light' %}checked='checked'{% endif %}>밝은 색상</label><br />
 <label><input type='radio' name='css' value='dark' {% if prefs.template == 'dark' %}checked='checked'{% endif %}>어두운 색상 (AMOLED 디스플레이를 위한)</label><br />

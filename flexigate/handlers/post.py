@@ -149,7 +149,9 @@ def handle_article_get(request, path):
     try:
         redirect_if_no_session(request)
 
-        sess = registry.query(get_session_id(request))
+        sid = get_session_id(request)
+        sess = registry.query(sid)
+        prefs = registry.get_prefs(sid)
 
         dest = check_arg(path)
         if not dest:
@@ -173,13 +175,19 @@ def handle_article_get(request, path):
         if request.META['HTTP_USER_AGENT']:
             ua = request.META['HTTP_USER_AGENT']
             if (('iPhone' in ua or 'iPod' in ua) and 'iPhone OS' in ua) or 'iPad' in ua:
-                data['iphone'] = True
-                data['session'] = md5(request.COOKIES['session']).hexdigest()
+                if 'OS 6_' in ua or 'OS 7_' in ua:
+                    pass
+                else:
+                    data['iphone'] = True
+                    data['session'] = md5(request.COOKIES['session']).hexdigest()
 
         if dest == 'free':
             zantan = 15 - get_zantan(request)
             if zantan:
                 data['zantan'] = zantan
+
+        if prefs.photo_resize:
+            data['size'] = prefs.photo_resize
     
         data['bid'] = dest
         data['target'] = '/post/%s' % dest

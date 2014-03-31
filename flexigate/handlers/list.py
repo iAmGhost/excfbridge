@@ -27,6 +27,7 @@ from django.shortcuts import render_to_response
 
 from flexigate import remote, pagedefs
 from flexigate.parser import parser
+from flexigate.parsers.common import get_my_nickname
 from flexigate.parsers import common
 from flexigate.tools import *
 from settings import TARGET_SITE, TARGET_ENCODING
@@ -53,6 +54,7 @@ def handle(request, path):
         try:
             page = int(args[base])
             base += 1
+
         except:
             pass
 
