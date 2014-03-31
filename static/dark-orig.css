@@ -3,8 +3,8 @@
 }
 
 body {
-    color: black;
-    background-color: white;
+    color: white;
+    background-color: black;
     font-size: 14px;
     margin: 0;
     padding: 0;
@@ -14,7 +14,7 @@ body {
 }
 
 a {
-    color: #000f0f;
+    color: #fff0f0;
 }
 
 table, tr, td {
@@ -46,7 +46,7 @@ a:link {
 
 #picup a:link {
     font-weight: bold;
-    color: #5ad5d5;
+    color: brown;
 }
 
 #topnav {
@@ -57,28 +57,28 @@ a:link {
 
 #view_header th {
     width: 60px;
-    background-color: #a8f1f1;
+    background-color: #570e0e;
 }
 
 #view_header td {
     padding-top: 7px;
     padding-bottom: 7px;
     padding-left: 10px;
-    border-bottom: 1px solid #ddeeee;
-    background-color: #cffafa;
+    border-bottom: 1px solid #221111;
+    background-color: #300505;
 }
 
 #comments {
-    border-top: 1px solid #dfeded;
-    border-bottom: 1px solid #dfeded;
+    border-top: 1px solid #201212;
+    border-bottom: 1px solid #201212;
 }
 
 #comments .header {
-    background-color: #b0f8d8;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b0f8d8), to(white));
-    background-image: -webkit-linear-gradient(top, #b0f8d8, white);
-    background-image: -moz-linear-gradient(top, #b0f8d8, white);
-    background-image: -ms-linear-gradient(top, #b0f8d8, white);
+    background-color: #4f0727;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4f0727), to(black));
+    background-image: -webkit-linear-gradient(top, #4f0727, black);
+    background-image: -moz-linear-gradient(top, #4f0727, black);
+    background-image: -ms-linear-gradient(top, #4f0727, black);
 }
 
 #comments .author {
@@ -118,20 +118,20 @@ table {
 }
 
 #list th {
-    background-color: #b0fafa;
+    background-color: #4f0505;
     padding-top: 0.8em;
     padding-bottom: 0.8em;
-    border-bottom: 1px solid #e0eeee;
+    border-bottom: 1px solid #1f1111;
 }
 
 #list td {
-    border-bottom: 1px solid #e0eeee;
+    border-bottom: 1px solid #1f1111;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
 }
 
 th {
-    background-color: #f7f7f7;
+    background-color: #080808;
 }
 
 .column_author {
@@ -146,7 +146,7 @@ th {
 }
 
 #list .highlight {
-    background-color: #7fafff;
+    background-color: #805000;
 }
 
 input, textarea {
@@ -156,7 +156,7 @@ input, textarea {
 }
 
 #list .header {
-    background-color: #aaffff;
+    background-color: #550000;
     font-weight: bold;
     border-radius: 4px;
     padding: 2px 5px 2px 5px;
@@ -165,14 +165,14 @@ input, textarea {
 .comment, .delete {
     font-size: 0.9em;
     padding: 2px 5px 2px 5px;
-    background-color: #1ff4be;
-    color: black; 
+    background-color: #e00b41;
+    color: white; 
     border-radius: 4px;
 }
 
 .emph {
     text-weight: bold;
-    color: #00ffff;
+    color: #ff0000;
 }
 
 embed {
@@ -202,9 +202,9 @@ img {
 #postcomment #input_comment {
     height: 2em;
     word-wrap: break-word;
-    border: 1px solid #335555;
-    background: #c8e0ea;
-    color: black;
+    border: 1px solid #ccaaaa;
+    background: #371f15;
+    color: white;
 }
 
 #postcomment #input_submit {
@@ -234,9 +234,9 @@ img {
     margin-left: auto;
     margin-right: auto;
     width: 90%;
-    border: 1px solid #335555;
-    background: #c8e0ea;
-    color: black;
+    border: 1px solid #ccaaaa;
+    background: #371f15;
+    color: white;
 }
 
 #post .file {
@@ -252,11 +252,11 @@ img {
     margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color: #40e2e2;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#40e2e2), to(#8cf5f5));
-    background-image: -webkit-linear-gradient(top, #40e2e2, #8cf5f5);
-    background-image: -moz-linear-gradient(top, #40e2e2, #8cf5f5);
-    background-image: -ms-linear-gradient(top, #40e2e2, #8cf5f5);
+    background-color: #bf1d1d;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bf1d1d), to(#730a0a));
+    background-image: -webkit-linear-gradient(top, #bf1d1d, #730a0a);
+    background-image: -moz-linear-gradient(top, #bf1d1d, #730a0a);
+    background-image: -ms-linear-gradient(top, #bf1d1d, #730a0a);
 }
 
 #header select {
@@ -264,7 +264,7 @@ img {
 }
 
 h2 {
-    color: black;
+    color: white;
     font-size: 1.2em;
     padding-left: 10px;
 }
@@ -273,7 +273,7 @@ h2 {
     float: right;
     font-size: 0.9em;
     margin-right: 0.4em;
-    color: black;
+    color: white;
 }
 
 #error {
@@ -287,11 +287,11 @@ h2 {
     border-radius: 5px;
     background: black;
     padding: 0.4em 0.5em 0.4em 0.5em;
-    color: black;
+    color: white;
 }
 
 #error .button {
-    background-color: #69cfcf;
+    background-color: #963030;
 }
 
 #body {
@@ -337,12 +337,12 @@ a:visited {
     display: block;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
-    background-color: #57d8b4;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#96f0d7), to(#57d8b4));
-    background-image: -webkit-linear-gradient(top, #96f0d7, #57d8b4);
-    background-image: -moz-linear-gradient(top, #96f0d7, #57d8b4);
-    background-image: -ms-linear-gradient(top, #96f0d7, #57d8b4);
-    color: black;
+    background-color: #a8274b;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#690f28), to(#a8274b));
+    background-image: -webkit-linear-gradient(top, #690f28, #a8274b);
+    background-image: -moz-linear-gradient(top, #690f28, #a8274b);
+    background-image: -ms-linear-gradient(top, #690f28, #a8274b);
+    color: white;
     border-radius: 4px;
 }
 
@@ -351,24 +351,24 @@ a:visited {
     display: block;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
-    border: 1px solid #9bffff;
-    background-color: #d9fcf5;
+    border: 1px solid #640000;
+    background-color: #26030a;
     border-radius: 4px;
 }
 
 .pagenav .btnhighlight {
-    background-color: #4fcfb8;
-    color: black;
+    background-color: #b03047;
+    color: white;
 }
 
 #footer {
     margin-top: 30px;
     padding: 20px 0 20px 0;
-    background-color: #bfffff;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#bfffff));
-    background-image: -webkit-linear-gradient(top, white, #bfffff);
-    background-image: -moz-linear-gradient(top, white, #bfffff);
-    background-image: -ms-linear-gradient(top, white, #bfffff);
+    background-color: #400000;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(#400000));
+    background-image: -webkit-linear-gradient(top, black, #400000);
+    background-image: -moz-linear-gradient(top, black, #400000);
+    background-image: -ms-linear-gradient(top, black, #400000);
     font-size: 0.9em;
     line-height: 150%;
     text-align: center;
@@ -390,7 +390,7 @@ a:visited {
 #privmsg {
     margin: 3px;
     padding: 2px;
-    border: 1px solid #33ffff;
+    border: 1px solid #cc0000;
     border-radius: 5px;
 }
 
@@ -399,17 +399,17 @@ a:visited {
     margin: 2px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background: #003333;
+    background: #ffcccc;
     border-radius: 5px;
     display: block;
-    color: #66ffff;
+    color: #990000;
     font-weight: bold;
 }
 
 .notice {
     margin: 3px;
     padding: 2px;
-    border: 1px solid #200d58;
+    border: 1px solid #dff2a7;
     border-radius: 5px;
 }
 
@@ -418,10 +418,10 @@ a:visited {
     margin: 3px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background: #0c004a;
+    background: #f3ffb5;
     border-radius: 5px;
     display: block;
-    color: #638cbb;
+    color: #9c7344;
     font-weight: bold;
 }
 
@@ -438,7 +438,7 @@ a:visited {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #efefef;
+    background-color: #101010;
     border-radius: 4px;
 }
 
@@ -446,14 +446,14 @@ a:visited {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #38a9a9;
+    background-color: #c75656;
     color: white;
     border-radius: 4px;
 }
 
 #popup {
     position: fixed;
-    background: rgba(183, 223, 245, 0.9);
+    background: rgba(72, 32, 10, 0.9);
     top: 0px;
     left: 0px;
     width: 100%;
@@ -469,7 +469,7 @@ a:visited {
     text-align: center;
     width: 100%;
     font-size: 1.6em;
-    border-bottom: #5fc8df 2px solid;
+    border-bottom: #a03720 2px solid;
     padding-top: 20px;
 }
 
@@ -488,18 +488,18 @@ a:visited {
 }
 
 #popup a {
-    color: #002121;
+    color: #ffdede;
 }
 
 #footer a {
-    color: #002222;
+    color: #ffdddd;
     font-weight: bold;
 }
 
 input[type="text"], input[type="password"], textarea {
-    border: 1px solid #335555;
-    background: #c8e0ea;
-    color: black;
+    border: 1px solid #ccaaaa;
+    background: #371f15;
+    color: white;
 }
 
 #adjpost {
@@ -531,7 +531,7 @@ section {
 }
 
 section h3 {
-    border-bottom: #111100 2px solid;
+    border-bottom: #eeeeff 2px solid;
 }
 
 section input[type=submit] {

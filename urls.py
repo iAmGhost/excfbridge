@@ -27,6 +27,7 @@ from django.conf.urls.defaults import *
 
 from flexigate.handlers.admin import handle as admin
 from flexigate.handlers.config import handle as config
+from flexigate.handlers.aprilfools import handle as toggle
 from flexigate.handlers.delete import handle_delete_post as delete, handle_delete_comment as delete_comment
 from flexigate.handlers.index import handle as index
 from flexigate.handlers.list import handle as listing
@@ -59,6 +60,7 @@ urlpatterns = patterns('',
     (r'^inbox/to/([0-9]*)$', inbox_send),
     (r'^inbox/delete/([0-9]*)$', inbox_delete),
     (r'^inbox/([0-9]*)$', inbox_list),
+    (r'^toggle', toggle),
 )
 
 

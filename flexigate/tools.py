@@ -118,6 +118,11 @@ def default_template_vars(title, request, location=None):
     if sess and sess[0].startswith('asdsadgj'):
         raise Exception
 
+    if 'aprilfools' in request.COOKIES:
+        out['aprilfools'] = True
+    else:
+        out['aprilfools'] = False
+
     pages = []
     for i in PAGES:
         pages.append({'id': i[0], 'location': i[1], 'name': i[2]})

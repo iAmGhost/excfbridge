@@ -8,7 +8,11 @@
     <link rel='apple-touch-icon' href='/static/touch-icon.png' />
     <title>ExCF | {{title}}</title>
     <style type="text/css">
+      {% if aprilfools %}
+      @import url('/static/{% if css %}{{css}}{% else %}light{% endif %}-orig.css');
+      {% else %}
       @import url('/static/{% if css %}{{css}}{% else %}light{% endif %}.css');
+      {% endif %}
     </style>
     <script type="text/javascript" src="/static/common.js"></script>
     <script type="text/javascript">
@@ -65,6 +69,11 @@
       <a href='mailto:segfault87@gmail.com'>문의</a>
 {% if admin %}
       | <a href='/admin'>관리자</a>
+{% endif %}
+{% if aprilfools %}
+      | <a href='/toggle'>좋아요</a>
+{% else %}
+      | <a href='/toggle'>싫어요</a>
 {% endif %}
     </div>
   </body>
