@@ -4,6 +4,7 @@
 {% if iphone %}
 <script type='text/javascript' src='/static/picup.js'></script>
 {% endif %}
+<script type='text/javascript' src='/static/sexiercf.js'></script>
 <script type='text/javascript'>
 var imgtags = '';
 var posdata = null;
@@ -17,6 +18,7 @@ function validate() {
   //nodoubleclick(document.getElementById('post_submit'));
 
   var elem = document.getElementById('post_contents');
+  elem.value = sexiercf_contentreplacer(elem.value);
 
 {% if iphone %}
   if (imgtags)
@@ -101,7 +103,10 @@ function add_file_upload_form() {
   div.appendChild(del);
 
   var fileuploads = document.getElementById('fileuploads');
-  fileuploads.appendChild(div);
+  if (fileuploads) {
+    fileuploads.appendChild(div);
+  }
+  
 
   ++cnt;
 }
@@ -152,8 +157,8 @@ function init() {
       Cookies.erase('unsaved_subject');
       Cookies.erase('unsaved_body');
     }
-{% endif %}
   }
+{% endif %}
 }
 
 window.onload = init;
