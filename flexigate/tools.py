@@ -36,6 +36,12 @@ class redirection(Exception):
         self.where = redirection
 
 cnt = 0
+
+def redirect_if_no_adult_check(request):
+    redir = redirect('/adult_check?%s' % urllib.urlencode({'redirect': request.path.encode('utf-8')}))
+
+    raise redirection(redir)
+
 def redirect_if_no_session(request):
     global cnt
 
