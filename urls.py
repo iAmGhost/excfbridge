@@ -35,7 +35,11 @@ from flexigate.handlers.modify import handle as modify
 from flexigate.handlers.post import handle_article as post, handle_comment as post_comment, handle_picup as post_picup
 from flexigate.handlers.signon import handle_signon as signon, handle_signoff as signoff
 from flexigate.handlers.view import handle as view
-from flexigate.handlers.inbox import handle_list as inbox_list, handle_view as inbox_view, handle_send as inbox_send, handle_delete as inbox_delete
+from flexigate.handlers.inbox import handle_list as inbox_list, handle_view as inbox_view, handle_send as inbox_send, \
+        handle_delete as inbox_delete
+from flexigate.handlers.inbox_sent import handle_list as inbox_sent_list, handle_view as inbox_sent_view, handle_delete as inbox_sent_delete
+from flexigate.handlers.adult_check import handle_adult_check as adult_check
+
 
 import settings
 
@@ -60,7 +64,11 @@ urlpatterns = patterns('',
     (r'^inbox/to/([0-9]*)$', inbox_send),
     (r'^inbox/delete/([0-9]*)$', inbox_delete),
     (r'^inbox/([0-9]*)$', inbox_list),
+    (r'^inbox_sent/([0-9]*)$', inbox_sent_list),
+    (r'^inbox_sent/view/([0-9]*)$', inbox_sent_view),
+    (r'^inbox_sent/delete/([0-9]*)$', inbox_sent_delete),
     (r'^toggle', toggle),
+    (r'^adult_check', adult_check),
 )
 
 

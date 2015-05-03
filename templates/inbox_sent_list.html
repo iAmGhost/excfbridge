@@ -1,0 +1,39 @@
+{% extends "skel.html" %}
+
+{% block body %}
+{% autoescape off %}
+<table id='list'>
+  <thead>
+    <tr>
+      <th>제목</th>
+      <th class='column_author'>보낸이</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for message in message_lists %}
+    <tr {% if message.unread %}class='highlight'{% endif %}>
+      <td><a href='{{message.link}}'>{{message.topic}}</a></td>
+      <td class='column_sender'>{{message.sender}}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+<div id='pagenav_container'>
+  <table class='pagenav'>
+    <tbody>
+      <tr>
+{% if not 1 in pages %}
+	<td><a href='/inbox_sent'>&lt;</a></td>
+{% endif %}
+{% for p in pages %}
+        <td><a {% if p == page %}class='btnhighlight'{% endif %} href='/inbox_sent/{{p}}'>{{p}}</a></td>
+{% endfor %}
+{% if maxpages and not maxpages in pages %}
+	<td><a href='/inbox_sent/{{maxpages}}'>&gt;</a></td>
+{% endif %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endautoescape %}
+{% endblock %}

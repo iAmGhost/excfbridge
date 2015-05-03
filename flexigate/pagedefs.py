@@ -33,6 +33,7 @@ PAGE_IDS = {
     'playground': 'ev',
     'game': 'game',
     'eatball': 'eatball',
+    'that': 'ddf',
 }
 
 PAGE_NAMES = {
@@ -43,7 +44,9 @@ PAGE_NAMES = {
     'playground': u'놀이 게시판',
     'game': u'오락실',
     'inbox': u'쪽지함',
+    'inbox_sent': u'보낸 쪽지함',
     'eatball': u'먹',
+    'that': u'그게시판',
 }
 
 PAGE_PARSERS = {
@@ -54,6 +57,7 @@ PAGE_PARSERS = {
     'playground': excf_new,
     'game': excf_new,
     'eatball': excf_new,
+    'that': excf_new,
 }
 
 PAGES = (
@@ -64,5 +68,7 @@ PAGES = (
     ('playground', '/list/playground', PAGE_NAMES['playground']),
     ('game', '/list/game', PAGE_NAMES['game']),
     ('eatball', '/list/eatball', PAGE_NAMES['eatball']),
+    ('that', '/list/that', PAGE_NAMES['that']),
     ('inbox', '/inbox', PAGE_NAMES['inbox']),
+    ('inbox_sent', '/inbox_sent', PAGE_NAMES['inbox_sent']),
 )
