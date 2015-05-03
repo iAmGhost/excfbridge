@@ -35,10 +35,7 @@ class redirection(Exception):
     def __init__(self, redirection):
         self.where = redirection
 
-cnt = 0
 def redirect_if_no_session(request):
-    global cnt
-
     # we have to kill inactive session first.
     registry.flush_outdated()
 
@@ -55,24 +52,13 @@ def redirect_if_no_session(request):
         ret = True
 
     if ret:
-        f = open('/var/log/flexigate/session_log_%d' % (cnt, ), 'w')
-        f.write(repr(request))
-        f.close()
-        cnt += 1
         raise redirection(redir)
 
     # there is an activity
     registry.touch(sid)
 
 def redirect_if_not_signed_on(request, page, soup, pagedef):
-    global cnt
-
     if not pagedef.check_session(request, page, soup):
-        f = open('/var/log/flexigate/signout_log_%d' % (cnt, ), 'w')
-        f.write('request: %s\n%s' % (repr(request), page.encode('utf-8')))
-        f.close()
-        cnt += 1
-
         # Remote session is expired
         redir = redirect('/signon?%s' % urllib.urlencode({'redirect': request.path})) 
         force_sign_out(request, redir)
@@ -118,10 +104,10 @@ def default_template_vars(title, request, location=None):
     if sess and sess[0].startswith('asdsadgj'):
         raise Exception
 
-    if 'aprilfools' in request.COOKIES:
-        out['aprilfools'] = True
-    else:
-        out['aprilfools'] = False
+    #if 'aprilfools' in request.COOKIES:
+    #    out['aprilfools'] = True
+    #else:
+    #    out['aprilfools'] = False
 
     pages = []
     for i in PAGES:

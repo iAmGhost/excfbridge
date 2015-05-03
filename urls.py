@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 
 from flexigate.handlers.admin import handle as admin
 from flexigate.handlers.config import handle as config
