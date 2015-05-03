@@ -31,6 +31,6 @@ if UPLOAD == 'imageshack':
 else:
     from flexigate.uploaders import local as uploader
 
-def upload(request, fileobj, size=UPLOAD_LOCAL_SIZE, sid=None):
-    return uploader.upload(request, fileobj, size=size, sid=sid)
+def upload(request, fileobj, size=UPLOAD_LOCAL_SIZE, sid=None, bid=None, uid=None):
+    return uploader.upload(request, fileobj, size=size, sid=sid, bid=bid, uid=uid)
 

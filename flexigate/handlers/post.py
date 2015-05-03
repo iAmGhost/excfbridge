@@ -94,6 +94,7 @@ def handle_article_post(request, path):
     try:
         redirect_if_no_session(request)
         sid = get_session_id(request)
+        sess = registry.query(sid)
         
         dest = check_arg(path)
         if not dest:
@@ -113,7 +114,7 @@ def handle_article_post(request, path):
         for f in keys:
             try:
                 prefs = registry.get_prefs(sid)
-                url = uploader.upload(request, request.FILES[f], size=prefs.photo_resize)
+                url = uploader.upload(request, request.FILES[f], size=prefs.photo_resize, bid=dest, uid=sess[0])
                 cx = '<img src=\'%s\' alt=\'%s\' />\n\n' % (url, request.FILES[f].name)
             except Exception, e:
                 cx = u'업로드 실패하였습니다: <b>%s</b> (%s)\n\n' % (request.FILES[f].name, str(e))
@@ -175,7 +176,7 @@ def handle_article_get(request, path):
         if request.META['HTTP_USER_AGENT']:
             ua = request.META['HTTP_USER_AGENT']
             if (('iPhone' in ua or 'iPod' in ua) and 'iPhone OS' in ua) or 'iPad' in ua:
-                if 'OS 6_' in ua or 'OS 7_' in ua:
+                if 'OS 6_' in ua or 'OS 7_' in ua or 'OS 8_' in ua:
                     pass
                 else:
                     data['iphone'] = True

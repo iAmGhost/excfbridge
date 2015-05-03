@@ -54,6 +54,11 @@ class parser(parser):
                 categories.append({'value': i['value'], 'name': i.text, 'selected': selected})
         output['categories'] = categories
 
+        if unicode(soup.find('title').text) == u'성인인증':
+            output['no_adult_check'] = True
+
+            return output
+
         # pages
         pager = soup.find('div', {'class': 'navbar_center'})
         prev_div = pager.find('a', {'class': 'prev_div'})

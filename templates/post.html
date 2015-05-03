@@ -9,6 +9,17 @@
 var imgtags = '';
 var posdata = null;
 
+function togglePostHelp() {
+  var help = document.getElementById("post_help");
+
+  if (help.style.display == "none") {
+    help.style.display = "block";
+  } else {
+    help.style.display = "none";
+  }
+}
+
+
 function validate() {
   if (!document.getElementById('post_subject').value || !document.getElementById('post_contents').value) {
     alert('본문을 입력해 주십시오.');
@@ -164,6 +175,23 @@ function init() {
 window.onload = init;
 </script>
 <div id='post'>
+<table class='nav'>
+  <tbody>
+    <tr>
+      <td colspan=2><a href='#' onClick="togglePostHelp();">글쓰기 도움말</a></td>
+    <tr>
+  </tbody>
+</table>
+<div id="post_help" style="text-align: left; display: none;">
+<p>
+이미지 태그: <br/>
+이미지 주소 앞에 #를 붙이면 자동으로 &lt;img&gt; 태그로 변경됩니다.
+</p>
+<p>
+유튜브: <br/>
+유튜브 주소를 넣으면 자동으로 embed 태그로 변경됩니다.
+</p>
+</div>
 {% if zantan %}
   <p>잔탄 수: {{zantan}}</p>
 {% endif %}

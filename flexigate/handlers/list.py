@@ -108,6 +108,10 @@ def handle(request, path):
             return error_forward(request, errmsg)
 
         output = pagedefs.PAGE_PARSERS[dest].parse_list(dest, html, soup)
+
+        if output.get('no_adult_check', False):
+            redirect_if_no_adult_check(request)
+
         output['bid'] = dest
         output['page'] = page
         output['search'] = search

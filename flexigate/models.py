@@ -117,5 +117,5 @@ class auditlog(models.Model):
     
 class prefs(models.Model):
     userid = models.CharField(max_length=20, primary_key=True)
-    photo_resize = models.IntegerField(default=1600)
+    photo_resize = models.IntegerField(default=1280)
     template = models.CharField(max_length=15, default='light')

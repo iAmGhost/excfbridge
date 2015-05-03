@@ -1,0 +1,30 @@
+{% extends "skel.html" %}
+
+{% block body %}
+{% autoescape off %}
+<table id='view_header'>
+  <tr>
+    <th>받은이</th>
+    <td><span class='name'>{{name}}</span> <span class='id'>({{userid}})</span></td>
+  </tr>
+  <tr>
+    <th>시각</th>
+    <td>{{date}}</td>
+  </tr>
+  <tr>
+    <th>제목</th>
+    <td>{{topic}}</td>
+  </tr>
+</table>
+<div id='view_body'>
+{{body}}
+</div>
+<table class='nav'>
+  <tbody>
+    <tr>
+      <td><a href='/inbox_sent'>목록</a></td>
+      <td><a href='/inbox_sent/delete/{{no}}' onclick='return confirmDelete();'>삭제</a></td>
+  </tbody>
+</table>
+{% endautoescape %}
+{% endblock %}

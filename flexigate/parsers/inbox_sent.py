@@ -38,24 +38,17 @@ def parse_list(page, soup):
             item['unread'] = True
 
         item['topic'] = msg.contents[5].text
-        item['link'] = '/inbox/view/%d' % int(no_matcher.match(msg.contents[5].contents[3]['href']).group(1))
+        item['link'] = '/inbox_sent/view/%d' % int(no_matcher.match(msg.contents[5].contents[3]['href']).group(1))
         item['sender'] = msg.contents[7].contents[3].text
 
         messages.append(item)
     data['message_lists'] = messages
 
     pages = soup.findAll('table', {'cellpadding': '5'})[1].text.replace('&nbsp;', '')
-    pagesp = pages.replace('[', ' ').replace(']', ' ').strip().split()[-1]
-    try:
-        maxpages = int(pagesp[-1])
-    except ValueError:
-        try:
-            maxpages = int(pagesp[-2])
-        except ValueError:
-            maxpages = 10
-    data['maxpages'] = maxpages
+    data['maxpages'] = int(pages.replace('[', ' ').replace(']', ' ').strip().split()[-1])
 
     return data
+
     
 def parse_view(page, soup):
     data = {}
@@ -73,14 +66,5 @@ def parse_view(page, soup):
 
     uidlink = body[8].contents[3].contents[0]['href']
     data['uid'] = int(no_matcher.match(uidlink).group(1))
-
-    return data
-
-def parse_new(page, soup):
-    data = {}
-
-    namestr = soup.find('font', {'color': 'brown'}).text.split()
-    data['name'] = namestr[1].replace('&nbsp;', '')[1:-1]
-    data['userid'] = namestr[0]
 
     return data

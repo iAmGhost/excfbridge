@@ -67,9 +67,9 @@ def handle(request, path):
         if errcode:
             return error_forward(request, errmsg)
 
-        if not 'aprilfools' in request.COOKIES:
-            for x in soup.findAll('img'):
-                x['src'] = 'http://prx.influx.kr/convert/negate?uri=%s' % (urllib.quote(x['src']))
+        #if not 'aprilfools' in request.COOKIES:
+        #    for x in soup.findAll('img'):
+        #        x['src'] = 'http://prx.influx.kr/convert/negate?uri=%s' % (urllib.quote(x['src']))
 
         output = pagedefs.PAGE_PARSERS[dest].parse_view(dest, html, soup)
         output['bid'] = dest

@@ -9,18 +9,16 @@ body {
     font-family: Helvetica, AppleGothic, sans-serif;
     letter-spacing: 0px;
     display: block;
-    background-color: black;
-    color: white;
 }
 
 a {
-    color: #ededed;
+    color: #121212;
 }
 
 table, tr, td {
     border: 0;
     border-spacing: 0;
-    border-color: black;
+    border-color: white;
 //    margin: 0;
 //    padding: 0;
 }
@@ -60,28 +58,28 @@ a:link {
 
 #view_header th {
     width: 60px;
-    background-color: #241600;
+    background-color: #dbe9ff;
 }
 
 #view_header td {
     padding-top: 7px;
     padding-bottom: 7px;
     padding-left: 10px;
-    border-bottom: 1px solid #111111;
-    background-color: #0f0600;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #f0f9ff;
 }
 
 #comments {
-    border-top: 1px solid #222222;
-    border-bottom: 1px solid #222222;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
 }
 
 #comments .header {
-    background-color: #1e140a;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1e140a), to(black));
-    background-image: -webkit-linear-gradient(top, #1e140a, black);
-    background-image: -moz-linear-gradient(top, #1e140a, black);
-    background-image: -ms-linear-gradient(top, #1e140a, black);
+    background-color: #e1ebf5;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e1ebf5), to(white));
+    background-image: -webkit-linear-gradient(top, #e1ebf5, white);
+    background-image: -moz-linear-gradient(top, #e1ebf5, white);
+    background-image: -ms-linear-gradient(top, #e1ebf5, white);
 }
 
 #comments .author {
@@ -121,20 +119,20 @@ table {
 }
 
 #list th {
-    background-color: #241600;
+    background-color: #dbe9ff;
     padding-top: 0.8em;
     padding-bottom: 0.8em;
-    border-bottom: 1px solid #121212;
+    border-bottom: 1px solid #ededed;
 }
 
 #list td {
-    border-bottom: 1px solid #121212;
+    border-bottom: 1px solid #ededed;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
 }
 
 th {
-    background-color: #070707;
+    background-color: #f8f8f8;
 }
 
 .column_author {
@@ -149,7 +147,7 @@ th {
 }
 
 #list .highlight {
-    background-color: #002200;
+    background-color: #ffddff;
 }
 
 input, textarea {
@@ -159,7 +157,7 @@ input, textarea {
 }
 
 #list .header {
-    background-color: #130e10;
+    background-color: #ecf1ef;
     font-weight: bold;
     border-radius: 4px;
     padding: 2px 3px 2px 3px;
@@ -168,14 +166,14 @@ input, textarea {
 .comment, .delete {
     font-size: 0.9em;
     padding: 2px 5px 2px 5px;
-    background-color: #e57d08;
-    color: black; 
+    background-color: #1a82f7;
+    color: white; 
     border-radius: 4px;
 }
 
 .emph {
     text-weight: bold;
-    color: #00ffff;
+    color: #ff0000;
 }
 
 embed {
@@ -246,16 +244,16 @@ img {
 
 #header {
     width: 100%
-    border-top: 1px solid #dddddd;
+    border-top: 1px solid #222222;
     margin: 0;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #dddddd;
-    background-color: #d8ae30;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d8ae30), to(#e1ce96));
-    background-image: -webkit-linear-gradient(top, #d8ae30, #e1ce96);
-    background-image: -moz-linear-gradient(top, #d8ae30, #e1ce96);
-    background-image: -ms-linear-gradient(top, #d8ae30, #e1ce96);
+    border-bottom: 1px solid #222222;
+    background-color: #2751cf;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2752cf), to(#1e3169));
+    background-image: -webkit-linear-gradient(top, #2752cf, #1e3169);
+    background-image: -moz-linear-gradient(top, #2752cf, #1e3169);
+    background-image: -ms-linear-gradient(top, #2752cf, #1e3169);
 }
 
 #header select {
@@ -263,7 +261,7 @@ img {
 }
 
 h2 {
-    color: black;
+    color: white;
     font-size: 1.2em;
     padding-left: 10px;
 }
@@ -286,11 +284,11 @@ h2 {
     border-radius: 5px;
     background: black;
     padding: 0.4em 0.5em 0.4em 0.5em;
-    color: black;
+    color: white;
 }
 
 #error .button {
-    background-color: #d99921;
+    background-color: #2666de;
 }
 
 #body {
@@ -308,7 +306,7 @@ a:visited {
 
 .nav {
     margin-top: 10px;
-    border: 1px solid #111111;
+    border: 1px solid #eeeeee;
     padding: 2px;
     border: none;
 }
@@ -323,7 +321,7 @@ a:visited {
     margin-right: auto;
 
     margin-bottom: 10px;
-    border: 1px solid #111111;
+    border: 1px solid #eeeeee;
     padding: 2px;
     margin-top: 3px;
     border: none;
@@ -340,12 +338,12 @@ a:visited {
     display: block;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
-    background-color: #e57d08;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ebca9c), to(#e57d08));
-    background-image: -webkit-linear-gradient(top, #ebca9c, #e57d08);
-    background-image: -moz-linear-gradient(top, #ebca9c, #e57d08);
-    background-image: -ms-linear-gradient(top, #ebca9c, #e57d08);
-    color: black;
+    background-color: #1a82f7;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#143563), to(#1a82f7));
+    background-image: -webkit-linear-gradient(top, #143563, #1a82f7);
+    background-image: -moz-linear-gradient(top, #143563, #1a82f7);
+    background-image: -ms-linear-gradient(top, #143563, #1a82f7);
+    color: white;
     border-radius: 4px;
 }
 
@@ -354,24 +352,24 @@ a:visited {
     display: block;
     padding-top: 0.4em;
     padding-bottom: 0.4em;
-    border: 1px solid #333333;
-    background-color: #140a00;
+    border: 1px solid #cccccc;
+    background-color: #ebf5ff;
     border-radius: 4px;
 }
 
 .pagenav .btnhighlight {
-    background-color: #db750f;
-    color: black;
+    background-color: #248af0;
+    color: white;
 }
 
 #footer {
     margin-top: 30px;
     padding: 20px 0 20px 0;
-    background-color: #1f0c00;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(#1f0c00));
-    background-image: -webkit-linear-gradient(top, black, #1f0c00);
-    background-image: -moz-linear-gradient(top, black, #1f0c00);
-    background-image: -ms-linear-gradient(top, black, #1f0c00);
+    background-color: #e0f3ff;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), to(#e0f3ff));
+    background-image: -webkit-linear-gradient(top, white, #e0f3ff);
+    background-image: -moz-linear-gradient(top, white, #e0f3ff);
+    background-image: -ms-linear-gradient(top, white, #e0f3ff);
     font-size: 0.9em;
     line-height: 150%;
     text-align: center;
@@ -393,7 +391,7 @@ a:visited {
 #privmsg {
     margin: 3px;
     padding: 2px;
-    border: 1px solid #33ffff;
+    border: 1px solid #cc0000;
     border-radius: 5px;
 }
 
@@ -402,17 +400,17 @@ a:visited {
     margin: 2px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background: #003333;
+    background: #ffcccc;
     border-radius: 5px;
     display: block;
-    color: #66ffff;
+    color: #990000;
     font-weight: bold;
 }
 
 .notice {
     margin: 3px;
     padding: 2px;
-    border: 1px solid #200d58;
+    border: 1px solid #dff2a7;
     border-radius: 5px;
 }
 
@@ -421,10 +419,10 @@ a:visited {
     margin: 3px;
     padding-top: 5px;
     padding-bottom: 5px;
-    background: #0c004a;
+    background: #f3ffb5;
     border-radius: 5px;
     display: block;
-    color: #638cbb;
+    color: #9c7344;
     font-weight: bold;
 }
 
@@ -441,7 +439,7 @@ a:visited {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #000000;
+    background-color: #ffffff;
     border-radius: 4px;
 }
 
@@ -449,14 +447,14 @@ a:visited {
     margin-top: 4px;
     margin-bottom: 4px;
     padding: 4px;
-    background-color: #db750f;
-    color: black;
+    background-color: #248af0;
+    color: white;
     border-radius: 4px;
 }
 
 #popup {
     position: fixed;
-    background: rgba(13, 7, 0, 0.9);
+    background: rgba(242, 248, 255, 0.9);
     top: 0px;
     left: 0px;
     width: 100%;
@@ -472,7 +470,7 @@ a:visited {
     text-align: center;
     width: 100%;
     font-size: 1.6em;
-    border-bottom: #443311 2px solid;
+    border-bottom: #bbccee 2px solid;
     padding-top: 20px;
 }
 
@@ -491,11 +489,11 @@ a:visited {
 }
 
 #popup a {
-    color: #cccc77;
+    color: #333388;
 }
 
 #footer a {
-    color: #dddddd;
+    color: #222222;
     font-weight: bold;
 }
 
@@ -528,7 +526,7 @@ section {
 }
 
 section h3 {
-    border-bottom: #111100 2px solid;
+    border-bottom: #eeeeff 2px solid;
 }
 
 section input[type=submit] {

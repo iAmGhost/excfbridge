@@ -30,10 +30,10 @@ import random
 def handle(request):
     response = redirect('/')
 
-    if request.COOKIES.has_key('aprilfools'):
-        response.delete_cookie('aprilfools')
-    else:
-        response.set_cookie('aprilfools', '1')
+    #if request.COOKIES.has_key('aprilfools'):
+    #    response.delete_cookie('aprilfools')
+    #else:
+    #    response.set_cookie('aprilfools', '1')
 
     return response
 

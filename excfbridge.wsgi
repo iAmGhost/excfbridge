@@ -17,5 +17,5 @@ import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
 
 
-#WSGIServer(('', 8000), application).serve_forever()
+#WSGIServer(('', 8002), application).serve_forever()
 

@@ -1,0 +1,37 @@
+{% extends "skel.html" %}
+
+{% block body %}
+<script type='text/javascript'>
+  function validate() {
+    if (!document.getElementById('ssn1').value || !document.getElementById('ssn2').value) {
+      alert('주민등록번호를 정확히 입력하여 주십시오.');
+      return false;
+    }
+
+    nodoubleclick(document.getElementById('btn_submit'));
+
+    return true;
+  }
+</script>
+<form action='/adult_check' method='post' onsubmit='return validate();'>
+  {% if redirect %}<input type='hidden' name='redirect' value='{{redirect}}' />{% endif %}
+  <table>
+    <tbody>
+      <tr>
+    	<th>주민번호</th>
+    	<td>
+        <div align="center">
+          <input id='input_ssn1' type='text' name='ssn1' size='9' maxlength='6'  autocapitalize='off' autocorrect='off' /> - <input id='input_ssn2' type='password' name='ssn2' size='9' maxlength='7' />
+        </div>
+      </td>
+      </tr>
+      <tr>
+    </tbody>
+  </table>
+  <div class='disclaimer'>입력한 주민번호는 연령 확인용이며 <span class='emph'>절대 결코 네버</span> 서버에 저장되지 않습니다.</div>
+  <div id='buttonbox'>
+    <input id='btn_submit' type='submit' value='성인인증' />
+    <input id='btn_back' type='button' onclick='history.back()' value='취소' />
+  </div>
+</form>
+{% endblock %}

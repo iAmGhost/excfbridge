@@ -90,16 +90,24 @@ def resize(filename, resize):
     im = im.resize((nx, ny), Image.ANTIALIAS)
     im.save(filename, quality=90)
 
-def upload(request, fileobj, size, sid = None):
+def upload(request, fileobj, size, sid = None, bid = None, uid = None):
     if not sid:
         sid = md5(get_session_id(request)).hexdigest()
+
+    prefix = ''
+    if bid is not None and uid is not None:
+        if not os.path.exists('%s/%s' % (UPLOAD_LOCAL_PATH, bid)):
+            os.mkdir('%s/%s' % (UPLOAD_LOCAL_PATH, bid))
+        if not os.path.exists('%s/%s/%s' % (UPLOAD_LOCAL_PATH, bid, uid)):
+            os.mkdir('%s/%s/%s' % (UPLOAD_LOCAL_PATH, bid, uid))
+        prefix = '%s/%s/' % (bid, uid)
 
     retrycnt = 0
     while True:
         if retrycnt == 0:
-            filename = '%s_%s' % (sid, fileobj.name)
+            filename = prefix + '%s_%s' % (sid, fileobj.name)
         else:
-            filename = '%s_%d_%s' % (sid, retrycnt, fileobj.name)
+            filename = prefix + '%s_%d_%s' % (sid, retrycnt, fileobj.name)
         filename = filename.encode('utf-8')
         fpath = '%s/%s' % (UPLOAD_LOCAL_PATH, filename)
 

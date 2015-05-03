@@ -23,8 +23,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
 # THE SOFTWARE.
 
-DEBUG = False 
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 BASE_URL = 'http://s.excf.com'
 BASE_PATH = '/home/segfault/excfbridge'
@@ -44,11 +49,22 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ADMINS_EXCF = ['segfault87', 'blaxin']
+ADMINS_EXCF = []
 SESSION_EXPIRE = 3600 * 24
 
 DATABASE_ENGINE = 'sqlite3'
 DATABASE_NAME = BASE_PATH + '/database/excfbridge.db'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_PATH + '/database/excfbridge.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST' : '',
+        'PORT': '',
+    }
+}
 
 TIME_ZONE = 'Asia/Seoul'
 LANGUAGE_CODE = 'en-us'
@@ -68,8 +84,8 @@ ADMIN_MEDIA_PREFIX = '/static/media/'
 SECRET_KEY = 'hhku$j1^-3dl5(!-5+0xeh+9)0@xmnp2jblf5!(ht736v3_hom'
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
