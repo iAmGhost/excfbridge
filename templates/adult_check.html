@@ -1,7 +1,24 @@
 {% extends "skel.html" %}
 
 {% block body %}
+<style>
+#input_ssn1 {
+  width: 60px;
+}
+#input_ssn2 {
+  width: 70px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+</style>
 <script type='text/javascript'>
+  function auto_focus() {
+    if (document.getElementById("input_ssn1").value.length == 6) {
+      document.getElementById("input_ssn2").focus();
+    }
+  }
   function validate() {
     if (!document.getElementById('ssn1').value || !document.getElementById('ssn2').value) {
       alert('주민등록번호를 정확히 입력하여 주십시오.');
@@ -13,7 +30,10 @@
     return true;
   }
 </script>
-<form action='/adult_check' method='post' onsubmit='return validate();'>
+<form autocomplete="off" action='/adult_check' method='post' onsubmit='return validate();'>
+  <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+  <input style="display:none" type="text" name="fakeusernameremembered"/>
+  <input style="display:none" type="password" name="fakepasswordremembered"/>
   {% if redirect %}<input type='hidden' name='redirect' value='{{redirect}}' />{% endif %}
   <table>
     <tbody>
@@ -21,7 +41,7 @@
     	<th>주민번호</th>
     	<td>
         <div align="center">
-          <input id='input_ssn1' type='text' name='ssn1' size='9' maxlength='6'  autocapitalize='off' autocorrect='off' /> - <input id='input_ssn2' type='password' name='ssn2' size='9' maxlength='7' />
+          <input id='input_ssn1' required="required" type='number' name='ssn1' size='9' maxlength='6' onkeyup="auto_focus();" /> - <input id='input_ssn2' required="required" type='number' name='ssn2' size='9' maxlength='7' />
         </div>
       </td>
       </tr>
