@@ -113,7 +113,7 @@ def handle_adult_check_post(request):
     try:
         raddr = request.POST['redirect']
     except:
-        raddr = "/adult_check"
+        raddr = "/list/that"
 
     response = redirect(raddr)
 
