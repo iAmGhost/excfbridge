@@ -34,6 +34,9 @@ PAGE_IDS = {
     'game': 'game',
     'eatball': 'eatball',
     'that': 'ddf',
+    'cartoon_excf1': 'EX1',
+    'cartoon_excf2': 'EX2',
+    'junk': 'zap',
 }
 
 PAGE_NAMES = {
@@ -47,6 +50,9 @@ PAGE_NAMES = {
     'inbox_sent': u'보낸 쪽지함',
     'eatball': u'먹',
     'that': u'그게시판',
+    'cartoon_excf1': u'만화1',
+    'cartoon_excf2': u'만화2',
+    'junk': u'잡동사니',
 }
 
 PAGE_PARSERS = {
@@ -58,17 +64,23 @@ PAGE_PARSERS = {
     'game': excf_new,
     'eatball': excf_new,
     'that': excf_new,
+    'cartoon_excf1': excf_new,
+    'cartoon_excf2': excf_new,
+    'junk': excf_new,
 }
 
 PAGES = (
     ('free', '/list/free', PAGE_NAMES['free']),
     ('general', '/list/general', PAGE_NAMES['general']),
     ('creation', '/list/creation', PAGE_NAMES['creation']),
+    ('cartoon_excf1', '/list/cartoon_excf1', PAGE_NAMES['cartoon_excf1']),
+    ('cartoon_excf2', '/list/cartoon_excf2', PAGE_NAMES['cartoon_excf2']),
     ('cartoon', '/list/cartoon', PAGE_NAMES['cartoon']),
     ('playground', '/list/playground', PAGE_NAMES['playground']),
     ('game', '/list/game', PAGE_NAMES['game']),
     ('eatball', '/list/eatball', PAGE_NAMES['eatball']),
     ('that', '/list/that', PAGE_NAMES['that']),
+    ('junk', '/list/junk', PAGE_NAMES['junk']),
     ('inbox', '/inbox', PAGE_NAMES['inbox']),
     ('inbox_sent', '/inbox_sent', PAGE_NAMES['inbox_sent']),
 )
