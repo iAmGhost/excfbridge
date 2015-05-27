@@ -45,7 +45,10 @@ def parse_list(page, soup):
     data['message_lists'] = messages
 
     pages = soup.findAll('table', {'cellpadding': '5'})[1].text.replace('&nbsp;', '')
-    data['maxpages'] = int(pages.replace('[', ' ').replace(']', ' ').strip().split()[-1])
+    try:
+        data['maxpages'] = int(pages.replace('[', ' ').replace(']', ' ').strip().split()[-1])
+    except:
+        data['maxpages'] = 10
 
     return data
 
