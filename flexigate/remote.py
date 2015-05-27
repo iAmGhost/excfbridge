@@ -23,6 +23,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+import re
+
 from BeautifulSoup import BeautifulSoup
 import urllib, urllib2
 
@@ -47,6 +49,12 @@ def send_request(request, url, data=None, sessid=None, referer=None):
     return urllib2.urlopen(req)
 
 def postprocess(data):
+    # This is dirty fix for missing quotes+non-ascii parameters.
+    regex = re.compile(r"(<img src=)(.+?)([ |>])", re.DOTALL)
+
+    data = re.sub(regex, r'\1"\2"\3', data)
+
     data = data.decode(TARGET_ENCODING, 'ignore')
+
     return data, BeautifulSoup(data)
 

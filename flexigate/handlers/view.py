@@ -67,6 +67,11 @@ def handle(request, path):
         if errcode:
             return error_forward(request, errmsg)
 
+        # For internal images
+        for x in soup.findAll('img'):
+            if x['src'][0:5] == 'data/':
+                x['src'] = "http://excf.com/bbs/" + x['src']
+
         #if not 'aprilfools' in request.COOKIES:
         #    for x in soup.findAll('img'):
         #        x['src'] = 'http://prx.influx.kr/convert/negate?uri=%s' % (urllib.quote(x['src']))
