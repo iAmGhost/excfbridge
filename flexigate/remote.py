@@ -50,7 +50,7 @@ def send_request(request, url, data=None, sessid=None, referer=None):
 
 def postprocess(data):
     # This is dirty fix for missing quotes+non-ascii parameters.
-    regex = re.compile(r"(<img src=)(.+?)([ |>])", re.DOTALL)
+    regex = re.compile(r"(<img src=(?!['|\"]))(.+?)([\s|>])", re.DOTALL)
 
     data = re.sub(regex, r'\1"\2"\3', data)
 
